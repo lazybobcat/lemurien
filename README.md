@@ -1,4 +1,4 @@
-test
+lemurien
 ====
 
-my first tests with github
+A C++ jukebox for my second year in computing school project.
