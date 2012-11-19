@@ -26,7 +26,7 @@ public:
     /**
      * @brief The Error enumeration
      */
-    enum Error { LogicalError, SQLError, CastError, UnknownError };
+    enum Error { LogicalError, SQLError, DataNotFound, CastError, UnknownError };
 
     /**
      * @brief SqlModel constructor

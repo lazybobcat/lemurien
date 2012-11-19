@@ -3,6 +3,12 @@
 #include "sqlmodelfactory.h"
 #include <iostream>
 
+std::ostream& operator<<(std::ostream& os, const Song* song)
+{
+    os << song->mTitle << " [" << song->mArtist << " : " << song->mAlbum << "] " << song->mFilepath << " {played:" << song->mNbPlay << "}";
+    return os;
+}
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
@@ -14,7 +20,11 @@ int main(int argc, char *argv[])
     try {
         SqlModelFactory::instance()->init();
         Song* s = static_cast<Song*>(SqlModelFactory::instance()->create("song"));
-        s->truc();
+        s->save();
+        s->setPrimaryKey(1);
+        s->construct();
+        std::cout << s << std::endl;
+
         delete s;
     }
     catch(DatabaseManager::Error e)
