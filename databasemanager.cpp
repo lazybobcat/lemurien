@@ -50,15 +50,17 @@ void DatabaseManager::createTables() throw(DatabaseManager::Error)
         QSqlQuery query;
         // Creating table songs
         ret = query.exec("CREATE TABLE IF NOT EXISTS songs("
-                         "id INTEGER, "
+                         "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                          "title VARCHAR(50) NOT NULL, "
                          "artist VARCHAR(50) NOT NULL, "
                          "album VARCHAR(50), "
-                         "filepath VARCHAR(150) NOT NULL, "
+                         "filepath VARCHAR(150) UNIQUE NOT NULL, "
                          "nbplay INTEGER, "
                          "mark INTEGER,"
-                         "lyrics TEXT,"
-                         "PRIMARY KEY(id, title, artist))");
+                         "lyrics TEXT"
+                         ")"); // After a lot of different creation, setting the primary key on id to
+                               // benefit from auto-increment and unique on filepath to only have one
+                               // song corresponding to one file is the best way
 
         // If there was an error while creating the tables.
         if(!ret)    throw DatabaseManager::AccessError; // Throw an error if one occured

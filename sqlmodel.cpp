@@ -1,6 +1,7 @@
 #include "sqlmodel.h"
+#include <QVariant>
 
-SqlModel::SqlModel(QSqlDatabase* db, const std::string &tablename, const std::string& primarykeyname)
+SqlModel::SqlModel(QSqlDatabase* db, const QString &tablename, const QString& primarykeyname)
     : mDatabase(db),
       mTable(tablename),
       mPrimaryKeyField(primarykeyname),
@@ -25,13 +26,31 @@ void SqlModel::construct(const boost::any &fromid)  throw(Error)
     construct();
 }
 
+void SqlModel::autoKey() throw(SqlModel::Error)
+{
+    // Nothing to do if database is close
+    if(db()->isOpen())
+    {
+        // Set the query : we want the bigger id+1 in the table
+        QSqlQuery query(QString("SELECT MAX(%1)+1 FROM %2").arg(mPrimaryKeyField).arg(mTable));
 
-void SqlModel::setTable(const std::string &newtable)
+        // If there's a result
+        if(query.next())
+            mPrimaryKey = query.value(0).toUInt(); // we extract the id and set Primarykey with its value
+        else
+            mPrimaryKey = 1; // If there the table is empty, we will be number one
+    }
+    else
+        throw SqlModel::SQLError;
+}
+
+
+void SqlModel::setTable(const QString &newtable)
 {
     mTable = newtable;
 }
 
-void SqlModel::setPrimaryKeyField(const std::string& keyname)
+void SqlModel::setPrimaryKeyField(const QString& keyname)
 {
     mPrimaryKeyField = keyname;
 }
@@ -41,12 +60,12 @@ void SqlModel::setPrimaryKey(const boost::any& key)
     mPrimaryKey = key;
 }
 
-const std::string& SqlModel::table() const
+const QString& SqlModel::table() const
 {
     return mTable;
 }
 
-const std::string& SqlModel::keyfield() const
+const QString& SqlModel::keyfield() const
 {
     return mPrimaryKeyField;
 }

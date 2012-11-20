@@ -9,9 +9,10 @@
  * @date 2012-11
  */
 
-#include <string>
+#include <QString>
 #include <boost/any.hpp>
 #include <QSqlDatabase>
+#include <QSqlQuery>
 
 /**
  * @class SqlModel
@@ -26,13 +27,13 @@ public:
     /**
      * @brief The Error enumeration
      */
-    enum Error { LogicalError, SQLError, DataNotFound, CastError, UnknownError };
+    enum Error { LogicalError, SQLError, DataNotFound, InsertFailed, CastError, UnknownError };
 
     /**
      * @brief SqlModel constructor
      * @param tablename This is the table name, where to look for the Object data
      */
-    explicit SqlModel(QSqlDatabase* db, const std::string& tablename, const std::string& primarykeyname = "id");
+    explicit SqlModel(QSqlDatabase* db, const QString& tablename, const QString &primarykeyname = "id");
 
     /**
      * @brief Default destructor
@@ -60,13 +61,13 @@ public:
      * @brief Set the table name containing the needed data
      * @param newtable The (db)table name
      */
-    void        setTable(const std::string& newtable);
+    void        setTable(const QString& newtable);
 
     /**
      * @brief Set the name of the primary key field in the table
      * @param keyname The name of the Primary Key Field (eg: "id" or "name")
      */
-    void        setPrimaryKeyField(const std::string& keyname);
+    void        setPrimaryKeyField(const QString &keyname);
 
     /**
      * @brief Set the value of the primary key
@@ -78,13 +79,13 @@ public:
      * @brief table accessor
      * @return The (db)table name
      */
-    const std::string&  table() const;
+    const QString&      table() const;
 
     /**
      * @brief keyname accessor
      * @return The name of the field containing the primary key
      */
-    const std::string&  keyfield() const;
+    const QString&      keyfield() const;
 
     /**
      * @brief key accessor
@@ -98,10 +99,21 @@ public:
      */
     QSqlDatabase*   db();
 
+protected:
+    /**
+     * @brief Automatically generates the next integer key for the table mTable, in cases where AUTO INCREMENT
+     *          cannot be activated (because of SQLIte simplifications)
+     * @details Takes the max mPrimarKeyField in the mTable and add 1. Sets the mPrimaryKey with that value.
+     *          This method can return an SqlModel::SqlError if the connection to the database isn't established.
+     *          This method is protected because you need to be very careful with it. You don't want to alter an already set
+     *          primary key for nothing !
+     */
+    void            autoKey()  throw(Error);
+
 private:
     QSqlDatabase*   mDatabase;          ///< Pointer on the unique QSqlDatabase, handled by the DatabaseManager
-    std::string     mTable;             ///< The (db)table name containing the needed data
-    std::string     mPrimaryKeyField;   ///< The name of the Primary Key Field (eg: "id" or "name")
+    QString         mTable;             ///< The (db)table name containing the needed data
+    QString         mPrimaryKeyField;   ///< The name of the Primary Key Field (eg: "id" or "name")
     boost::any      mPrimaryKey;        ///< The value of the Primary Key for this object to access our data in the (db)table
 };
 
