@@ -1,20 +1,10 @@
 #include <QApplication>
 #include "mainwindow.h"
 #include "sqlmodelfactory.h"
+
+#ifdef DEBUG
 #include <iostream>
-
-
-std::ostream& operator<<(std::ostream& os, const QString& s)
-{
-    os << s.toStdString();
-    return os;
-}
-
-std::ostream& operator<<(std::ostream& os, const Song* song)
-{
-    os << "(" << boost::any_cast<unsigned int>(song->key()) << ") " << song->mTitle << " [" << song->mArtist << " : " << song->mAlbum << "] " << song->mFilepath << " {played:" << song->mNbPlay << "}";
-    return os;
-}
+#endif
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +13,7 @@ int main(int argc, char *argv[])
 
 
 
-
+#ifdef DEBUG
     try {
         SqlModelFactory::instance()->init();
         Song* s = static_cast<Song*>(SqlModelFactory::instance()->create("song"));
@@ -56,6 +46,7 @@ int main(int argc, char *argv[])
     {
         std::cerr << "Unknown error with the SQLite database !" << std::endl;
     }
+#endif
 
 
     MainWindow w;

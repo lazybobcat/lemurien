@@ -131,11 +131,16 @@ void    Song::playOneMoreTime()
 
 
 
-
-/*
-std::ostream& operator<<(std::ostream& os, const Song* song)
+#ifdef DEBUG
+std::ostream& operator<<(std::ostream& os, const QString& s)
 {
-    os << song->mTitle << " [" << song->mArtist << " : " << song->mAlbum << "] " << song->mFilepath << " {played:" << song->mNbPlay << "}";
+    os << s.toStdString();
     return os;
 }
-*/
+
+std::ostream& operator<<(std::ostream& os, const Song* song)
+{
+    os << "(" << boost::any_cast<unsigned int>(song->key()) << ") " << song->mTitle << " [" << song->mArtist << " : " << song->mAlbum << "] " << song->mFilepath << " {played:" << song->mNbPlay << "}";
+    return os;
+}
+#endif

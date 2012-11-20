@@ -25,9 +25,12 @@ class DatabaseManager
 {
 public:
     /**
-     * @brief The Error enumeration.
+     * @brief The Error enumeration for DatabaseManager actions.
      */
-    enum Error { OpenDbError, AccessError, UnknownError };
+    enum Error { OpenDbError, ///< Error that occurs when the DB cannot be opened
+                 AccessError, ///< Error that occurs when a query cannot be executed
+                 UnknownError ///< Other errors
+               };
 
     /**
      * @brief DatabaseManager constructor is private, for Singleton

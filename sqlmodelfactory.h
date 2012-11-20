@@ -47,12 +47,12 @@ public:
     DatabaseManager*  dbManager();
 
 private:
-    explicit SqlModelFactory();
-    explicit SqlModelFactory(const SqlModelFactory&);
-    SqlModelFactory& operator=(const SqlModelFactory&);
+    explicit SqlModelFactory(); ///< Explicit private constructor -> singeton implementation
+    explicit SqlModelFactory(const SqlModelFactory&); ///< Explicit private copy constructor -> singeton implementation
+    SqlModelFactory& operator=(const SqlModelFactory&); ///< Explicit private copy operator -> singeton implementation
 
-    static SqlModelFactory* mInstance;
-    DatabaseManager  mDBManager;
+    static SqlModelFactory* mInstance;  ///< Static and unique (global variable) instance of SqlModelFactory
+    DatabaseManager  mDBManager;        ///< That DatabaseManager should be unique because it is contained by a singleton
 };
 
 #endif // SQLMODELFACTORY_H

@@ -27,7 +27,12 @@ public:
     /**
      * @brief The Error enumeration
      */
-    enum Error { LogicalError, SQLError, DataNotFound, InsertFailed, CastError, UnknownError };
+    enum Error { LogicalError,  ///< Error that occurs if the program is wrong (a important initialisation has been skiped, ...)
+                 SQLError,      ///< Error that occurs if the database isn't open
+                 DataNotFound,  ///< Error that occurs if the data for a primary key hasn't been found. This can occur, make sure to catch this !
+                 InsertFailed,  ///< Error that occurs if the data hasn't been inserted in the database. This can occur, make sure to catch this !
+                 UnknownError   ///< Other errors
+               };
 
     /**
      * @brief SqlModel constructor
