@@ -11,7 +11,8 @@
 
 #include "factory.h"
 #include "databasemanager.h"
-#include "song.h"
+#include "playlist.h"
+#include <boost/make_shared.hpp>
 
 /**
  * @class SqlModelFactory
@@ -31,25 +32,37 @@ public:
     /**
      * @brief Initialisation method. For now, it opens the Database.
      */
-    void              init();
+    void                init();
 
     /**
-     * @brief Creates a SqlModel children depnding on the parameter.
-     * @param type The type of object you want
-     * @return A SqlModel pointer on a children object
+     * @brief Creates a Song and returns a shared_ptr on it
+     * @return A boost::shared_ptr<Song> on the song
      */
-    virtual SqlModel* create(const std::string &type);
+    Song::Ptr           createSong();
+
+    /**
+     * @brief Creates a Playlist and returns a shared_ptr on it
+     * @return A boost::shared_ptr<Playlist> on the playlist
+     */
+    Playlist::Ptr       createPlaylist();
 
     /**
      * @brief Getter for DatabaseManager
      * @return Pointer on the unique DatabaseManager
      */
-    DatabaseManager*  dbManager();
+    DatabaseManager*    dbManager();
 
 private:
     explicit SqlModelFactory(); ///< Explicit private constructor -> singeton implementation
     explicit SqlModelFactory(const SqlModelFactory&); ///< Explicit private copy constructor -> singeton implementation
     SqlModelFactory& operator=(const SqlModelFactory&); ///< Explicit private copy operator -> singeton implementation
+
+    /**
+     * @brief Creates a SqlModel children depending on the parameter.
+     * @param type The type of object you want ("song", "playlist")
+     * @return A SqlModel pointer on a children object
+     */
+    virtual SqlModel* create(const std::string &type);
 
     static SqlModelFactory* mInstance;  ///< Static and unique (global variable) instance of SqlModelFactory
     DatabaseManager  mDBManager;        ///< That DatabaseManager should be unique because it is contained by a singleton

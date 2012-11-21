@@ -78,10 +78,9 @@ void DatabaseManager::createTables() throw(DatabaseManager::Error)
 
         // Creating table playlists_songs (link between both previous tables)
         ret = query.exec("CREATE TABLE IF NOT EXISTS playlists_songs("
-                         "id INTEGER, "
                          "id_playlist INTEGER, "
                          "id_song INTEGER, "
-                         "PRIMARY KEY(id, id_playlist, id_song),"
+                         "PRIMARY KEY(id_playlist, id_song),"
                          "FOREIGN KEY(id_playlist) REFERENCES playlists(id),"
                          "FOREIGN KEY(id_song) REFERENCES songs(id)"
                          ")");

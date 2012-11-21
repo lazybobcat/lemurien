@@ -3,14 +3,16 @@
 
 /**
  * @file
- * @brief This file implements the Songs class and tools
+ * @brief This file implements the Song class and related tools
  * @author BOUTTER Loïc
- * @version 1
+ * @version 2
  * @date 2012-11
  */
 
 #include "sqlmodel.h"
 #include "config.h"
+#include <boost/shared_ptr.hpp>
+//#include <memory> // For C++11
 #ifdef DEBUG
 #include <iostream>
 #endif
@@ -22,7 +24,7 @@
  * @details The Song class is directly linked to the database (inherits from SqlModel) so you can
  *          construct a song from data in the table 'songs' and/or save a song in database.\n
  *          You shouldn't construct a Song by yourself, use SqlModelFactory instead.
- * @see SqlModelFactory, save(), construct()
+ * @see SqlModelFactory, save(), construct(), Playlist
  */
 class Song : public SqlModel
 {
@@ -32,6 +34,11 @@ class Song : public SqlModel
 
 public:
     /**
+     * @brief Make our life simple
+     */
+    typedef boost::shared_ptr<Song> Ptr;
+
+    /**
      * @brief Song constructor, you shouldn't construt a Song by yourself, it's done by SqlModelFactory
      * @param db Is a pointer on the QSqlDatabase containing all data needed.
      */
@@ -40,7 +47,7 @@ public:
     /**
      * @brief Song destructor (default)
      */
-    virtual ~Song() { }
+    virtual ~Song();
 
     /**
      * @brief Save the song in the database.

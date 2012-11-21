@@ -12,6 +12,10 @@ Song::Song(QSqlDatabase* db)
 {
 }
 
+Song::~Song()
+{
+}
+
 
 void Song::save() throw(SqlModel::Error)
 {
@@ -25,7 +29,7 @@ void Song::save() throw(SqlModel::Error)
             QSqlQuery query;
             query.prepare("INSERT INTO songs VALUES(NULL, :title, :artist, :album, :filepath, :nbplay, :mark, :lyrics)");
             // We've set the ID to null because AUTOINCREMENT is activated, so let SQLite do its job !
-            query.bindValue(":title", QString(mTitle));
+            query.bindValue(":title", mTitle);
             query.bindValue(":artist", mArtist);
             query.bindValue(":album", mAlbum);
             query.bindValue(":filepath", mFilepath);
@@ -44,7 +48,7 @@ void Song::save() throw(SqlModel::Error)
             QSqlQuery query;
             query.prepare("UPDATE songs SET title=:title, artist=:artist, album=:album, filepath=:filepath, nbplay=:nbplay, mark=:mark, lyrics=:lyrics WHERE id=:id");
             query.bindValue(":id", boost::any_cast<unsigned int>(key()));
-            query.bindValue(":title", QString(mTitle));
+            query.bindValue(":title", mTitle);
             query.bindValue(":artist", mArtist);
             query.bindValue(":album", mAlbum);
             query.bindValue(":filepath", mFilepath);
@@ -69,7 +73,7 @@ void Song::construct() throw(SqlModel::Error)
     if(db()->isOpen())
     {
         // Get the song in the database
-        QSqlQuery query(QString("SELECT id, title, artist, album, filepath, nbplay, mark, lyrics FROM songs WHERE id=%1").arg(boost::any_cast<int>(key())));
+        QSqlQuery query(QString("SELECT id, title, artist, album, filepath, nbplay, mark, lyrics FROM songs WHERE id=%1").arg(boost::any_cast<unsigned int>(key())));
         if(query.next()) // Get to the data
         {
             mTitle = query.value(1).toString();         // Extract the title
@@ -77,7 +81,7 @@ void Song::construct() throw(SqlModel::Error)
             mAlbum = query.value(3).toString();         // Extrat the album name
             mFilepath = query.value(4).toString();      // Extract te filepath
             mNbPlay = query.value(5).toUInt();          // Extract the numer of times the song has been played
-            mMark = query.value(6).toUInt();             // Extract the mark
+            mMark = query.value(6).toUInt();            // Extract the mark
             mLyrics = query.value(7).toString();        // Extact the lyrics
         }
         else
@@ -132,7 +136,7 @@ void    Song::playOneMoreTime()
 
 
 #ifdef DEBUG
-std::ostream& operator<<(std::ostream& os, const QString& s)
+inline std::ostream& operator<<(std::ostream& os, const QString& s)
 {
     os << s.toStdString();
     return os;
