@@ -18,5 +18,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-
+    delete audioOutput;
+    delete mediaObject;
 }

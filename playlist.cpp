@@ -26,7 +26,7 @@ void Playlist::save() throw(SqlModel::Error)
          */
 
         // If the playlist hasn't been saved yet in the database, it needs an INSERT
-        if(key().empty())
+        if(!key())
         {
             // Prepare the query and then bind values
             QSqlQuery query;
@@ -44,7 +44,7 @@ void Playlist::save() throw(SqlModel::Error)
             // Prepare the query and then bind values
             QSqlQuery query;
             query.prepare("UPDATE playlists SET name=:name WHERE id=:id");
-            query.bindValue(":id", boost::any_cast<unsigned int>(key()));
+            query.bindValue(":id", key());
             query.bindValue(":name", mName);
             // Execution
             if(!query.exec()) // In case of error
@@ -64,19 +64,19 @@ void Playlist::save() throw(SqlModel::Error)
 
         QList<Song::Ptr>::iterator it = begin(); // Iterator on the begining of the playlist
         // Get the playlist database primary key, to avoid calling that method X times.
-        unsigned int this_key = boost::any_cast<unsigned int>(key());
+        unsigned int this_key = key();
 
         // Iteration on the playlist to save each song in playlists_songs database
         for(; it != end(); ++it)
         {
-            if((*it)->key().empty())
+            if((*it)->key() == 0)
                 (*it)->save();
 
             // Prepare the query and then bind values
             QSqlQuery query;
             query.prepare("INSERT INTO playlists_songs VALUES(:idP, :idS)");
             query.bindValue(":idP", this_key);
-            query.bindValue(":idS", boost::any_cast<unsigned int>((*it)->key()));
+            query.bindValue(":idS", (*it)->key());
             // Exec the query. Note that we do not returns error because we gonna insert data pairs
             // that are UNIQUE in the table, and we do it on purpose.
             query.exec();
@@ -89,7 +89,7 @@ void Playlist::save() throw(SqlModel::Error)
 
 void Playlist::construct() throw(SqlModel::Error)
 {
-    if(key().empty())
+    if(!key())
         throw SqlModel::LogicalError;
 
     if(db()->isOpen())
@@ -99,7 +99,7 @@ void Playlist::construct() throw(SqlModel::Error)
         //////////////////////////////////////////////////////////////////////////////////
 
         // Get the playlist in the database
-        QSqlQuery query(QString("SELECT name FROM playlists WHERE id=%1").arg(boost::any_cast<int>(key())));
+        QSqlQuery query(QString("SELECT name FROM playlists WHERE id=%1").arg(key()));
         if(query.next()) // Get to the data
         {
             mName = query.value(0).toString();  // Extract the playlist name
@@ -114,10 +114,10 @@ void Playlist::construct() throw(SqlModel::Error)
         //////////////////////////////////////////////////////////////////////////////////
 
         // Get the playlist in the database
-        query = QString("SELECT id_song FROM playlists_songs WHERE id_playlist=%1").arg(boost::any_cast<int>(key()));
+        query = QString("SELECT id_song FROM playlists_songs WHERE id_playlist=%1").arg(key());
 
         // Multiple results, we iterate on query.next() while it's true
-        boost::any id_song;
+        unsigned int id_song;
         Song::Ptr   tmp_song;
         while(query.next()) // Get to the data
         {
@@ -134,6 +134,38 @@ void Playlist::construct() throw(SqlModel::Error)
             tmp_song->construct();  // With the ID the song is able to construct itself from database
             append(tmp_song);   // Finally we push it in the list
         }
+
+    }
+    else
+        throw SqlModel::SQLError;
+}
+
+void Playlist::erase() throw(SqlModel::Error)
+{
+    if(!key())
+        throw SqlModel::LogicalError;
+
+    if(db()->isOpen())
+    {
+        // Remove all data from table 'playlists_songs' first
+        QSqlQuery query(QString("DELETE FROM playlists_songs WHERE id_playlist=%1").arg(key()));
+
+        // In case of error
+        if(query.lastError().type() != QSqlError::NoError)
+            throw SqlModel::DataNotFound; // Throw an error if one occured
+
+
+
+        // Then we can remove the playlist from table 'playlits'
+        query.exec(QString("DELETE FROM playlists WHERE id=%1").arg(key()));
+
+        // In case of error
+        if(query.lastError().type() != QSqlError::NoError)
+            throw SqlModel::DataNotFound; // Throw an error if one occured
+
+
+        // Remove songs from the list
+        clear();
 
     }
     else
@@ -157,7 +189,7 @@ void Playlist::eraseSongFromPlaylist(Song::Ptr song)
     if(db()->isOpen() && contains(song))
     {
         // Get the playlist in the database
-        QSqlQuery query(QString("DELETE FROM playlists_songs WHERE id_playlist=%1 AND id_song=%2").arg(boost::any_cast<unsigned int>(key())).arg(boost::any_cast<unsigned int>(song->key())));
+        QSqlQuery query(QString("DELETE FROM playlists_songs WHERE id_playlist=%1 AND id_song=%2").arg(key()).arg(song->key()));
         // Hop, adios amigos !
 
         QList<Song::Ptr>::removeOne(song);

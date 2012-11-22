@@ -54,21 +54,32 @@ public:
      * @details This add the song in the database if that song is not already in it, else do an update of the song data.
      * This method can return different SqlModel errors :
      *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *     - SqlModel::SqlError if there is a problem with the database connection
+     *     - SqlModel::SQLError if there is a problem with the database connection
      *     - SqlModel::InsertFailed if for some reason, the inserting failed (it's often because of the UNIQUE
      *          on the filepath : the song is already in database)
      */
-    virtual void save() throw(Error);
+    virtual void save() throw(SqlModel::Error);
 
     /**
      * @brief Construct a Song from a line in the table 'songs'.
      *  Beware: the primary key MUST be set ( with setPrimaryKey() ), else it returns a SqlModel::Error
      * @details This method can throw different SqlModel errors:
      *      - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *      - SqlModel::SqlError if there is a problem with the database connection
+     *      - SqlModel::SQLError if there is a problem with the database connection
      *      - SqlModel::DataNotFound if the data hasn't been found
      */
-    virtual void construct() throw(Error);
+    virtual void construct() throw(SqlModel::Error);
+
+    /**
+     * @brief Removes the song from database.
+     * @details This removes the song from database if the primary key has been set (the song is saved in database).
+     *          Else it does nothing.
+     * This method can return different SqlModel errors :
+     *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
+     *     - SqlModel::SQLError if there is a problem with the database connection
+     *     - SqlModel::DataNotFound the line hasn't been found nor erased for some reason.
+     */
+    virtual void erase() throw(SqlModel::Error);
 
 
     /**

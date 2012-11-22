@@ -5,7 +5,7 @@ SqlModel::SqlModel(QSqlDatabase* db, const QString &tablename, const QString& pr
     : mDatabase(db),
       mTable(tablename),
       mPrimaryKeyField(primarykeyname),
-      mPrimaryKey()
+      mPrimaryKey(0)
 {
 
 }
@@ -16,10 +16,10 @@ SqlModel::~SqlModel()
 }
 
 
-void SqlModel::construct(const boost::any &fromid)  throw(Error)
+void SqlModel::construct(unsigned int fromid)  throw(Error)
 {
     // If the param is empty, big mistake ! We throw a logical error
-    if(fromid.empty())
+    if(!fromid)
         throw SqlModel::LogicalError;
 
     setPrimaryKey(fromid);
@@ -55,7 +55,7 @@ void SqlModel::setPrimaryKeyField(const QString& keyname)
     mPrimaryKeyField = keyname;
 }
 
-void SqlModel::setPrimaryKey(const boost::any& key)
+void SqlModel::setPrimaryKey(unsigned int key)
 {
     mPrimaryKey = key;
 }
@@ -70,7 +70,7 @@ const QString& SqlModel::keyfield() const
     return mPrimaryKeyField;
 }
 
-const boost::any&  SqlModel::key() const
+unsigned int SqlModel::key() const
 {
     return mPrimaryKey;
 }

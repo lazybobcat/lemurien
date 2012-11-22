@@ -10,9 +10,9 @@
  */
 
 #include <QString>
-#include <boost/any.hpp>
 #include <QSqlDatabase>
 #include <QSqlQuery>
+#include <QSqlError>
 
 /**
  * @class SqlModel
@@ -56,10 +56,15 @@ public:
     virtual void construct() throw(Error) = 0;
 
     /**
-     * @brief consruct should initialize children classes data from database
-     * @param fromid This is to retrieve the correct line in the table, the type can be a string, int values, ...
+     * @brief erase should remove the line corresponding to the object from database, the primary key should be set before !
      */
-    void construct(const boost::any& fromid) throw(Error);
+    virtual void erase() throw(Error) = 0;
+
+    /**
+     * @brief consruct should initialize children classes data from database
+     * @param fromid This is to retrieve the correct line in the table
+     */
+    void construct(unsigned int fromid) throw(Error);
 
 
     /**
@@ -76,9 +81,9 @@ public:
 
     /**
      * @brief Set the value of the primary key
-     * @param key Key to retrieve the correct line in the table, the type can be a string, int values, ...
+     * @param key Key to retrieve the correct line in the table
      */
-    void        setPrimaryKey(const boost::any& key);
+    void        setPrimaryKey(unsigned int key);
 
     /**
      * @brief table accessor
@@ -96,7 +101,7 @@ public:
      * @brief key accessor
      * @return The value of the primary key for the object in the (db)table
      */
-    const boost::any&   key() const;
+    unsigned int        key() const;
 
     /**
      * @brief Get a pointer on the QSqlDatabase
@@ -119,7 +124,7 @@ private:
     QSqlDatabase*   mDatabase;          ///< Pointer on the unique QSqlDatabase, handled by the DatabaseManager
     QString         mTable;             ///< The (db)table name containing the needed data
     QString         mPrimaryKeyField;   ///< The name of the Primary Key Field (eg: "id" or "name")
-    boost::any      mPrimaryKey;        ///< The value of the Primary Key for this object to access our data in the (db)table
+    unsigned int    mPrimaryKey;        ///< The value of the Primary Key for this object to access our data in the (db)table
 };
 
 #endif // SQLMODEL_H

@@ -23,7 +23,7 @@ void Song::save() throw(SqlModel::Error)
     if(db()->isOpen())
     {
         // If the song hasn't been saved yet in the database, it needs an INSERT
-        if(key().empty())
+        if(!key())
         {
             // Prepare the query and then bind values
             QSqlQuery query;
@@ -47,7 +47,7 @@ void Song::save() throw(SqlModel::Error)
             // Prepare the query and then bind values
             QSqlQuery query;
             query.prepare("UPDATE songs SET title=:title, artist=:artist, album=:album, filepath=:filepath, nbplay=:nbplay, mark=:mark, lyrics=:lyrics WHERE id=:id");
-            query.bindValue(":id", boost::any_cast<unsigned int>(key()));
+            query.bindValue(":id", key());
             query.bindValue(":title", mTitle);
             query.bindValue(":artist", mArtist);
             query.bindValue(":album", mAlbum);
@@ -67,13 +67,13 @@ void Song::save() throw(SqlModel::Error)
 
 void Song::construct() throw(SqlModel::Error)
 {
-    if(key().empty())
+    if(!key())
         throw SqlModel::LogicalError;
 
     if(db()->isOpen())
     {
         // Get the song in the database
-        QSqlQuery query(QString("SELECT id, title, artist, album, filepath, nbplay, mark, lyrics FROM songs WHERE id=%1").arg(boost::any_cast<unsigned int>(key())));
+        QSqlQuery query(QString("SELECT id, title, artist, album, filepath, nbplay, mark, lyrics FROM songs WHERE id=%1").arg(key()));
         if(query.next()) // Get to the data
         {
             mTitle = query.value(1).toString();         // Extract the title
@@ -85,6 +85,24 @@ void Song::construct() throw(SqlModel::Error)
             mLyrics = query.value(7).toString();        // Extact the lyrics
         }
         else
+            throw SqlModel::DataNotFound; // Throw an error if one occured
+    }
+    else
+        throw SqlModel::SQLError;
+}
+
+
+void Song::erase() throw(SqlModel::Error)
+{
+    if(!key())
+        throw SqlModel::LogicalError;
+
+    if(db()->isOpen())
+    {
+        // Get the song in the database
+        QSqlQuery query(QString("DELETE FROM songs WHERE id=%1").arg(key()));
+
+        if(query.lastError().type() != QSqlError::NoError)
             throw SqlModel::DataNotFound; // Throw an error if one occured
     }
     else
@@ -144,7 +162,7 @@ inline std::ostream& operator<<(std::ostream& os, const QString& s)
 
 std::ostream& operator<<(std::ostream& os, const Song* song)
 {
-    os << "(" << boost::any_cast<unsigned int>(song->key()) << ") " << song->mTitle << " [" << song->mArtist << " : " << song->mAlbum << "] " << song->mFilepath << " {played:" << song->mNbPlay << "}";
+    os << "(" << song->key() << ") " << song->mTitle << " [" << song->mArtist << " : " << song->mAlbum << "] " << song->mFilepath << " {played:" << song->mNbPlay << "}";
     return os;
 }
 #endif

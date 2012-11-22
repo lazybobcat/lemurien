@@ -24,7 +24,7 @@
 class Playlist : public SqlModel, public QList<Song::Ptr>
 {
     #ifdef DEBUG
-    friend std::ostream& operator<<(std::ostream&, const Playlist*);
+    friend std::ostream& operator<<(std::ostream&, const Playlist*); ///< Allow stream operator to access our attributes
     #endif
 
 public:
@@ -47,7 +47,7 @@ public:
      *          Furthermore, every song that are in the playlist are added (saved/updated) to the database.\n
      * This method can return different SqlModel errors :
      *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Playlist
-     *     - SqlModel::SqlError if there is a problem with the database connection
+     *     - SqlModel::SQLError if there is a problem with the database connection
      *     - SqlModel::InsertFailed if for some reason, the inserting failed
      */
     virtual void    save() throw(SqlModel::Error);
@@ -57,10 +57,22 @@ public:
      *  Beware: the primary key MUST be set ( with setPrimaryKey() ), else it returns a SqlModel::Error
      * @details This method can throw different SqlModel errors:
      *      - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *      - SqlModel::SqlError if there is a problem with the database connection
+     *      - SqlModel::SQLError if there is a problem with the database connection
      *      - SqlModel::DataNotFound if the data hasn't been found
      */
     virtual void    construct() throw(SqlModel::Error);
+
+    /**
+     * @brief Removes the Playlist from database and clear() it.
+     * @details This removes the playlist from database if the primary key has been set (saved in database).
+     *          Else it does nothing. This remove all datain table 'playlists_songs', then in 'playlists' and
+     *          clear() the list of songs.
+     * This method can return different SqlModel errors :
+     *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
+     *     - SqlModel::SQLError if there is a problem with the database connection
+     *     - SqlModel::DataNotFound the line hasn't been found nor erased for some reason.
+     */
+    virtual void    erase() throw(SqlModel::Error);
 
 
 
