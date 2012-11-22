@@ -11,6 +11,7 @@
 
 #include "song.h"
 #include <QList>
+#include <QtAlgorithms>
 
 
 /**
@@ -29,6 +30,17 @@ class Playlist : public SqlModel, public QList<Song::Ptr>
 
 public:
     typedef boost::shared_ptr<Playlist> Ptr; ///< Make our life simple.
+
+    /**
+     * @brief The SortField enum to set on wich field we want to sort the playlist
+     */
+    enum SortField {
+        SortOnTitle,    ///< Sort field = title
+        SortOnArtist,   ///< Sort field = artist
+        SortOnAlbum,    ///< Sort field = album
+        SortOnMark,     ///< Sort field = mark
+        SortOnNbplay    ///< Sort field = number of times the song has been played
+    };
 
     /**
      * @brief Playlist constructor, you shouldn't construt a Playlist by yourself, it's done by SqlModelFactory
@@ -76,6 +88,10 @@ public:
 
 
 
+
+    void            sort(SortField  type);
+
+
     /**
      * @brief Renames the playlist
      * @param name The new name
@@ -114,5 +130,30 @@ private:
 
     QString         mName;  ///< The Playlist name, by default : "Playlist Sans Titre"
 };
+
+
+
+/**
+ * @brief Compare two string without taking the case in account
+ * @param s1 The first string to compare
+ * @param s2 The second string to compare
+ * @return true if s1 < s2
+ */
+bool caseInsensitiveLessThan(const QString& s1, const QString& s2);
+/**
+ * @brief Compare two unsined ints
+ * @param number1
+ * @param number2
+ * @return true if number1 > number2
+ */
+bool uintMoreThan(const unsigned int number1, const unsigned int number2);
+
+bool compareTitles(const Song::Ptr song1, const Song::Ptr song2);   ///< Compare songs titles
+bool compareArtists(const Song::Ptr song1, const Song::Ptr song2);  ///< Compare songs artists
+bool compareAlbums(const Song::Ptr song1, const Song::Ptr song2);   ///< Compare songs albums
+bool compareMarks(const Song::Ptr song1, const Song::Ptr song2);    ///< Compare songs marks
+bool compareNbplays(const Song::Ptr song1, const Song::Ptr song2);  ///< Compare songs number of plays
+
+
 
 #endif // PLAYLIST_H

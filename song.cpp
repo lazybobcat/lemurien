@@ -151,6 +151,41 @@ void    Song::playOneMoreTime()
     ++mNbPlay;
 }
 
+QString Song::title() const
+{
+    return mTitle;
+}
+
+QString Song::artist() const
+{
+    return mArtist;
+}
+
+QString Song::album() const
+{
+    return mAlbum;
+}
+
+QString Song::filepath() const
+{
+    return mFilepath;
+}
+
+QString Song::lyrics() const
+{
+    return mLyrics;
+}
+
+unsigned int Song::mark() const
+{
+    return mMark;
+}
+
+unsigned int Song::nbplay() const
+{
+    return mNbPlay;
+}
+
 
 
 #ifdef DEBUG

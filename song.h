@@ -123,6 +123,16 @@ public:
      */
     void    playOneMoreTime();
 
+
+    QString title() const;      ///< Title Getter
+    QString artist() const;     ///< Artist Getter
+    QString album() const;      ///< Album Getter
+    QString filepath() const;   ///< Filepath Getter
+    QString lyrics() const;     ///< Lyrics Getter
+
+    unsigned int mark() const;  ///< Mark Getter
+    unsigned int nbplay() const;///< Number of plays Getter
+
 private:
     QString         mTitle;     ///< The song title
     QString         mArtist;    ///< The song author/artist

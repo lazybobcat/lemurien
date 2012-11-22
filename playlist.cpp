@@ -2,6 +2,19 @@
 #include <QVariant>
 #include "sqlmodelfactory.h"
 
+
+
+
+/*****************************************************
+ *
+ *             PLAYLIST METHODS
+ *
+ ****************************************************/
+
+
+
+
+
 Playlist::Playlist(QSqlDatabase* db) : SqlModel(db, "playlists"), QList(), mName("Playlist Sans Titre")
 {
 }
@@ -173,6 +186,33 @@ void Playlist::erase() throw(SqlModel::Error)
 }
 
 
+void Playlist::sort(SortField type)
+{
+    switch(type)
+    {
+    case Playlist::SortOnTitle:
+        qSort(begin(), end(), compareTitles);
+        break;
+
+    case Playlist::SortOnAlbum:
+        qSort(begin(), end(), compareAlbums);
+        break;
+
+    case Playlist::SortOnArtist:
+        qSort(begin(), end(), compareArtists);
+        break;
+
+    case Playlist::SortOnMark:
+        qSort(begin(), end(), compareMarks);
+        break;
+
+    case Playlist::SortOnNbplay:
+        qSort(begin(), end(), compareNbplays);
+        break;
+    }
+}
+
+
 void Playlist::removeOne(const Song::Ptr song)
 {
     eraseSongFromPlaylist(song);
@@ -206,6 +246,55 @@ void Playlist::rename(const QString &name)
 QString Playlist::name() const
 {
     return mName;
+}
+
+
+
+
+
+
+/*****************************************************
+ *
+ *             OTHER FUNCTIONS
+ *
+ ****************************************************/
+
+
+bool caseInsensitiveLessThan(const QString& s1, const QString& s2)
+{
+    return (s1.toLower() < s2.toLower());
+}
+
+bool uintMoreThan(const unsigned int number1, const unsigned int number2)
+{
+    return (number1 > number2);
+}
+
+
+
+bool compareTitles(const Song::Ptr song1, const Song::Ptr song2)
+{
+    return caseInsensitiveLessThan(song1->title(), song2->title());
+}
+
+bool compareArtists(const Song::Ptr song1, const Song::Ptr song2)
+{
+    return caseInsensitiveLessThan(song1->artist(), song2->artist());
+}
+
+bool compareAlbums(const Song::Ptr song1, const Song::Ptr song2)
+{
+    return caseInsensitiveLessThan(song1->album(), song2->album());
+}
+
+bool compareMarks(const Song::Ptr song1, const Song::Ptr song2)
+{
+    return uintMoreThan(song1->mark(), song2->mark());
+}
+
+bool compareNbplays(const Song::Ptr song1, const Song::Ptr song2)
+{
+    return uintMoreThan(song1->nbplay(), song2->nbplay());
 }
 
 
