@@ -38,8 +38,14 @@
 
 int main(int argc, char *argv[])
 {
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     QApplication app(argc, argv);
     app.setApplicationName("Lémurien");
+    app.setApplicationVersion("0.1");
+
+
 
 
     MainWindow w;

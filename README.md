@@ -20,14 +20,14 @@ This jukebox needs Qt4.6+ (with phonon), libsqlite 3+ to work.
 Implemented features
 ===
 
-- DB handler
+- Database relations
+- Playlist and Song handling
 
 
 NYI features
 ===
 
 - Main actions (play, pause, stop, next, previous, play mode, sliders, volume, ...)
-- Playlist handling
 - shrink mode
 - Splash and super jungle screen
 - UI

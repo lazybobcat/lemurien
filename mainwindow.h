@@ -7,11 +7,14 @@
 #include <phonon/mediasource.h>
 #include <phonon/audiooutput.h>
 #include <phonon/mediasource.h>
-
+#include <phonon/volumeslider.h>
+#include <phonon/seekslider.h>
+#include "sidebar.h"
 #include "ui_mainwindow.h"
+#include "config.h"
 
 
-class MainWindow : public QMainWindow, private Ui::MainWindow
+class MainWindow : public QMainWindow
 {
     Q_OBJECT
     
@@ -20,8 +23,46 @@ public:
     ~MainWindow();
     
 private:
-    Phonon::AudioOutput* audioOutput;
-    Phonon::MediaObject* mediaObject;
+    void setupActions();
+    void setupMenus();
+    void setupUi();
+
+
+
+    /////////////////////////////////
+    //       Audio Properties      //
+    /////////////////////////////////
+    Phonon::AudioOutput* mAudioOutput;
+    Phonon::MediaObject* mMediaObject;
+    Phonon::MediaObject *mMetaInformationResolver;
+    Phonon::SeekSlider  *mSeekSlider;
+    Phonon::VolumeSlider *mVolumeSlider;
+
+
+    /////////////////////////////////
+    //         UI Properties       //
+    /////////////////////////////////
+    // Widgets
+    SideBar     *mSidebar;
+    QToolBar    *mControlBar;
+    QTableWidget *mMusicTable;
+    QLabel      *mSongLabel;
+    QLabel      *mElapsedTimeLabel;
+    QLabel      *mRemainingTimeLabel;
+
+    // Actions
+    QAction     *mPlayAction;
+    QAction     *mPauseAction;
+    QAction     *mStopAction;
+    QAction     *mNextAction;
+    QAction     *mPreviousAction;
+    QAction     *mShuffleAction;
+    QAction     *mRepeatAction;
+    QAction     *mRepeatOnceAction;
+    QAction     *mAddFilesAction;
+    QAction     *mExitAction;
+    QAction     *mAboutAction;
+    QAction     *mShrinkAction;
 
 };
 

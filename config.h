@@ -14,7 +14,9 @@
 
 namespace Config
 {
-    extern unsigned int    cMaxMark; ///< The maximum mark you can give to a song. Can be 5, 10, 20, ... Default: 5
+    extern unsigned int cMaxMark; ///< The maximum mark you can give to a song. Can be 5, 10, 20, ... Default: 5
+    extern bool         cFadeChaining; ///< IS there a fading between 2 songs ?
+    extern int          cFadeTime; ///< Fading time in msec
 }
 
 #endif // CONFIG_H
