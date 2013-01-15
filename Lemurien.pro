@@ -6,7 +6,11 @@ TEMPLATE = app
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .
-QT += core gui phonon xml sql
+QT += core gui phonon xml sql webkit
+OBJECTS_DIR = .obj
+MOC_DIR = .moc
+
+LIBS += -ltag
 
 # Input
 HEADERS += mainwindow.h \
@@ -17,16 +21,45 @@ HEADERS += mainwindow.h \
     song.h \
     config.h \
     playlist.h \
-    sidebar.h
-FORMS += mainwindow.ui
-SOURCES += main.cpp mainwindow.cpp \
+    sidebar.h \
+    playlisttablemodel.h \
+    addfileswindow.h \
+    exceptions/sqlexception.h \
+    exceptions.h \
+    exceptions/sqldatabaseexception.h \
+    exceptions/sqldatanotfoundexception.h \
+    exceptions/sqlinsertfailedexception.h \
+    exceptions/logicalfaultexception.h \
+    editsongwindow.h \
+    unsavabeplaylist.h \
+    webkitwindow.h
+SOURCES += main.cpp \
     databasemanager.cpp \
     sqlmodelfactory.cpp \
     sqlmodel.cpp \
     song.cpp \
     config.cpp \
     playlist.cpp \
-    sidebar.cpp
+    sidebar.cpp \
+    mainwindow_ui.cpp \
+    mainwindow_behaviors.cpp \
+    playlisttablemodel.cpp \
+    addfileswindow.cpp \
+    exceptions/sqlexception.cpp \
+    exceptions/sqldatabaseexception.cpp \
+    exceptions/sqldatanotfoundexception.cpp \
+    exceptions/sqlinsertfailedexception.cpp \
+    exceptions/logicalfaultexception.cpp \
+    editsongwindow.cpp \
+    webkitwindow.cpp
 
 OTHER_FILES += \
-    data/texture.png
+    data/texture.png \
+    data/shuffle.png \
+    data/repeatOnce.png \
+    data/repeat.png \
+    data/lemurien.png \
+    data/intro.mp3 \
+    data/playlist.png \
+    data/licence.txt \
+    data/music.png

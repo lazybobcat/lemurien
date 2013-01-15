@@ -22,14 +22,14 @@ Implemented features
 
 - Database relations
 - Playlist and Song handling
-
+- Main actions (play, pause, stop, next, previous, play mode, sliders, volume, ...)
+- UI
+- Import audio files/folders
+- ...
 
 NYI features
 ===
 
-- Main actions (play, pause, stop, next, previous, play mode, sliders, volume, ...)
 - shrink mode
-- Splash and super jungle screen
-- UI
-- Import audio files/folders
+- Splash and super jingle screen
 - Options and preferences
