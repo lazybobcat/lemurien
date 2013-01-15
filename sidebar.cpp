@@ -112,6 +112,57 @@ QAction *SideBar::addAction(const QString &text, const QIcon &icon)
     return action;
 }
 
+void SideBar::removeAction(const QString &text)
+{
+    QList<QAction*>::iterator it = _actions.begin();
+    for(; it != _actions.end(); ++it)
+    {
+        if((*it)->text() == text)
+        {
+            if(*it == _checkedAction)
+                _checkedAction = NULL;
+            if(*it == _pressedAction)
+                _pressedAction = NULL;
+            delete *it;
+            _actions.erase(it);
+            update();
+            return;
+        }
+    }
+}
+
+void SideBar::clear()
+{
+    QList<QAction*>::iterator it = _actions.begin();
+    for(; it != _actions.end(); ++it)
+    {
+        delete *it;
+    }
+    _actions.clear();
+    _checkedAction = NULL;
+    _pressedAction = NULL;
+}
+#include <iostream>
+void SideBar::checkAction(const QString &text)
+{
+    QList<QAction*>::iterator it = _actions.begin();
+    for(; it != _actions.end(); ++it)
+    {
+        if((*it)->text() == text)
+        {
+            (*it)->setChecked(true);
+            _checkedAction = (*it);
+            update();
+            return;
+        }
+    }
+}
+
+QAction *SideBar::checkedAction()
+{
+    return _checkedAction;
+}
+
 void SideBar::mousePressEvent(QMouseEvent *event)
 {
     _pressedAction = actionAt(event->pos());
@@ -128,7 +179,7 @@ void SideBar::mouseReleaseEvent(QMouseEvent *event)
         _pressedAction = NULL;
         return;
     }
-    if(_checkedAction != NULL)
+    if(_checkedAction != NULL && _checkedAction != _pressedAction)
         _checkedAction->setChecked(false);
     _checkedAction = _pressedAction;
     if(_checkedAction != NULL)

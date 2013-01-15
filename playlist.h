@@ -5,7 +5,7 @@
  * @file
  * @brief This file implements the Playlist class and related tools
  * @author BOUTTER Loïc
- * @version 1
+ * @version 2
  * @date 2012-11
  */
 
@@ -58,21 +58,21 @@ public:
      * @details This add the playlist in the database if that playlist is not already in it, else do an update of the playlist data.\n
      *          Furthermore, every song that are in the playlist are added (saved/updated) to the database.\n
      * This method can return different SqlModel errors :
-     *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Playlist
-     *     - SqlModel::SQLError if there is a problem with the database connection
-     *     - SqlModel::InsertFailed if for some reason, the inserting failed
+     *     - LogicalFaultException if the pimary key isn't set before you try to construct the Playlist
+     *     - SqlDatabaseException if there is a problem with the database connection
+     *     - SqlInsertFailedException if for some reason, the inserting failed
      */
-    virtual void    save() throw(SqlModel::Error);
+    virtual void    save() throw(SqlException);
 
     /**
      * @brief Construct a Playlist from a line in the table 'playlists' and lines in 'playlists_songs'.
      *  Beware: the primary key MUST be set ( with setPrimaryKey() ), else it returns a SqlModel::Error
      * @details This method can throw different SqlModel errors:
-     *      - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *      - SqlModel::SQLError if there is a problem with the database connection
-     *      - SqlModel::DataNotFound if the data hasn't been found
+     *      - LogicalFaultException if the pimary key isn't set before you try to construct the Playlist
+     *      - SqlDatabaseException if there is a problem with the database connection
+     *      - SqlDataNotFoundException if the data hasn't been found
      */
-    virtual void    construct() throw(SqlModel::Error);
+    virtual void    construct() throw(SqlException, LogicalFaultException);
 
     /**
      * @brief Removes the Playlist from database and clear() it.
@@ -80,15 +80,18 @@ public:
      *          Else it does nothing. This remove all datain table 'playlists_songs', then in 'playlists' and
      *          clear() the list of songs.
      * This method can return different SqlModel errors :
-     *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *     - SqlModel::SQLError if there is a problem with the database connection
-     *     - SqlModel::DataNotFound the line hasn't been found nor erased for some reason.
+     *      - LogicalFaultException if the pimary key isn't set before you try to construct the Playlist
+     *      - SqlDatabaseException if there is a problem with the database connection
+     *      - SqlDataNotFoundException if the data hasn't been found
      */
-    virtual void    erase() throw(SqlModel::Error);
+    virtual void    erase() throw(SqlException, LogicalFaultException);
 
 
 
-
+    /**
+     * @brief Sorts the playlist on the given parameter
+     * @param type The Sorting Type / the field on wich you want to sort the playlist
+     */
     void            sort(SortField  type);
 
 
@@ -132,7 +135,6 @@ private:
 };
 
 
-
 /**
  * @brief Compare two string without taking the case in account
  * @param s1 The first string to compare
@@ -153,7 +155,5 @@ bool compareArtists(const Song::Ptr song1, const Song::Ptr song2);  ///< Compare
 bool compareAlbums(const Song::Ptr song1, const Song::Ptr song2);   ///< Compare songs albums
 bool compareMarks(const Song::Ptr song1, const Song::Ptr song2);    ///< Compare songs marks
 bool compareNbplays(const Song::Ptr song1, const Song::Ptr song2);  ///< Compare songs number of plays
-
-
 
 #endif // PLAYLIST_H

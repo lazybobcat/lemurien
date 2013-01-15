@@ -17,7 +17,7 @@ Song::~Song()
 }
 
 
-void Song::save() throw(SqlModel::Error)
+void Song::save() throw(SqlException)
 {
 
     if(db()->isOpen())
@@ -38,7 +38,7 @@ void Song::save() throw(SqlModel::Error)
             query.bindValue(":lyrics", mLyrics);
             // Execution
             if(!query.exec()) // In case of error
-                throw SqlModel::InsertFailed;
+                throw SqlInsertFailedException("SQL Error : Inserting song failed");
             else // If the song has been saved, we get is ID (wich is the last inserted Id)
                 setPrimaryKey(query.lastInsertId().toUInt());
         }
@@ -56,19 +56,20 @@ void Song::save() throw(SqlModel::Error)
             query.bindValue(":mark", mMark);
             query.bindValue(":lyrics", mLyrics);
             // Execution
-            if(!query.exec()) // In case of error
-                throw SqlModel::InsertFailed;
+            if(!query.exec()) { // In case of error
+                throw SqlInsertFailedException("SQL Error : Updating song failed - " + query.lastError().text().toStdString());
+            }
         }
     }
     else
-        throw SqlModel::SQLError;
+        throw SqlDatabaseException("SQL Error : Database is not open");
 }
 
 
-void Song::construct() throw(SqlModel::Error)
+void Song::construct() throw(SqlException, LogicalFaultException)
 {
     if(!key())
-        throw SqlModel::LogicalError;
+        throw LogicalFaultException("Logical Fault : key has not been set before construction");
 
     if(db()->isOpen())
     {
@@ -85,17 +86,17 @@ void Song::construct() throw(SqlModel::Error)
             mLyrics = query.value(7).toString();        // Extact the lyrics
         }
         else
-            throw SqlModel::DataNotFound; // Throw an error if one occured
+            throw SqlDataNotFoundException("SQL Error : data has not been found for song"); // Throw an error if one occured
     }
     else
-        throw SqlModel::SQLError;
+        throw SqlDatabaseException("SQL Error : Database is not open");
 }
 
 
-void Song::erase() throw(SqlModel::Error)
+void Song::erase() throw(SqlException, LogicalFaultException)
 {
     if(!key())
-        throw SqlModel::LogicalError;
+        throw LogicalFaultException("Logical Fault : key has not been set before construction");
 
     if(db()->isOpen())
     {
@@ -103,29 +104,26 @@ void Song::erase() throw(SqlModel::Error)
         QSqlQuery query(QString("DELETE FROM songs WHERE id=%1").arg(key()));
 
         if(query.lastError().type() != QSqlError::NoError)
-            throw SqlModel::DataNotFound; // Throw an error if one occured
+            throw SqlDataNotFoundException("SQL Error : data has not been found for song"); // Throw an error if one occured
     }
     else
-        throw SqlModel::SQLError;
+        throw SqlDatabaseException("SQL Error : Database is not open");
 }
 
 
 void    Song::setTitle(const QString& title)
 {
-    if(!title.isEmpty())
-        mTitle = title;
+    mTitle = title;
 }
 
 void    Song::setArtist(const QString &the_artist)
 {
-    if(!the_artist.isEmpty())
-        mArtist = the_artist;
+    mArtist = the_artist;
 }
 
 void    Song::setAlbum(const QString& album)
 {
-    if(!album.isEmpty())
-        mAlbum = album;
+    mAlbum = album;
 }
 
 void    Song::setFilepath(const QString& filepath)
@@ -142,8 +140,7 @@ void    Song::setMark(unsigned int mark)
 
 void    Song::setLyrics(const QString& lyrics)
 {
-    if(!lyrics.isEmpty())
-        mLyrics = lyrics;
+    mLyrics = lyrics;
 }
 
 void    Song::playOneMoreTime()

@@ -19,10 +19,10 @@ DatabaseManager::~DatabaseManager()
     close();
 }
 
-void DatabaseManager::open() throw(DatabaseManager::Error)
+void DatabaseManager::open() throw(SqlDatabaseException)
 {
     if(!mDatabase.open())
-            throw DatabaseManager::OpenDbError;
+        throw SqlDatabaseException("SQL Error : the database cannot be open");
 }
 
 void DatabaseManager::close()
@@ -42,17 +42,22 @@ QSqlDatabase* DatabaseManager::db()
 }
 
 
-void DatabaseManager::createTables() throw(DatabaseManager::Error)
+void DatabaseManager::createTables() throw(SqlDatabaseException)
 {
     bool ret = false;
     if(mDatabase.isOpen())
     {
         QSqlQuery query;
-        // Creating table songs
+
+
+        /*************************************************************************************************************
+         *                                       Creating table songs
+         ************************************************************************************************************/
+
         ret = query.exec("CREATE TABLE IF NOT EXISTS songs("
                          "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                         "title VARCHAR(50) NOT NULL, "
-                         "artist VARCHAR(50) NOT NULL, "
+                         "title VARCHAR(50), "
+                         "artist VARCHAR(50), "
                          "album VARCHAR(50), "
                          "filepath VARCHAR(150) UNIQUE NOT NULL, "
                          "nbplay INTEGER, "
@@ -63,20 +68,40 @@ void DatabaseManager::createTables() throw(DatabaseManager::Error)
                                // song corresponding to one file is the best way
 
         // If there was an error while creating the tables.
-        if(!ret)    throw DatabaseManager::AccessError; // Throw an error if one occured
+        if(!ret)    throw SqlDatabaseException("SQL Error : Database access error"); // Throw an error if one occured
 
 
-        // Creating table playlists
+
+
+
+        /*************************************************************************************************************
+         *                                       Creating table playlists
+         ************************************************************************************************************/
         ret = query.exec("CREATE TABLE IF NOT EXISTS playlists("
                          "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                          "name VARCHAR(50) NOT NULL"
                          ")");
 
         // If there was an error while creating the tables.
-        if(!ret)    throw DatabaseManager::AccessError; // Throw an error if one occured
+        if(!ret)    throw SqlDatabaseException("SQL Error : Database access error"); // Throw an error if one occured
 
 
-        // Creating table playlists_songs (link between both previous tables)
+
+
+
+        /*************************************************************************************************************
+         *                            Inserting the main playlist ('Toute la musique')
+         ************************************************************************************************************/
+        query.exec("INSERT INTO playlists VALUES(1, 'All Music')");
+
+
+
+
+
+
+        /*************************************************************************************************************
+         *                                Creating table playlists_songs
+         ************************************************************************************************************/
         ret = query.exec("CREATE TABLE IF NOT EXISTS playlists_songs("
                          "id_playlist INTEGER, "
                          "id_song INTEGER, "
@@ -86,6 +111,6 @@ void DatabaseManager::createTables() throw(DatabaseManager::Error)
                          ")");
 
         // If there was an error while creating the tables.
-        if(!ret)    throw DatabaseManager::AccessError; // Throw an error if one occured
+        if(!ret)    throw SqlDatabaseException("SQL Error : Database access error"); // Throw an error if one occured
     }
 }

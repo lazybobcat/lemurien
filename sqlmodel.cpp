@@ -16,17 +16,17 @@ SqlModel::~SqlModel()
 }
 
 
-void SqlModel::construct(unsigned int fromid)  throw(Error)
+void SqlModel::construct(unsigned int fromid)  throw(SqlException, LogicalFaultException)
 {
     // If the param is empty, big mistake ! We throw a logical error
     if(!fromid)
-        throw SqlModel::LogicalError;
+        throw LogicalFaultException("Logical Fault: cannot construct a SqlModel from an id=0");
 
     setPrimaryKey(fromid);
     construct();
 }
 
-void SqlModel::autoKey() throw(SqlModel::Error)
+void SqlModel::autoKey() throw(SqlException)
 {
     // Nothing to do if database is close
     if(db()->isOpen())
@@ -41,7 +41,7 @@ void SqlModel::autoKey() throw(SqlModel::Error)
             mPrimaryKey = 1; // If there the table is empty, we will be number one
     }
     else
-        throw SqlModel::SQLError;
+        throw SqlDatabaseException("SQL Error : Database is not open");
 }
 
 

@@ -1,4 +1,5 @@
 #include "sqlmodelfactory.h"
+#include <iostream>
 
 SqlModelFactory* SqlModelFactory::mInstance = NULL;
 
@@ -26,17 +27,59 @@ SqlModel* SqlModelFactory::create(const std::string &type)
         return new Song(mDBManager.db());
     else if(type == "playlist")
         return new Playlist(mDBManager.db());
+    else if(type == "unsavable_playlist")
+        return new UnsavablePlaylist(mDBManager.db());
 
     return NULL;
 }
 
-Song::Ptr SqlModelFactory::createSong()
+Song::Ptr SqlModelFactory::createSong(unsigned int id)
 {
-    // Get a SqlModel* from create() method
+    // Check if the song has already been created
+    if(mSongs.find(id) != mSongs.end())
+        return mSongs[id]; // If yes we return it
+
+    // Else, get a SqlModel* from create() method
     // Cast it in Song* (and we're sure it's a Song* or NULL)
-    // Give the ownership to the shared_ptr (Song::Ptr) an return it
-    //return boost::make_shared<Song>(mDBManager.db());
-    return Song::Ptr(static_cast<Song*>(create("song")));
+    // Give the ownership to the shared_ptr (Song::Ptr)
+    // Init the song
+    // return boost::make_shared<Song> on the song
+    Song::Ptr song(static_cast<Song*>(create("song")));
+
+    song->setPrimaryKey(id);
+    song->construct();
+    mSongs[song->key()] = song; // Add the song to the map, for a future usage
+
+    return song;
+}
+
+bool SqlModelFactory::getSong(const QString& filepath, Song::Ptr& song)
+{
+    if(!mDBManager.db()->isOpen())
+        mDBManager.db()->open();
+
+    QSqlQuery query(QString("SELECT id FROM songs WHERE filepath='%1'").arg(filepath));
+    if(query.next())
+    {
+        if(query.isValid())
+        {
+            song = createSong(query.value(0).toUInt());
+            return true;
+        }
+    }
+
+    song = Song::Ptr(static_cast<Song*>(create("song")));
+    song->setFilepath(filepath);
+    try {
+        song->save();
+        mSongs[song->key()] = song; // Add the song to the map, for a future usage
+    }
+    catch(SqlInsertFailedException& e)
+    {
+        std::cerr << "The saving of a song failed in " << __FILE__ << ". If the song already exists in database, check the logic of the code that leads here." << std::endl;
+    }
+
+    return false;
 }
 
 Playlist::Ptr SqlModelFactory::createPlaylist()

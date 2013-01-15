@@ -25,7 +25,7 @@ Playlist::~Playlist()
 }
 
 
-void Playlist::save() throw(SqlModel::Error)
+void Playlist::save() throw(SqlException)
 {
     if(db()->isOpen())
     {
@@ -41,6 +41,7 @@ void Playlist::save() throw(SqlModel::Error)
         // If the playlist hasn't been saved yet in the database, it needs an INSERT
         if(!key())
         {
+            std::cout << "will save playlist" << std::endl;
             // Prepare the query and then bind values
             QSqlQuery query;
             query.prepare("INSERT INTO playlists VALUES(NULL, :name)");
@@ -48,7 +49,7 @@ void Playlist::save() throw(SqlModel::Error)
             query.bindValue(":name", mName);
             // Execution
             if(!query.exec()) // In case of error
-                throw SqlModel::InsertFailed;
+                throw SqlInsertFailedException("SQL Error : Inserting playlist failed");
             else // If the song has been saved, we get is ID (wich is the last inserted Id)
                 setPrimaryKey(query.lastInsertId().toUInt());
         }
@@ -61,7 +62,7 @@ void Playlist::save() throw(SqlModel::Error)
             query.bindValue(":name", mName);
             // Execution
             if(!query.exec()) // In case of error
-                throw SqlModel::InsertFailed;
+                throw SqlInsertFailedException("SQL Error : Updating playlists failed");
         }
 
 
@@ -97,13 +98,13 @@ void Playlist::save() throw(SqlModel::Error)
 
     }
     else
-        throw SqlModel::SQLError;
+        throw SqlDatabaseException("SQL Error : Database is not open");
 }
 
-void Playlist::construct() throw(SqlModel::Error)
+void Playlist::construct() throw(SqlException, LogicalFaultException)
 {
     if(!key())
-        throw SqlModel::LogicalError;
+        throw LogicalFaultException("Logical Fault : the key has not been set before construction of playlist");
 
     if(db()->isOpen())
     {
@@ -118,7 +119,7 @@ void Playlist::construct() throw(SqlModel::Error)
             mName = query.value(0).toString();  // Extract the playlist name
         }
         else
-            throw SqlModel::DataNotFound; // Throw an error if one occured
+            throw SqlDataNotFoundException("SQL Error : the data of the playlist (by id) has not been found"); // Throw an error if one occured
 
 
 
@@ -142,21 +143,19 @@ void Playlist::construct() throw(SqlModel::Error)
              */
             // We are going to construct a Song based on the id we get
             tmp_song.reset();   // Reset the previous Song::Ptr
-            tmp_song = SqlModelFactory::instance()->createSong(); // Get a new Song::Ptr, brand new
-            tmp_song->setPrimaryKey(id_song);   // We give the song its primary key (its ID)
-            tmp_song->construct();  // With the ID the song is able to construct itself from database
+            tmp_song = SqlModelFactory::instance()->createSong(id_song); // Get a the song corresponding to the primary key (ID)
             append(tmp_song);   // Finally we push it in the list
         }
 
     }
     else
-        throw SqlModel::SQLError;
+        throw SqlDatabaseException("SQL Error : Database is not open");
 }
 
-void Playlist::erase() throw(SqlModel::Error)
+void Playlist::erase() throw(SqlException, LogicalFaultException)
 {
     if(!key())
-        throw SqlModel::LogicalError;
+        throw LogicalFaultException("Logical Fault : the key has not been set before erasing a playlist");
 
     if(db()->isOpen())
     {
@@ -165,7 +164,7 @@ void Playlist::erase() throw(SqlModel::Error)
 
         // In case of error
         if(query.lastError().type() != QSqlError::NoError)
-            throw SqlModel::DataNotFound; // Throw an error if one occured
+            throw SqlDataNotFoundException("SQL Error : error while deleting playlist songs"); // Throw an error if one occured
 
 
 
@@ -174,7 +173,7 @@ void Playlist::erase() throw(SqlModel::Error)
 
         // In case of error
         if(query.lastError().type() != QSqlError::NoError)
-            throw SqlModel::DataNotFound; // Throw an error if one occured
+            throw SqlDataNotFoundException("SQL Error : error while deleting playlist"); // Throw an error if one occured
 
 
         // Remove songs from the list
@@ -182,7 +181,7 @@ void Playlist::erase() throw(SqlModel::Error)
 
     }
     else
-        throw SqlModel::SQLError;
+        throw SqlDatabaseException("SQL Error : Database is not open");
 }
 
 

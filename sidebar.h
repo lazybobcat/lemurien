@@ -28,7 +28,13 @@ public:
     ~SideBar();
 
     void addAction(QAction *action);
+    void removeAction(const QString& text);
     QAction *addAction(const QString &text, const QIcon &icon = QIcon());
+
+    void checkAction(const QString& text);
+    QAction *checkedAction();
+
+    void clear();
 
 protected:
     void paintEvent(QPaintEvent *event);

@@ -6,7 +6,7 @@
  * @file
  * @brief Class to manage SQLite database and provide a pointer on QSqlDatabase object
  * @author BOUTTER Loïc
- * @version 1
+ * @version 2
  * @date 2012-11
  */
 
@@ -16,6 +16,7 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include <QFile>
+#include "exceptions.h"
 
 /**
  * @class DatabaseManager
@@ -24,14 +25,6 @@
 class DatabaseManager
 {
 public:
-    /**
-     * @brief The Error enumeration for DatabaseManager actions.
-     */
-    enum Error { OpenDbError, ///< Error that occurs when the DB cannot be opened
-                 AccessError, ///< Error that occurs when a query cannot be executed
-                 UnknownError ///< Other errors
-               };
-
     /**
      * @brief DatabaseManager constructor is private, for Singleton
      */
@@ -52,7 +45,7 @@ public:
     /**
      * @brief Open the database
      */
-    void        open()      throw(Error);
+    void        open()      throw(SqlDatabaseException);
 
     /**
      * @brief Close the database.
@@ -69,9 +62,9 @@ public:
 private:
     /**
      * @brief createTables
-     * @throw In case of error while creating databases, throw a DatabaseManager::AccessError.
+     * @throw In case of error while creating databases, throw a SqlDatabaseException
      */
-    virtual void    createTables()      throw(Error);
+    virtual void    createTables()      throw(SqlDatabaseException);
 
     QSqlDatabase     mDatabase; ///< Contains database informations and useful methods (open, close, sql commands)
     

@@ -5,7 +5,7 @@
  * @file
  * @brief This file implements the Song class and related tools
  * @author BOUTTER Loïc
- * @version 2
+ * @version 3
  * @date 2012-11
  */
 
@@ -31,6 +31,7 @@ class Song : public SqlModel
     #ifdef DEBUG
     friend std::ostream& operator<<(std::ostream&, const Song*);
     #endif
+    friend class SqlModelFactory;
 
 public:
     /**
@@ -53,33 +54,32 @@ public:
      * @brief Save the song in the database.
      * @details This add the song in the database if that song is not already in it, else do an update of the song data.
      * This method can return different SqlModel errors :
-     *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *     - SqlModel::SQLError if there is a problem with the database connection
-     *     - SqlModel::InsertFailed if for some reason, the inserting failed (it's often because of the UNIQUE
-     *          on the filepath : the song is already in database)
+     *     - LogicalFaultException if the pimary key isn't set before you try to construct the Song
+     *     - SqlDatabaseException if there is a problem with the database connection
+     *     - SqlInsertFailedException if for some reason, the inserting failed
      */
-    virtual void save() throw(SqlModel::Error);
+    virtual void save() throw(SqlException);
 
     /**
      * @brief Construct a Song from a line in the table 'songs'.
      *  Beware: the primary key MUST be set ( with setPrimaryKey() ), else it returns a SqlModel::Error
      * @details This method can throw different SqlModel errors:
-     *      - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *      - SqlModel::SQLError if there is a problem with the database connection
-     *      - SqlModel::DataNotFound if the data hasn't been found
+     *      - LogicalFaultException if the pimary key isn't set before you try to construct the Song
+     *      - SqlDatabaseException if there is a problem with the database connection
+     *      - SqlDataNotFoundException if the data hasn't been found
      */
-    virtual void construct() throw(SqlModel::Error);
+    virtual void construct() throw(SqlException, LogicalFaultException);
 
     /**
      * @brief Removes the song from database.
      * @details This removes the song from database if the primary key has been set (the song is saved in database).
      *          Else it does nothing.
      * This method can return different SqlModel errors :
-     *     - SqlModel::LogicalError if the pimary key isn't set before you try to construct the Song
-     *     - SqlModel::SQLError if there is a problem with the database connection
-     *     - SqlModel::DataNotFound the line hasn't been found nor erased for some reason.
+     *      - LogicalFaultException if the pimary key isn't set before you try to construct the Song
+     *      - SqlDatabaseException if there is a problem with the database connection
+     *      - SqlDataNotFoundException if the data hasn't been found
      */
-    virtual void erase() throw(SqlModel::Error);
+    virtual void erase() throw(SqlException, LogicalFaultException);
 
 
     /**

@@ -5,7 +5,7 @@
  * @file
  * @brief This file contains the class to handle Database Models
  * @author BOUTTER Loïc
- * @version 1
+ * @version 2
  * @date 2012-11
  */
 
@@ -13,6 +13,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlError>
+#include "exceptions.h"
 
 /**
  * @class SqlModel
@@ -24,15 +25,7 @@
 class SqlModel
 {
 public:
-    /**
-     * @brief The Error enumeration
-     */
-    enum Error { LogicalError,  ///< Error that occurs if the program is wrong (a important initialisation has been skiped, ...)
-                 SQLError,      ///< Error that occurs if the database isn't open
-                 DataNotFound,  ///< Error that occurs if the data for a primary key hasn't been found. This can occur, make sure to catch this !
-                 InsertFailed,  ///< Error that occurs if the data hasn't been inserted in the database. This can occur, make sure to catch this !
-                 UnknownError   ///< Other errors
-               };
+
 
     /**
      * @brief SqlModel constructor
@@ -48,23 +41,23 @@ public:
     /**
      * @brief save should save the children classes data in database
      */
-    virtual void save() throw(Error) = 0;
+    virtual void save() throw(SqlException) = 0;
 
     /**
      * @brief consruct should initialize children classes data from database with the primary key (that should to be set !!)
      */
-    virtual void construct() throw(Error) = 0;
+    virtual void construct() throw(SqlException, LogicalFaultException) = 0;
 
     /**
      * @brief erase should remove the line corresponding to the object from database, the primary key should be set before !
      */
-    virtual void erase() throw(Error) = 0;
+    virtual void erase() throw(SqlException, LogicalFaultException) = 0;
 
     /**
      * @brief consruct should initialize children classes data from database
      * @param fromid This is to retrieve the correct line in the table
      */
-    void construct(unsigned int fromid) throw(Error);
+    void construct(unsigned int fromid) throw(SqlException, LogicalFaultException);
 
 
     /**
@@ -118,7 +111,7 @@ protected:
      *          This method is protected because you need to be very careful with it. You don't want to alter an already set
      *          primary key for nothing !
      */
-    void            autoKey()  throw(Error);
+    void            autoKey()  throw(SqlException);
 
 private:
     QSqlDatabase*   mDatabase;          ///< Pointer on the unique QSqlDatabase, handled by the DatabaseManager
