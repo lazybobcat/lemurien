@@ -14,7 +14,7 @@ Loïc Boutter - main developer (http://loicboutter.fr/)
 Dependences
 ===
 
-This jukebox needs Qt4.6+ (with phonon), libsqlite 3+ to work.
+This jukebox needs Qt4.7+ (with phonon), libsqlite 3+ to work.
 
 
 Implemented features
