@@ -1,5 +1,20 @@
 #include "mainwindow.h"
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (mTrayIcon && mTrayIcon->isVisible())
+    {
+        hide();
+        mMaximizeAction->setVisible(true);
+        event->ignore();
+    }
+}
+
+void MainWindow::showEvent(QShowEvent *)
+{
+    mMaximizeAction->setVisible(false);
+}
+
 /**
  * @brief Change the value of duration labels. Sould be called once per second.
  * @param time The song actual time
@@ -122,7 +137,13 @@ void MainWindow::currentSourceChanged()
     setWindowTitle(title + " - Lémurien");
     message = "<b>" + title + "</b> - " + artist;
     mSongLabel->setText(message);
-    popTrayMessage(tr("Now Playing"), QString(message + "<br />" + mSource->at(mIndexOfSource)->album() + "<br />" + tr("Noté %1/%2")).arg(mSource->at(mIndexOfSource)->mark()).arg(Config::cMaxMark));
+
+    // Change the system tray informations and popup message
+    if(QSystemTrayIcon::isSystemTrayAvailable())
+    {
+        popTrayMessage(tr("Now Playing"), QString(message + "<br />" + mSource->at(mIndexOfSource)->album() + "<br />" + tr("Noté %1/%2")).arg(mSource->at(mIndexOfSource)->mark()).arg(Config::cMaxMark));
+        mTrayIcon->setToolTip(message);
+    }
 
     // Change wikipedia if window opened
     if(mWebkitWindow)
@@ -309,9 +330,10 @@ void MainWindow::addFilesToLibrairy()
 void MainWindow::about()
 {
     QMessageBox::information(this, tr("A propos de Lémurien"),
-                             QString("<p align=\"center\"><b>Lémurien</b><br />%1.%2<br /></p>"
+                                tr("<p align=\"center\"><b>Lémurien</b><br />%1.%2<br /></p>"
                                      "<p align=\"center\">Lémurien est un logiciel d'écoute et de gestion musicale</p>"
                                      "<p align=\"center\">Créé par <a href=\"http://loicboutter.fr\">Loïc Boutter</a> - Licence GPL</p>"
+                                     "<p align=\"center\">Les icones \"cartoon\" ont été crées par <a href=\"http://shlyapnikova.deviantart.com/\">shlyapnikova</a> - Licence Creative Commons Attribution 3.0"
                                      "<p align=\"center\">Merci de l'avoir essayé !</p>").arg(Config::cMajorVersion).arg(Config::cMinorVersion));
 }
 

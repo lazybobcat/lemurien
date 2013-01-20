@@ -1,5 +1,17 @@
 <RCC>
     <qresource prefix="/">
         <file>data/lemurien.svg</file>
+        <file>data/cancel.png</file>
+        <file>data/edit.png</file>
+        <file>data/idea.png</file>
+        <file>data/label.png</file>
+        <file>data/music.png</file>
+        <file>data/playlist.png</file>
+        <file>data/repeat.png</file>
+        <file>data/repeatOnce.png</file>
+        <file>data/shuffle.png</file>
+        <file>data/zoom.png</file>
+        <file>data/texture.png</file>
+        <file>data/trash.png</file>
     </qresource>
 </RCC>

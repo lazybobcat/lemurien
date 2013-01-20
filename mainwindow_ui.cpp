@@ -69,6 +69,7 @@ MainWindow::~MainWindow()
     delete mSortOnMarkAction;
     delete mSortOnNbPlayAction;
     delete mShrinkAction;
+    delete mMaximizeAction;
 
     // delete windows
     delete mAddfilesWindow;
@@ -138,27 +139,27 @@ void MainWindow::setupActions()
     connect(mPreviousAction, SIGNAL(triggered()), this, SLOT(previous()));
 
     // Shuffle mode
-    mShuffleAction = new QAction(QIcon("data/shuffle.png"), tr("Choisir la chanson suivante aléatoirement"), this);
+    mShuffleAction = new QAction(QIcon(":/data/shuffle.png"), tr("Choisir la chanson suivante aléatoirement"), this);
     mShuffleAction->setCheckable(true);
     connect(mShuffleAction, SIGNAL(triggered()), this, SLOT(shuffle()));
 
     // Repeat once mode
-    mRepeatOnceAction = new QAction(QIcon("data/repeatOnce.png"), tr("Répéter la chanson actuelle"), this);
+    mRepeatOnceAction = new QAction(QIcon(":/data/repeatOnce.png"), tr("Répéter la chanson actuelle"), this);
     mRepeatOnceAction->setCheckable(true);
     connect(mRepeatOnceAction, SIGNAL(triggered()), this, SLOT(repeatOnce()));
 
     // Add files action
-    mAddFilesAction = new QAction(tr("Ajouter des fichiers audio"), this);
+    mAddFilesAction = new QAction(QIcon(":/data/music.png"), tr("Ajouter des fichiers audio"), this);
     mAddFilesAction->setShortcut(tr("Ctrl+F"));
     connect(mAddFilesAction, SIGNAL(triggered()), this, SLOT(addFilesToLibrairy()));
 
     // Exit action
-    mExitAction = new QAction(tr("Quitter"), this);
+    mExitAction = new QAction(QIcon(":/data/cancel.png"), tr("Quitter"), this);
     mExitAction->setShortcut(tr("Ctrl+Q"));
-    connect(mExitAction, SIGNAL(triggered()), this, SLOT(close()));
+    connect(mExitAction, SIGNAL(triggered()), qApp, SLOT(quit()));
 
     // About action
-    mAboutAction = new QAction(tr("A propos"), this);
+    mAboutAction = new QAction(QIcon(":/data/idea.png"), tr("A propos"), this);
     connect(mAboutAction, SIGNAL(triggered()), this, SLOT(about()));
 
     // Shrink Action
@@ -170,15 +171,15 @@ void MainWindow::setupActions()
 
 
     // Add Playlist Action
-    mAddPlaylistAction = new QAction(tr("Ajouter une playlist"), this);
+    mAddPlaylistAction = new QAction(QIcon(":/data/playlist.png"), tr("Ajouter une playlist"), this);
     connect(mAddPlaylistAction, SIGNAL(triggered()), this, SLOT(addPlaylist()));
 
     // Remove playlist action
-    mRemovePlaylistAction = new QAction(tr("Suprimmer la playlist actuelle"), this);
+    mRemovePlaylistAction = new QAction(QIcon(":/data/trash.png"), tr("Suprimmer la playlist actuelle"), this);
     connect(mRemovePlaylistAction, SIGNAL(triggered()), this, SLOT(removePlaylist()));
 
     // Remove playlist action
-    mRenamePlaylistAction = new QAction(tr("Renommer la playlist actuelle"), this);
+    mRenamePlaylistAction = new QAction(QIcon(":/data/label.png"), tr("Renommer la playlist actuelle"), this);
     connect(mRenamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
 
     mSortOnTitleAction = new QAction(tr("Trier par titre"), this);
@@ -192,6 +193,10 @@ void MainWindow::setupActions()
     mSortOnNbPlayAction = new QAction(tr("Trier par nb de lectures"), this);
     connect(mSortOnNbPlayAction, SIGNAL(triggered()), this, SLOT(sortOnNbPlay()));
 
+    // System Tray specific actions
+    mMaximizeAction = new QAction(tr("Agrandir"), this);
+    connect(mMaximizeAction, SIGNAL(triggered()), this, SLOT(show()));
+    mMaximizeAction->setVisible(false);
 }
 
 void MainWindow::setupMenus()
@@ -230,8 +235,8 @@ void MainWindow::setupMenus()
         controlMenu->addAction(mShuffleAction);
 
 
-    /*QMenu *affichageMenu = menuBar()->addMenu(tr("Affichage"));
-        affichageMenu->addAction(mShrinkAction);*/
+    QMenu *affichageMenu = menuBar()->addMenu(tr("Affichage"));
+        affichageMenu->addAction(mShrinkAction);
 
 
     QMenu *aboutMenu = menuBar()->addMenu(tr("Aide"));
@@ -242,25 +247,33 @@ void MainWindow::setupMenus()
 
 void MainWindow::setupTray()
 {
+    mTrayMenu = new QMenu(this);
     if(!QSystemTrayIcon::isSystemTrayAvailable())
     {
         std::cerr << "System Tray unvailable on this system !" << std::endl;
         return;
     }
 
-    mTrayMenu = new QMenu(this);
-    // Actions
+    // Setup Tray Menu with actions
+    mTrayMenu->addAction(mMaximizeAction);
+    mTrayMenu->addSeparator();
+    mTrayMenu->addAction(mPreviousAction);
+    mTrayMenu->addAction(mNextAction);
+    mTrayMenu->addAction(mPlayAction);
+    mTrayMenu->addAction(mPauseAction);
+    mTrayMenu->addAction(mStopAction);
+    mTrayMenu->addSeparator();
+    mTrayMenu->addAction(mRepeatOnceAction);
+    mTrayMenu->addAction(mShuffleAction);
+    mTrayMenu->addSeparator();
+    mTrayMenu->addAction(mExitAction);
 
+    // Setup tray icon and tooltip
     mTrayIcon = new QSystemTrayIcon(this);
     mTrayIcon->setIcon(QIcon(":/data/lemurien.svg"));
     mTrayIcon->setContextMenu(mTrayMenu);
     mTrayIcon->setToolTip(tr("Lémurien - Jukebox"));
     mTrayIcon->show();
-
-
-
-
-
 }
 
 void MainWindow::setupUi()
@@ -416,11 +429,11 @@ void MainWindow::rebuildSidebar()
     {
         QAction* playlistAction;
         if((*it)->name() == mMusicLibrairy->name())
-            playlistAction = mSidebar->addAction((*it)->name(), QIcon("data/music.png"));
+            playlistAction = mSidebar->addAction((*it)->name(), QIcon(":/data/music.png"));
         else if((*it)->name() == tr("Recherche"))
-            playlistAction = mSidebar->addAction((*it)->name(), QIcon("data/zoom.png"));
+            playlistAction = mSidebar->addAction((*it)->name(), QIcon(":/data/zoom.png"));
         else
-            playlistAction = mSidebar->addAction((*it)->name(), QIcon("data/playlist.png"));
+            playlistAction = mSidebar->addAction((*it)->name(), QIcon(":/data/playlist.png"));
 
         playlistAction->setData((*it)->name());
 

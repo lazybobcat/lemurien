@@ -67,6 +67,10 @@ public slots:
 
     void search();
     
+protected:
+    void closeEvent(QCloseEvent *event);
+    void showEvent(QShowEvent *);
+
 private:
     void setupActions();
     void setupMenus();
@@ -121,6 +125,7 @@ private:
     QAction     *mSortOnMarkAction;     ///< Sort the current playlist by mark
     QAction     *mSortOnNbPlayAction;   ///< Sort the current playlist by nb play
     QAction     *mShrinkAction;
+    QAction     *mMaximizeAction;
 
     // System Tray
     QSystemTrayIcon*    mTrayIcon;
