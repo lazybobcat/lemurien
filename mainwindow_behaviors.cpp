@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include <taglib/tag.h>
+#include <taglib/fileref.h>
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
@@ -13,6 +15,52 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::showEvent(QShowEvent *)
 {
     mMaximizeAction->setVisible(false);
+}
+
+void MainWindow::handleParams(const QStringList& params1)
+{
+    // Filters files, we want music only !
+    QStringList params = params1.filter(QRegExp(".*\\.(mp3|ogg|m4a|wav|flac|mp4|wma|mid)", Qt::CaseInsensitive));
+
+    // If there were no songs, do nothing
+    if(params.size() == 0)    return;
+
+    // The first arguments to handle
+    if(!mArgumentsPlaylist)
+    {
+        // We dynamically create a UnsavablePlaylist* that we dynamically cast into a Playlist*
+        mArgumentsPlaylist.reset(dynamic_cast<Playlist*>(SqlModelFactory::instance()->create("unsavable_playlist")));
+        // Rename it, nicer
+        mArgumentsPlaylist->rename(tr("Ouverts"));
+        // Insert playlist in the playlists list
+        mPlaylists.insert(tr("Ouverts"), mArgumentsPlaylist);
+        // Add an action in the sidebar for the playlist
+        QAction* playlistAction = mSidebar->addAction(tr("Ouverts"), QIcon(":/data/box.png"));
+        playlistAction->setData(tr("Ouverts"));
+
+        connect(playlistAction, SIGNAL(toggled(bool)),
+                this,           SLOT(playlistChanged(bool)));
+
+        // Rebuild sidebar to have things in right order, etc..
+        rebuildSidebar();
+    }
+
+    // Iterates on results and create songs that we will add to the playlist
+    for(int i = 0; i < params.size(); ++i)
+    {
+        Song::Ptr song = importSong(params.at(i));
+        mArgumentsPlaylist->append(song);
+    }
+
+    // Details : show the playlist, set it as the current playlist and check it in the sidebar
+    mMusicModel->setPlaylist(mArgumentsPlaylist);
+    mSource = mArgumentsPlaylist;
+    mSidebar->checkAction(tr("Ouverts"));
+}
+
+void MainWindow::handleMessage(const QString& message)
+{
+    handleParams(message.split(' ', QString::SkipEmptyParts));
 }
 
 /**
@@ -609,7 +657,7 @@ void MainWindow::search()
                 // Insert playlist in the playlists list
                 mPlaylists.insert(tr("Recherche"), mSearchedPlaylist);
                 // Add an action in the sidebar for the playlist
-                QAction* playlistAction = mSidebar->addAction(tr("Recherche"), QIcon("data/zoom.png"));
+                QAction* playlistAction = mSidebar->addAction(tr("Recherche"), QIcon(":/data/zoom.png"));
                 playlistAction->setData(tr("Recherche"));
 
                 connect(playlistAction, SIGNAL(toggled(bool)),
@@ -717,32 +765,73 @@ void MainWindow::sortOnNbPlay()
     mMusicModel->setPlaylist(mPlaylists[playlistName]);
 }
 
+/**
+ * @brief Try to import a song from its filepath. If that song wasn't already imported, try to extract information from file with TagLib and add the song into the MusicLibrary.
+ * @param filepath
+ * @return
+ */
+Song::Ptr MainWindow::importSong(const QString &filepath)
+{
+    TagLib::FileRef f(filepath.toStdString().c_str());
 
+#ifdef DEBUG
+    std::cout << "Importing : ";
+    std::cout << f.tag()->title() << " / "
+              << f.tag()->artist() << " / "
+              << f.tag()->album();
+    std::cout << std::endl;
+#endif
 
+    Song::Ptr song;
 
+    bool r = SqlModelFactory::instance()->getSong(filepath, song);
+    if(!r)
+    {
+        song->setTitle(f.tag()->title().toCString(true));
+        song->setAlbum(f.tag()->album().toCString(true));
+        song->setArtist(f.tag()->artist().toCString(true));
 
+        try {
+            song->save();
+        }
+        catch(SqlInsertFailedException& e)
+        {
+            // The user tried to add a song that is already in the database, no prob
+            std::cerr << "Tried to add " << song->filepath().toStdString() << " but it is already in database. Continuing..." << std::endl;
+        }
+        catch(SqlDatabaseException& e)
+        {
+            std::cerr << "SQL Database is busy or not connected !" << std::endl;
+        }
+        catch(...)
+        {
+            std::cerr << "Unhandled exception !?" << std::endl;
+        }
 
+        if(!mMusicLibrairy->contains(song)) {
+            mMusicLibrairy->append(song);
+        }
 
+        try {
+            mMusicLibrairy->save();
+        }
+        catch(SqlInsertFailedException& e)
+        {
+            // The user tried to add a song that is already in the database, no prob
+            std::cerr << "Tried to add " << song->filepath().toStdString() << " but it is already in database. Continuing..." << std::endl;
+        }
+        catch(SqlDatabaseException& e)
+        {
+            std::cerr << "SQL Database is busy or not connected !" << std::endl;
+        }
+        catch(...)
+        {
+            std::cerr << "Unhandled exception !?" << std::endl;
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }
+    return song;
+}
 
 
 

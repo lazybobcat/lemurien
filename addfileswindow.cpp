@@ -128,82 +128,20 @@ void AddfilesWindow::prepareQueue(const QDir &directory)
 
 void AddfilesWindow::import()
 {
+    QString source;
     while(!mQueue.empty())
     {
-        QString source = mQueue.front();
-        TagLib::FileRef f(source.toStdString().c_str());
-        TagLib::String artist = f.tag()->artist();
-
-
-#ifdef DEBUG
-        std::cout << "Importing : ";
-        std::cout << f.tag()->title() << " / "
-                  << f.tag()->artist() << " / "
-                  << f.tag()->album();
-        std::cout << std::endl;
-#endif
-
-
-
-        Song::Ptr song;
-
-
-        bool r = SqlModelFactory::instance()->getSong(source, song);
-        if(!r)
-        {
-            song->setTitle(f.tag()->title().toCString(true));
-            song->setAlbum(f.tag()->album().toCString(true));
-            song->setArtist(f.tag()->artist().toCString(true));
-
-            try {
-                song->save();
-            }
-            catch(SqlInsertFailedException& e)
-            {
-                // The user tried to add a song that is already in the database, no prob
-                std::cerr << "Tried to add " << song->filepath().toStdString() << " but it is already in database. Continuing..." << std::endl;
-            }
-            catch(SqlDatabaseException& e)
-            {
-                std::cerr << "SQL Database is busy or not connected !" << std::endl;
-            }
-            catch(...)
-            {
-                std::cerr << "Unhandled exception !?" << std::endl;
-            }
-
-            if(mParent)
-            {
-                if(!mParent->mMusicLibrairy->contains(song)) {
-                    mParent->mMusicLibrairy->append(song);
-                }
-
-                try {
-                    mParent->mMusicLibrairy->save();
-                    mParent->mMusicModel->setPlaylist(mParent->mMusicLibrairy);
-                }
-                catch(SqlInsertFailedException& e)
-                {
-                    // The user tried to add a song that is already in the database, no prob
-                    std::cerr << "Tried to add " << song->filepath().toStdString() << " but it is already in database. Continuing..." << std::endl;
-                }
-                catch(SqlDatabaseException& e)
-                {
-                    std::cerr << "SQL Database is busy or not connected !" << std::endl;
-                }
-                catch(...)
-                {
-                    std::cerr << "Unhandled exception !?" << std::endl;
-                }
-            }
-
-        }
+        source = mQueue.front();
+        // call importSong
+        mParent->importSong(source);
 
         mProgressBar->setValue(static_cast<int>(100 - (100 * mQueue.size() / mNbFilepaths)));
 
 
         mQueue.pop();
     }
+
+    mParent->mMusicModel->setPlaylist(mParent->mMusicLibrairy);
 
     close();
 }

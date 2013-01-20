@@ -36,7 +36,12 @@ public:
      */
     ~MainWindow();
 
+signals:
+    void needToShow();
+
 public slots:
+    void handleParams(const QStringList& params);
+    void handleMessage(const QString& message);
 
     void playlistChanged(bool checked);
     void tick(qint64);
@@ -79,7 +84,7 @@ private:
     void setupPlaylists();
     void rebuildSidebar();
 
-
+    Song::Ptr importSong(const QString& filepath);
 
     /////////////////////////////////
     //       Audio Properties      //
@@ -144,6 +149,7 @@ private:
     unsigned int                 mIndexOfSource;    ///< The index in playlist of the actual playing song
     Playlist::Ptr                mSource;           ///< Redundant : the actual playing playlist
     Playlist::Ptr                mSearchedPlaylist; ///< A special (temporary) playlist that contains the results of a search
+    Playlist::Ptr                mArgumentsPlaylist;///< A special (temporary) playlist that contains songs given in application arguments
 
 };
 

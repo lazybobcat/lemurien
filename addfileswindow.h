@@ -5,8 +5,6 @@
 #include <queue>
 #include "sqlmodelfactory.h"
 #include <phonon/mediaobject.h>
-#include <taglib/tag.h>
-#include <taglib/fileref.h>
 
 class MainWindow;
 

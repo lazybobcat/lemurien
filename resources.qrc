@@ -13,5 +13,6 @@
         <file>data/zoom.png</file>
         <file>data/texture.png</file>
         <file>data/trash.png</file>
+        <file>data/box.png</file>
     </qresource>
 </RCC>
