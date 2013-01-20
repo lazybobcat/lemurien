@@ -23,6 +23,11 @@ AddfilesWindow::AddfilesWindow(MainWindow *parent) : QDialog(parent), mNbFilepat
         choseDirLayout->addWidget(mChoseDirectoryButton);
         connect(mChoseDirectoryButton, SIGNAL(clicked()), this, SLOT(choseDirectory()));
 
+    // Recursive inclusion line
+    QHBoxLayout* recursiveLineLayout = new QHBoxLayout;
+        mRecursiveField = new QCheckBox;
+        mRecursiveField->setText(tr("Inclure les sous dossier récursivement ?"));
+        recursiveLineLayout->addWidget(mRecursiveField);
 
     // Progress bar
         mProgressBar = new QProgressBar;
@@ -40,6 +45,7 @@ AddfilesWindow::AddfilesWindow(MainWindow *parent) : QDialog(parent), mNbFilepat
 
     // Window main layout
     mainlayout->addLayout(choseDirLayout);
+    mainlayout->addLayout(recursiveLineLayout);
     mainlayout->addWidget(mProgressBar);
     mainlayout->addLayout(buttonsLayout);
 
@@ -63,24 +69,61 @@ void AddfilesWindow::startImporting()
     mOkButton->setEnabled(false);
     mCancelButton->setEnabled(false);
 
-    QStringList filters;
-    filters << "*.mp3" << "*.ogg" << "*.m4a" << "*.wav" << "*.flac" << "*.mp4" << "*.mid" << "*.wma"
-            << "*.MP3" << "*.OGG" << "*.M4A" << "*.WAV" << "*.FLAC" << "*.MP4" << "*.MID" << "*.WMA";
 
-
+    // Folder
     QDir directory(mDirectoryField->text() + "/");
-    directory.setNameFilters(filters);
 
-    foreach(QFileInfo fileInfo, directory.entryInfoList())
+    // Do we include sngs recursively ?
+    if(mRecursiveField->isChecked())
     {
-        mQueue.push(fileInfo.filePath());
+        // Recursive inclusion
+        prepareQueue(directory);
     }
+    else
+    {
+        // Else we just want to include current directory
+        QStringList filters;
+            filters << "*.mp3" << "*.ogg" << "*.m4a" << "*.wav" << "*.flac" << "*.mp4" << "*.mid" << "*.wma"
+                    << "*.MP3" << "*.OGG" << "*.M4A" << "*.WAV" << "*.FLAC" << "*.MP4" << "*.MID" << "*.WMA";
+
+            directory.setNameFilters(filters);
+
+            foreach(QFileInfo fileInfo, directory.entryInfoList())
+            {
+                mQueue.push(fileInfo.filePath());
+            }
+    }
+
+
 
     mNbFilepaths = mQueue.size();
 
     import();
 
     mParent->playlistChanged(true);
+}
+
+void AddfilesWindow::prepareQueue(const QDir &directory)
+{
+    QFileInfoList list = directory.entryInfoList(QDir::Dirs | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    foreach(QFileInfo fileInfo, list)
+    {
+        if(fileInfo.isDir())
+        {
+            QDir subdirectory = fileInfo.absoluteFilePath();
+            prepareQueue(subdirectory);
+        }
+    }
+
+    QStringList filters;
+    filters << "*.mp3" << "*.ogg" << "*.m4a" << "*.wav" << "*.flac" << "*.mp4" << "*.mid" << "*.wma"
+            << "*.MP3" << "*.OGG" << "*.M4A" << "*.WAV" << "*.FLAC" << "*.MP4" << "*.MID" << "*.WMA";
+
+    list = directory.entryInfoList(filters, QDir::Files);
+    foreach(QFileInfo fileInfo, list)
+    {
+        mQueue.push(fileInfo.filePath());
+    }
 }
 
 void AddfilesWindow::import()
@@ -120,14 +163,14 @@ void AddfilesWindow::import()
                     // The user tried to add a song that is already in the database, no prob
                     std::cout << "Tried to add " << song->filepath().toStdString() << " but it is already in database. Continuing..." << std::endl;
                 }
+                catch(SqlDatabaseException& e)
+                {
+                    std::cout << "SQL Database is busy or not connected !" << std::endl;
+                }
                 catch(...)
                 {
                     std::cout << "Unhandled exception !?" << std::endl;
                 }
-
-#ifdef DEBUG
-                std::cout << "We had to define the song data" << std::endl;
-#endif
             }
 
         if(mParent)

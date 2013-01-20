@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setupActions();
     setupMenus();
     setupUi();
+    setupTray();
 
     connect(mMediaObject, SIGNAL(tick(qint64)), this, SLOT(tick(qint64)));
     connect(mMediaObject, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SLOT(stateChanged(Phonon::State,Phonon::State)));
@@ -239,6 +240,29 @@ void MainWindow::setupMenus()
         aboutMenu->addAction(mAboutAction);
 }
 
+void MainWindow::setupTray()
+{
+    if(!QSystemTrayIcon::isSystemTrayAvailable())
+    {
+        std::cerr << "System Tray unvailable on this system !" << std::endl;
+        return;
+    }
+
+    mTrayMenu = new QMenu(this);
+    // Actions
+
+    mTrayIcon = new QSystemTrayIcon(this);
+    mTrayIcon->setIcon(QIcon(":/data/lemurien.svg"));
+    mTrayIcon->setContextMenu(mTrayMenu);
+    mTrayIcon->setToolTip(tr("Lémurien - Jukebox"));
+    mTrayIcon->show();
+
+
+
+
+
+}
+
 void MainWindow::setupUi()
 {
     // ***************************************************** //
@@ -246,7 +270,7 @@ void MainWindow::setupUi()
     // ***************************************************** //
 
     setWindowTitle("Lémurien");
-    setWindowIcon(QIcon("data/lemurien.png"));
+    setWindowIcon(QIcon(":/data/lemurien.svg"));
     resize(960, 600);
     //setMinimumSize(600, 300);
 

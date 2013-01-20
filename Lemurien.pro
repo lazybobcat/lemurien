@@ -9,7 +9,8 @@ INCLUDEPATH += .
 QT += core gui phonon xml sql webkit
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
-
+CONFIG += c++11
+RESOURCES += resources.qrc
 LIBS += -ltag
 
 # Input
@@ -58,8 +59,6 @@ OTHER_FILES += \
     data/shuffle.png \
     data/repeatOnce.png \
     data/repeat.png \
-    data/lemurien.png \
-    data/intro.mp3 \
     data/playlist.png \
     data/licence.txt \
     data/music.png

@@ -116,10 +116,13 @@ void MainWindow::currentSourceChanged()
     mMusicTable->selectRow(mIndexOfSource);
 
     // Change the window title and mSongLabel with the new title
+    QString message;
     QString title = mSource->at(mIndexOfSource)->title();
     QString artist = mSource->at(mIndexOfSource)->artist();
     setWindowTitle(title + " - Lémurien");
-    mSongLabel->setText("<b>" + title + "</b> - " + artist);
+    message = "<b>" + title + "</b> - " + artist;
+    mSongLabel->setText(message);
+    popTrayMessage(tr("Now Playing"), QString(message + "<br />" + mSource->at(mIndexOfSource)->album() + "<br />" + tr("Noté %1/%2")).arg(mSource->at(mIndexOfSource)->mark()).arg(Config::cMaxMark));
 
     // Change wikipedia if window opened
     if(mWebkitWindow)
@@ -127,6 +130,14 @@ void MainWindow::currentSourceChanged()
 
     mSource->at(mIndexOfSource)->playOneMoreTime();
     mSource->at(mIndexOfSource)->save();
+}
+
+/**
+ * @brief Pops up a tray information message containing information for the user
+ */
+void MainWindow::popTrayMessage(const QString& title, const QString& message, QSystemTrayIcon::MessageIcon icon)
+{
+    mTrayIcon->showMessage("Lémurien - " + title, message, icon, 5000);
 }
 
 /**

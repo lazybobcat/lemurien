@@ -35,6 +35,8 @@ public slots:
      */
     void startImporting();
 
+    void prepareQueue(const QDir& directory);
+
 private:
     /**
      * @brief While the song filepath queue isn't empty : extract informations from the file, construct the song and save it in database, add the song in the Music Librairy
@@ -44,6 +46,7 @@ private:
 
     // Widgets
     QLineEdit*      mDirectoryField;        ///< The directory field
+    QCheckBox*      mRecursiveField;        ///< If the inclusion of music files should be directory recursive
 
     QPushButton*    mChoseDirectoryButton;  ///< The push button that will open the chose directory window
     QPushButton*    mOkButton;              ///< The push button to start importing

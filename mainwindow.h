@@ -63,6 +63,7 @@ public slots:
     void sortOnNbPlay();
 
     void popContextMenuOnSong(const QPoint& point);
+    void popTrayMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::Information);
 
     void search();
     
@@ -70,6 +71,7 @@ private:
     void setupActions();
     void setupMenus();
     void setupUi();
+    void setupTray();
     void setupPlaylists();
     void rebuildSidebar();
 
@@ -119,6 +121,10 @@ private:
     QAction     *mSortOnMarkAction;     ///< Sort the current playlist by mark
     QAction     *mSortOnNbPlayAction;   ///< Sort the current playlist by nb play
     QAction     *mShrinkAction;
+
+    // System Tray
+    QSystemTrayIcon*    mTrayIcon;
+    QMenu*              mTrayMenu;
 
     // Other windows
     AddfilesWindow* mAddfilesWindow;    ///< A pointer on an "add files" window
