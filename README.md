@@ -1,6 +1,8 @@
 Lemurien Jukebox
 ======
 
+![Interface Lémurien](http://blog.monstruosor.com/wp-content/uploads/2013/03/preview_lemurien1.png)
+
 Lemurien is a C++ project of jukebox for my second year in computing school.
 It allows you to play your favorite playlists in a simple and efficient way !
 
