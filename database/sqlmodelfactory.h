@@ -9,10 +9,10 @@
  * @date 2012-11
  */
 
-#include "factory.h"
+#include "../utilities/factory.h"
 #include "databasemanager.h"
-#include "playlist.h"
-#include "unsavabeplaylist.h"
+#include "../playlists/playlist.h"
+#include "../playlists/unsavabeplaylist.h"
 #include <boost/make_shared.hpp>
 #include <map>
 #include <QVariant>

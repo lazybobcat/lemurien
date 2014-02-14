@@ -2,25 +2,14 @@
 /**
  * @mainpage Lemurien - Jukebox
  * @section Description
- *  Lemurien is a C++ project of jukebox for my second year in computing school. It allows you to play your favorite playlists in a simple and efficient way !
+ *  Lemurien is a C++ project of jukebox. It allows you to play your favorite playlists in a simple and efficient way !
  *
  * @section Author
  *  Loïc Boutter - main developer (<a href="http://loicboutter.fr/">website</a>)
  *
  * @section Dependences
- *  This jukebox needs Qt4.6+ (with phonon), libsqlite 3+ to work.
+ *  This jukebox needs Qt5+, libsqlite 3+, SFML(OpenAL), libtag1 to work.
  *
- * @section Implemented features
- *  - DB Handler
- *
- * @section NYI Features
- *  - Main actions (play, pause, stop, next, previous, play mode, sliders, volume, ...)
- *  - Playlist handling
- *  - Shrink mode
- *  - Splash and super jungle screen
- *  - UI
- *  - Import audio files/folders
- *  - Options and preferences
  */
 
 
@@ -28,9 +17,9 @@
 
 
 #include <QtSingleApplication/QtSingleApplication>
-#include "mainwindow.h"
-#include "sqlmodelfactory.h"
-#include "playlist.h"
+#include "windows/mainwindow.h"
+#include "database/sqlmodelfactory.h"
+#include "playlists/playlist.h"
 
 #ifdef DEBUG
 #include <iostream>

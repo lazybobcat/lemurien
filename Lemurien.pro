@@ -13,48 +13,48 @@ OBJECTS_DIR = .obj
 MOC_DIR = .moc
 CONFIG += c++11
 RESOURCES += resources.qrc
-LIBS += -ltag
+LIBS += -ltag -lfsml-audio -lsfml-system
 
 # Input
-HEADERS += mainwindow.h \
-    databasemanager.h \
-    factory.h \
-    sqlmodel.h \
-    sqlmodelfactory.h \
-    song.h \
+HEADERS += song.h \
     config.h \
-    playlist.h \
-    sidebar.h \
-    playlisttablemodel.h \
-    addfileswindow.h \
+    database/databasemanager.h \
+    database/sqlmodel.h \
+    database/sqlmodelfactory.h \
     exceptions/sqlexception.h \
     exceptions.h \
     exceptions/sqldatabaseexception.h \
     exceptions/sqldatanotfoundexception.h \
     exceptions/sqlinsertfailedexception.h \
     exceptions/logicalfaultexception.h \
-    editsongwindow.h \
-    unsavabeplaylist.h \
-    webkitwindow.h
+    interface/sidebar.h \
+    models/playlisttablemodel.h \
+    playlists/playlist.h \
+    playlists/unsavabeplaylist.h \
+    utilities/factory.h \
+    windows/addfileswindow.h \
+    windows/editsongwindow.h \
+    windows/mainwindow.h \
+    windows/webkitwindow.h
 SOURCES += main.cpp \
-    databasemanager.cpp \
-    sqlmodelfactory.cpp \
-    sqlmodel.cpp \
     song.cpp \
     config.cpp \
-    playlist.cpp \
-    sidebar.cpp \
-    mainwindow_ui.cpp \
-    mainwindow_behaviors.cpp \
-    playlisttablemodel.cpp \
-    addfileswindow.cpp \
+    database/databasemanager.cpp \
+    database/sqlmodelfactory.cpp \
+    database/sqlmodel.cpp \
     exceptions/sqlexception.cpp \
     exceptions/sqldatabaseexception.cpp \
     exceptions/sqldatanotfoundexception.cpp \
     exceptions/sqlinsertfailedexception.cpp \
     exceptions/logicalfaultexception.cpp \
-    editsongwindow.cpp \
-    webkitwindow.cpp
+    interface/sidebar.cpp \
+    models/playlisttablemodel.cpp \
+    playlists/playlist.cpp \
+    windows/addfileswindow.cpp \
+    windows/editsongwindow.cpp \
+    windows/mainwindow_ui.cpp \
+    windows/mainwindow_behaviors.cpp \
+    windows/webkitwindow.cpp
 
 OTHER_FILES += \
     data/texture.png \

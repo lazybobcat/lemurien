@@ -13,7 +13,7 @@
 
 
 
-#include <QtGui/QWidget>
+#include <QtWidgets>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QIcon>

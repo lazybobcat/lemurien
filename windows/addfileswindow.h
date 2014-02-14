@@ -2,9 +2,9 @@
 #define ADDFILESWINDOW_H
 
 #include <QtGui>
+#include <QtWidgets>
 #include <queue>
-#include "sqlmodelfactory.h"
-#include <phonon/mediaobject.h>
+#include "../database/sqlmodelfactory.h"
 
 class MainWindow;
 

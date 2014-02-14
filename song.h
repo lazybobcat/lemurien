@@ -5,11 +5,11 @@
  * @file
  * @brief This file implements the Song class and related tools
  * @author BOUTTER Loïc
- * @version 3
- * @date 2012-11
+ * @version 4
+ * @date 2013-02
  */
 
-#include "sqlmodel.h"
+#include "database/sqlmodel.h"
 #include "config.h"
 #include <boost/shared_ptr.hpp>
 //#include <memory> // For C++11

@@ -16,7 +16,11 @@ Loïc Boutter - main developer (http://loicboutter.fr/)
 Dependences
 ===
 
-This jukebox needs Qt4.7+ (with phonon), libsqlite 3+ to work.
+To work, this jukebox needs Qt5+ with : 
+
+*   openAl (used with SFML) 
+*   libsqlite 3+
+*   libtag1 (taglib)
 
 
 Implemented features

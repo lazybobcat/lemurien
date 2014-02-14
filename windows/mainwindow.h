@@ -3,17 +3,12 @@
 
 #include <QtGui>
 #include <QMainWindow>
-#include <phonon/mediaobject.h>
-#include <phonon/mediasource.h>
-#include <phonon/audiooutput.h>
-#include <phonon/volumeslider.h>
-#include <phonon/seekslider.h>
 #include <QMap>
 #include <QVariant>
-#include "sidebar.h"
+#include "../interface/sidebar.h"
 #include "config.h"
-#include "sqlmodelfactory.h"
-#include "playlisttablemodel.h"
+#include "../database/sqlmodelfactory.h"
+#include "../models/playlisttablemodel.h"
 #include "addfileswindow.h"
 #include "editsongwindow.h"
 #include "webkitwindow.h"

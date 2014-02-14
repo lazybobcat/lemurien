@@ -1,7 +1,7 @@
 #include "config.h"
 
-unsigned int    Config::cMajorVersion = 0;
-unsigned int    Config::cMinorVersion = 1;
+unsigned int    Config::cMajorVersion = 1;
+unsigned int    Config::cMinorVersion = 0;
 
 unsigned int    Config::cMaxMark = 5;
 /*bool            Config::cFadeChaining = true;

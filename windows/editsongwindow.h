@@ -2,6 +2,7 @@
 #define EDITSONGWINDOW_H
 
 #include <QtGui>
+#include <QtWidgets>
 #include "song.h"
 #include "exceptions.h"
 
