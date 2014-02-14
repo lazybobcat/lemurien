@@ -1,0 +1,5 @@
+*.o
+*.user
+lemurien
+moc_*.cpp
+.obj/
