@@ -14,11 +14,11 @@
 
 
 
-/*#include <QtWidgets/QApplication>
+#include <QtWidgets/QApplication>
 #include <QtSingleApplication/QtSingleApplication>
 #include "windows/mainwindow.h"
 #include "database/sqlmodelfactory.h"
-#include "playlists/playlist.h"*/
+#include "playlists/playlist.h"
 
 #include <cassert>
 #include <bandit/bandit.h>
@@ -28,7 +28,7 @@ using namespace bandit;
 #include <iostream>
 #endif
 
-/*
+
 int main(int argc, char *argv[])
 {
     if(argc > 1 && strcmp(argv[1], "-test") == 0)
@@ -37,9 +37,6 @@ int main(int argc, char *argv[])
     }
     else
     {
-
-        QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
-        QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
         QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
         QtSingleApplication app("Lemurien", argc, argv);
 
@@ -79,9 +76,4 @@ int main(int argc, char *argv[])
 
         return app.exec();
     }
-}*/
-
-int main(int argc, char *argv[])
-{
-    return bandit::run(argc, argv);
 }

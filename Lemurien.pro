@@ -54,7 +54,8 @@ SOURCES += main.cpp \
     windows/editsongwindow.cpp \
     windows/mainwindow_ui.cpp \
     windows/mainwindow_behaviors.cpp \
-    windows/webkitwindow.cpp
+    windows/webkitwindow.cpp \
+    tests/test_database.cpp
 
 OTHER_FILES += \
     data/texture.png \

@@ -28,7 +28,7 @@ public:
     /**
      * @brief DatabaseManager constructor is private, for Singleton
      */
-    explicit DatabaseManager();
+    explicit DatabaseManager(QString dbname = "db");
 
 
     /**

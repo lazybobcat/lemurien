@@ -3,12 +3,12 @@
 
 #include <iostream>
 
-DatabaseManager::DatabaseManager()
+DatabaseManager::DatabaseManager(QString dbname)
 {
     // Tell Qt we use an SQLite database
     mDatabase = QSqlDatabase::addDatabase("QSQLITE");
     // Fixed database name
-    mDatabase.setDatabaseName("db.sqlite");
+    mDatabase.setDatabaseName(dbname + ".sqlite");
     // Open the database and create the tables if not exists
     open();
     createTables();

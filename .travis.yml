@@ -1,0 +1,9 @@
+language: cpp
+install: make get-deps
+compiler: 
+	- gcc
+	- clang
+
+script: 
+	- make
+	- lemurien -test
