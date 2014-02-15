@@ -3,3 +3,5 @@
 lemurien
 moc_*.cpp
 .obj/
+*.pro
+
