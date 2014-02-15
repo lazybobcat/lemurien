@@ -7,6 +7,7 @@
 #include <QVariant>
 #include "../interface/sidebar.h"
 #include "config.h"
+#include "QSfmlMusic/qsfmlmusic.h"
 #include "../database/sqlmodelfactory.h"
 #include "../models/playlisttablemodel.h"
 #include "addfileswindow.h"
@@ -40,6 +41,7 @@ public slots:
 
     void playlistChanged(bool checked);
     void tick(qint64);
+    void tick(sf::Time);
     //void stateChanged(Phonon::State,Phonon::State);
     void currentSourceChanged();
     void aboutToFinish();
@@ -56,11 +58,11 @@ public slots:
     void removePlaylist();
     void renamePlaylist();
 
-    void sortOnTitle();
+    /*void sortOnTitle();
     void sortOnAlbum();
     void sortOnArtist();
     void sortOnMark();
-    void sortOnNbPlay();
+    void sortOnNbPlay();*/
 
     void popContextMenuOnSong(const QPoint& point);
     void popTrayMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = QSystemTrayIcon::Information);
@@ -87,7 +89,7 @@ private:
     //Phonon::AudioOutput* mAudioOutput;      ///< The Audio Output for Phonon, that we will link to our MediaObject
     //Phonon::MediaObject* mMediaObject;      ///< The media object (the song that we are playing + songs in waiting queue)
     //Phonon::MediaObject *mMetaInformationResolver;  ///< The meta information resolver extract informations from songs, such as duration, title, etc..
-
+    QSfmlMusic  mMusicPlayer;
 
     /////////////////////////////////
     //         UI Properties       //

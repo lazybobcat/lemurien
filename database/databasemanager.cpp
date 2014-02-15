@@ -105,6 +105,7 @@ void DatabaseManager::createTables() throw(SqlDatabaseException)
         ret = query.exec("CREATE TABLE IF NOT EXISTS playlists_songs("
                          "id_playlist INTEGER, "
                          "id_song INTEGER, "
+                         "position INTEGER, "
                          "PRIMARY KEY(id_playlist, id_song),"
                          "FOREIGN KEY(id_playlist) REFERENCES playlists(id),"
                          "FOREIGN KEY(id_song) REFERENCES songs(id)"

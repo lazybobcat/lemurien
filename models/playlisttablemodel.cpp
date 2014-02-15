@@ -47,19 +47,19 @@ QVariant PlaylistTableModel::data(const QModelIndex &index, int role) const
         switch(index.column())
         {
         case 0:
-            return mPlaylist->at(index.row())->title();
+            return mPlaylist->value(index.row())->title();
 
         case 1:
-            return mPlaylist->at(index.row())->artist();
+            return mPlaylist->value(index.row())->artist();
 
         case 2:
-            return mPlaylist->at(index.row())->album();
+            return mPlaylist->value(index.row())->album();
 
         case 3:
-            return mPlaylist->at(index.row())->mark();
+            return mPlaylist->value(index.row())->mark();
 
         case 4:
-            return mPlaylist->at(index.row())->nbplay();
+            return mPlaylist->value(index.row())->nbplay();
 
         default:
             return QVariant();

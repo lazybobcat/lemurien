@@ -10,7 +10,7 @@
  */
 
 #include "song.h"
-#include <QList>
+#include <QMap>
 #include <QtAlgorithms>
 
 
@@ -22,7 +22,7 @@
  *          the playlist in database.\n
  * @see SqlModelFactory, Song, save(), construct()
  */
-class Playlist : public SqlModel, public QList<Song::Ptr>
+class Playlist : public SqlModel, public QMap<unsigned int,Song::Ptr>
 {
     #ifdef DEBUG
     friend std::ostream& operator<<(std::ostream&, const Playlist*); ///< Allow stream operator to access our attributes
@@ -34,13 +34,13 @@ public:
     /**
      * @brief The SortField enum to set on wich field we want to sort the playlist
      */
-    enum SortField {
+    /*enum SortField {
         SortOnTitle,    ///< Sort field = title
         SortOnArtist,   ///< Sort field = artist
         SortOnAlbum,    ///< Sort field = album
         SortOnMark,     ///< Sort field = mark
         SortOnNbplay    ///< Sort field = number of times the song has been played
-    };
+    };*/
 
     /**
      * @brief Playlist constructor, you shouldn't construt a Playlist by yourself, it's done by SqlModelFactory
@@ -92,7 +92,10 @@ public:
      * @brief Sorts the playlist on the given parameter
      * @param type The Sorting Type / the field on wich you want to sort the playlist
      */
-    void            sort(SortField  type);
+    //void            sort(SortField  type);
+
+
+    void            append(const Song::Ptr song);
 
 
     /**

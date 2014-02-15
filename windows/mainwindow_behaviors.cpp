@@ -4,12 +4,12 @@
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    if (mTrayIcon && mTrayIcon->isVisible())
+    /*if (mTrayIcon && mTrayIcon->isVisible())
     {
         hide();
         mMaximizeAction->setVisible(true);
         event->ignore();
-    }
+    }*/
 }
 
 void MainWindow::showEvent(QShowEvent *)
@@ -76,6 +76,10 @@ void MainWindow::tick(qint64 time)
     // Displaying elapsed time with mm:ss format
     //QTime remainingTime(0, (mMediaObject->remainingTime() / 60000) % 60, (mMediaObject->remainingTime() / 1000) % 60);
     //mRemainingTimeLabel->setText(remainingTime.toString("-mm:ss"));
+}
+void MainWindow::tick(sf::Time time)
+{
+    std::cout << time.asSeconds() << std::endl;
 }
 
 /**
@@ -180,8 +184,8 @@ void MainWindow::currentSourceChanged()
 
     // Change the window title and mSongLabel with the new title
     QString message;
-    QString title = mSource->at(mIndexOfSource)->title();
-    QString artist = mSource->at(mIndexOfSource)->artist();
+    QString title = mSource->value(mIndexOfSource)->title();
+    QString artist = mSource->value(mIndexOfSource)->artist();
     setWindowTitle(title + " - Lémurien");
     message = "<b>" + title + "</b> - " + artist;
     mSongLabel->setText(message);
@@ -189,7 +193,7 @@ void MainWindow::currentSourceChanged()
     // Change the system tray informations and popup message
     if(QSystemTrayIcon::isSystemTrayAvailable())
     {
-        popTrayMessage(tr("Now Playing"), QString(message + "<br />" + mSource->at(mIndexOfSource)->album() + "<br />" + tr("Noté %1/%2")).arg(mSource->at(mIndexOfSource)->mark()).arg(Config::cMaxMark));
+        popTrayMessage(tr("Now Playing"), QString(message + "<br />" + mSource->value(mIndexOfSource)->album() + "<br />" + tr("Noté %1/%2")).arg(mSource->value(mIndexOfSource)->mark()).arg(Config::cMaxMark));
         mTrayIcon->setToolTip(message);
     }
 
@@ -197,8 +201,8 @@ void MainWindow::currentSourceChanged()
     if(mWebkitWindow)
         mWebkitWindow->setWebPage("http://en.wikipedia.org/wiki/" + artist);
 
-    mSource->at(mIndexOfSource)->playOneMoreTime();
-    mSource->at(mIndexOfSource)->save();
+    mSource->value(mIndexOfSource)->playOneMoreTime();
+    mSource->value(mIndexOfSource)->save();
 }
 
 /**
@@ -548,7 +552,7 @@ void MainWindow::popContextMenuOnSong(const QPoint& point)
     if(index.row() >= 0 && index.row() < playlist->size())
     {
         // Get the song corresponding to the row
-        Song::Ptr song = playlist->at(index.row());
+        Song::Ptr song = playlist->value(index.row());
 
         // Creation of contextual menu
         QMenu playlistMenu;
@@ -613,7 +617,7 @@ void MainWindow::popContextMenuOnSong(const QPoint& point)
                 {
                     if((*it)->name() == action->text())
                     {
-                        if(!(*it)->contains(song))
+                        if(!(*it)->contains((*it)->QMap::key(song)))
                         {
                             (*it)->append(song);
                             (*it)->save();
@@ -698,7 +702,7 @@ void MainWindow::search()
 /**
  * @brief Sorting slot, sort on title
  */
-void MainWindow::sortOnTitle()
+/*void MainWindow::sortOnTitle()
 {
     if(!mSidebar->checkedAction()) return;
 
@@ -707,12 +711,12 @@ void MainWindow::sortOnTitle()
 
     playlist->sort(Playlist::SortOnTitle);
     mMusicModel->setPlaylist(mPlaylists[playlistName]);
-}
+}*/
 
 /**
  * @brief Sorting slot, sort on album
  */
-void MainWindow::sortOnAlbum()
+/*void MainWindow::sortOnAlbum()
 {
     if(!mSidebar->checkedAction()) return;
 
@@ -721,12 +725,12 @@ void MainWindow::sortOnAlbum()
 
     playlist->sort(Playlist::SortOnAlbum);
     mMusicModel->setPlaylist(mPlaylists[playlistName]);
-}
+}*/
 
 /**
  * @brief Sorting slot, sort on artist
  */
-void MainWindow::sortOnArtist()
+/*void MainWindow::sortOnArtist()
 {
     if(!mSidebar->checkedAction()) return;
 
@@ -735,12 +739,12 @@ void MainWindow::sortOnArtist()
 
     playlist->sort(Playlist::SortOnArtist);
     mMusicModel->setPlaylist(mPlaylists[playlistName]);
-}
+}*/
 
 /**
  * @brief Sorting slot, sort on mark
  */
-void MainWindow::sortOnMark()
+/*void MainWindow::sortOnMark()
 {
     if(!mSidebar->checkedAction()) return;
 
@@ -749,12 +753,12 @@ void MainWindow::sortOnMark()
 
     playlist->sort(Playlist::SortOnMark);
     mMusicModel->setPlaylist(mPlaylists[playlistName]);
-}
+}*/
 
 /**
  * @brief Sorting slot, sort on nb play
  */
-void MainWindow::sortOnNbPlay()
+/*void MainWindow::sortOnNbPlay()
 {
     if(!mSidebar->checkedAction()) return;
 
@@ -763,7 +767,7 @@ void MainWindow::sortOnNbPlay()
 
     playlist->sort(Playlist::SortOnNbplay);
     mMusicModel->setPlaylist(mPlaylists[playlistName]);
-}
+}*/
 
 /**
  * @brief Try to import a song from its filepath. If that song wasn't already imported, try to extract information from file with TagLib and add the song into the MusicLibrary.
@@ -808,7 +812,7 @@ Song::Ptr MainWindow::importSong(const QString &filepath)
             std::cerr << "Unhandled exception !?" << std::endl;
         }
 
-        if(!mMusicLibrairy->contains(song)) {
+        if(!mMusicLibrairy->contains(mMusicLibrairy->QMap::key(song))) {
             mMusicLibrairy->append(song);
         }
 

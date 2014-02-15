@@ -14,9 +14,14 @@ MainWindow::MainWindow(QWidget *parent) :
     Phonon::createPath(mMediaObject, mAudioOutput);
 
     mMediaObject->setTickInterval(1000);
-    /*mMediaObject->setCurrentSource(Config::cIntroSong);
+    mMediaObject->setCurrentSource(Config::cIntroSong);
     mMediaObject->play();
     mMetaInformationResolver->setCurrentSource(Config::cIntroSong);*/
+
+    mMusicPlayer.openFromFile("/home/lo-x/Musique/testsample.flac");
+    connect(&mMusicPlayer, SIGNAL(tick(sf::Time)), this, SLOT(tick(sf::Time)));
+
+    mMusicPlayer.play();
 
 
     setupPlaylists();
@@ -183,15 +188,15 @@ void MainWindow::setupActions()
     connect(mRenamePlaylistAction, SIGNAL(triggered()), this, SLOT(renamePlaylist()));
 
     mSortOnTitleAction = new QAction(tr("Trier par titre"), this);
-    connect(mSortOnTitleAction, SIGNAL(triggered()), this, SLOT(sortOnTitle()));
+    //connect(mSortOnTitleAction, SIGNAL(triggered()), this, SLOT(sortOnTitle()));
     mSortOnAlbumAction = new QAction(tr("Trier par album"), this);
-    connect(mSortOnAlbumAction, SIGNAL(triggered()), this, SLOT(sortOnAlbum()));
+    //connect(mSortOnAlbumAction, SIGNAL(triggered()), this, SLOT(sortOnAlbum()));
     mSortOnArtistAction = new QAction(tr("Trier par artiste"), this);
-    connect(mSortOnArtistAction, SIGNAL(triggered()), this, SLOT(sortOnArtist()));
+    //connect(mSortOnArtistAction, SIGNAL(triggered()), this, SLOT(sortOnArtist()));
     mSortOnMarkAction = new QAction(tr("Trier par note"), this);
-    connect(mSortOnMarkAction, SIGNAL(triggered()), this, SLOT(sortOnMark()));
+    //connect(mSortOnMarkAction, SIGNAL(triggered()), this, SLOT(sortOnMark()));
     mSortOnNbPlayAction = new QAction(tr("Trier par nb de lectures"), this);
-    connect(mSortOnNbPlayAction, SIGNAL(triggered()), this, SLOT(sortOnNbPlay()));
+    //connect(mSortOnNbPlayAction, SIGNAL(triggered()), this, SLOT(sortOnNbPlay()));
 
     // System Tray specific actions
     mMaximizeAction = new QAction(tr("Agrandir"), this);

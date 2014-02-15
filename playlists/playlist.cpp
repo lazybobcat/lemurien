@@ -15,7 +15,7 @@
 
 
 
-Playlist::Playlist(QSqlDatabase* db) : SqlModel(db, "playlists"), QList(), mName("Playlist Sans Titre")
+Playlist::Playlist(QSqlDatabase* db) : SqlModel(db, "playlists"), QMap(), mName("Playlist Sans Titre")
 {
 }
 
@@ -39,7 +39,7 @@ void Playlist::save() throw(SqlException)
          */
 
         // If the playlist hasn't been saved yet in the database, it needs an INSERT
-        if(!key())
+        if(!SqlModel::key())
         {
             std::cout << "will save playlist" << std::endl;
             // Prepare the query and then bind values
@@ -58,7 +58,7 @@ void Playlist::save() throw(SqlException)
             // Prepare the query and then bind values
             QSqlQuery query;
             query.prepare("UPDATE playlists SET name=:name WHERE id=:id");
-            query.bindValue(":id", key());
+            query.bindValue(":id", SqlModel::key());
             query.bindValue(":name", mName);
             // Execution
             if(!query.exec()) // In case of error
@@ -76,9 +76,9 @@ void Playlist::save() throw(SqlException)
          * Note that a song can belongs to multiple playlists but once per playlist.
          */
 
-        QList<Song::Ptr>::iterator it = begin(); // Iterator on the begining of the playlist
+        auto it = begin(); // Iterator on the begining of the playlist
         // Get the playlist database primary key, to avoid calling that method X times.
-        unsigned int this_key = key();
+        unsigned int this_key = SqlModel::key();
 
         // Iteration on the playlist to save each song in playlists_songs database
         for(; it != end(); ++it)
@@ -103,7 +103,7 @@ void Playlist::save() throw(SqlException)
 
 void Playlist::construct() throw(SqlException, LogicalFaultException)
 {
-    if(!key())
+    if(!SqlModel::key())
         throw LogicalFaultException("Logical Fault : the key has not been set before construction of playlist");
 
     if(db()->isOpen())
@@ -113,7 +113,7 @@ void Playlist::construct() throw(SqlException, LogicalFaultException)
         //////////////////////////////////////////////////////////////////////////////////
 
         // Get the playlist in the database
-        QSqlQuery query(QString("SELECT name FROM playlists WHERE id=%1").arg(key()));
+        QSqlQuery query(QString("SELECT name FROM playlists WHERE id=%1").arg(SqlModel::key()));
         if(query.next()) // Get to the data
         {
             mName = query.value(0).toString();  // Extract the playlist name
@@ -128,14 +128,16 @@ void Playlist::construct() throw(SqlException, LogicalFaultException)
         //////////////////////////////////////////////////////////////////////////////////
 
         // Get the playlist in the database
-        query = QSqlQuery(QString("SELECT id_song FROM playlists_songs WHERE id_playlist=%1").arg(key()));
+        query = QSqlQuery(QString("SELECT id_song, position FROM playlists_songs WHERE id_playlist=%1").arg(SqlModel::key()));
 
         // Multiple results, we iterate on query.next() while it's true
         unsigned int id_song;
+        unsigned int position;
         Song::Ptr   tmp_song;
         while(query.next()) // Get to the data
         {
             id_song = query.value(0).toUInt();
+            position = query.value(1).toUInt();
             /**
              * @todo This method is right but surely slower than to do a SELECT with a JOIN on both playlists_songs and songs tables,
              * but that make us rewrite same code than in Song::construct().
@@ -144,7 +146,7 @@ void Playlist::construct() throw(SqlException, LogicalFaultException)
             // We are going to construct a Song based on the id we get
             tmp_song.reset();   // Reset the previous Song::Ptr
             tmp_song = SqlModelFactory::instance()->createSong(id_song); // Get a the song corresponding to the primary key (ID)
-            append(tmp_song);   // Finally we push it in the list
+            insert(position, tmp_song);   // Finally we push it in the list
         }
 
     }
@@ -154,13 +156,13 @@ void Playlist::construct() throw(SqlException, LogicalFaultException)
 
 void Playlist::erase() throw(SqlException, LogicalFaultException)
 {
-    if(!key())
+    if(!SqlModel::key())
         throw LogicalFaultException("Logical Fault : the key has not been set before erasing a playlist");
 
     if(db()->isOpen())
     {
         // Remove all data from table 'playlists_songs' first
-        QSqlQuery query(QString("DELETE FROM playlists_songs WHERE id_playlist=%1").arg(key()));
+        QSqlQuery query(QString("DELETE FROM playlists_songs WHERE id_playlist=%1").arg(SqlModel::key()));
 
         // In case of error
         if(query.lastError().type() != QSqlError::NoError)
@@ -169,7 +171,7 @@ void Playlist::erase() throw(SqlException, LogicalFaultException)
 
 
         // Then we can remove the playlist from table 'playlits'
-        query.exec(QString("DELETE FROM playlists WHERE id=%1").arg(key()));
+        query.exec(QString("DELETE FROM playlists WHERE id=%1").arg(SqlModel::key()));
 
         // In case of error
         if(query.lastError().type() != QSqlError::NoError)
@@ -185,7 +187,7 @@ void Playlist::erase() throw(SqlException, LogicalFaultException)
 }
 
 
-void Playlist::sort(SortField type)
+/*void Playlist::sort(SortField type)
 {
     switch(type)
     {
@@ -209,7 +211,7 @@ void Playlist::sort(SortField type)
         qSort(begin(), end(), compareNbplays);
         break;
     }
-}
+}*/
 
 
 void Playlist::removeOne(const Song::Ptr song)
@@ -225,16 +227,23 @@ void Playlist::remove(const Song::Ptr song)
 
 void Playlist::eraseSongFromPlaylist(Song::Ptr song)
 {
-    if(db()->isOpen() && contains(song))
+    unsigned int map_key = QMap::key(song);
+    if(db()->isOpen() && contains(map_key))
     {
         // Get the playlist in the database
-        QSqlQuery query(QString("DELETE FROM playlists_songs WHERE id_playlist=%1 AND id_song=%2").arg(key()).arg(song->key()));
+        QSqlQuery query(QString("DELETE FROM playlists_songs WHERE id_playlist=%1 AND id_song=%2").arg(SqlModel::key()).arg(song->key()));
         // Hop, adios amigos !
 
-        QList<Song::Ptr>::removeOne(song);
+        QMap::remove(map_key);
     }
 }
 
+
+void Playlist::append(const Song::Ptr song)
+{
+    unsigned int index = size() + 1u;
+    insert(index, song);
+}
 
 
 void Playlist::rename(const QString &name)
@@ -259,7 +268,7 @@ QString Playlist::name() const
  ****************************************************/
 
 
-bool caseInsensitiveLessThan(const QString& s1, const QString& s2)
+/*bool caseInsensitiveLessThan(const QString& s1, const QString& s2)
 {
     return (s1.toLower() < s2.toLower());
 }
@@ -294,7 +303,7 @@ bool compareMarks(const Song::Ptr song1, const Song::Ptr song2)
 bool compareNbplays(const Song::Ptr song1, const Song::Ptr song2)
 {
     return uintMoreThan(song1->nbplay(), song2->nbplay());
-}
+}*/
 
 
 
@@ -309,7 +318,7 @@ std::ostream& operator<<(std::ostream& os, const Playlist* p)
 {
     os << p->mName << ":" << std::endl;
 
-    QList<Song::Ptr>::const_iterator it = p->begin(); // Iterator on the begining of the playlist
+    auto it = p->begin(); // Iterator on the begining of the playlist
 
     // Iteration on the playlist to save each song in playlists_songs database
     for(; it != p->end(); ++it)
