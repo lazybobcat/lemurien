@@ -41,8 +41,8 @@
 #ifndef QTLOCALPEER_H
 #define QTLOCALPEER_H
 
-#include <QLocalServer>
-#include <QLocalSocket>
+#include <QtNetwork/QLocalServer>
+#include <QtNetwork/QLocalSocket>
 #include <QDir>
 
 #include "qtlockedfile.h"

@@ -13,11 +13,11 @@
 
 
 
-#include <QtWidgets>
+#include <QtWidgets/QtWidgets>
 #include <QPainter>
 #include <QPaintEvent>
 #include <QIcon>
-#include <QAction>
+#include <QtWidgets/QAction>
 
 class SideBar : public QWidget
 {

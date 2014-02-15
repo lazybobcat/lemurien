@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
-#include <QMainWindow>
+#include <QtWidgets/QMainWindow>
 #include <QMap>
 #include <QVariant>
 #include "../interface/sidebar.h"

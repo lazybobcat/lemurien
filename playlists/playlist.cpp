@@ -128,7 +128,7 @@ void Playlist::construct() throw(SqlException, LogicalFaultException)
         //////////////////////////////////////////////////////////////////////////////////
 
         // Get the playlist in the database
-        query = QString("SELECT id_song FROM playlists_songs WHERE id_playlist=%1").arg(key());
+        query = QSqlQuery(QString("SELECT id_song FROM playlists_songs WHERE id_playlist=%1").arg(key()));
 
         // Multiple results, we iterate on query.next() while it's true
         unsigned int id_song;

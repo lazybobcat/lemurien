@@ -2,7 +2,7 @@
 #define ADDFILESWINDOW_H
 
 #include <QtGui>
-#include <QtWidgets>
+#include <QtWidgets/QtWidgets>
 #include <queue>
 #include "../database/sqlmodelfactory.h"
 

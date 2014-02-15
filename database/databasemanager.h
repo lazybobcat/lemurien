@@ -12,9 +12,9 @@
 
 
 #include <QObject>
-#include <QSqlDatabase>
-#include <QSqlError>
-#include <QSqlQuery>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlError>
+#include <QtSql/QSqlQuery>
 #include <QFile>
 #include "exceptions.h"
 

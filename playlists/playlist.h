@@ -29,7 +29,7 @@ class Playlist : public SqlModel, public QList<Song::Ptr>
     #endif
 
 public:
-    typedef boost::shared_ptr<Playlist> Ptr; ///< Make our life simple.
+    typedef std::shared_ptr<Playlist> Ptr; ///< Make our life simple.
 
     /**
      * @brief The SortField enum to set on wich field we want to sort the playlist

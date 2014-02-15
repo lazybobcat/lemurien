@@ -10,9 +10,9 @@
  */
 
 #include <QString>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlError>
+#include <QtSql/QSqlDatabase>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
 #include "exceptions.h"
 
 /**

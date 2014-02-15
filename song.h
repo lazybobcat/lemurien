@@ -11,8 +11,7 @@
 
 #include "database/sqlmodel.h"
 #include "config.h"
-#include <boost/shared_ptr.hpp>
-//#include <memory> // For C++11
+#include <memory>
 #ifdef DEBUG
 #include <iostream>
 #endif
@@ -37,7 +36,7 @@ public:
     /**
      * @brief Make our life simple
      */
-    typedef boost::shared_ptr<Song> Ptr;
+    typedef std::shared_ptr<Song> Ptr;
 
     /**
      * @brief Song constructor, you shouldn't construt a Song by yourself, it's done by SqlModelFactory
