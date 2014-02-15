@@ -1,4 +1,5 @@
 #include "webkitwindow.h"
+#include <QHBoxLayout>
 
 WebkitWindow::WebkitWindow(const QString& url, QWidget *parent) :
     QDialog(parent)

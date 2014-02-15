@@ -5,7 +5,7 @@
 include(QtSingleApplication/qtsingleapplication.pri)
 
 TEMPLATE += app
-TARGET = 
+TARGET = lemurien
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += core gui xml sql webkit

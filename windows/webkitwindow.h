@@ -3,6 +3,7 @@
 
 #include <QtGui>
 #include <QtWebKitWidgets/QWebView>
+#include <QDialog>
 
 /**
  * @brief The Webkit Window displays wikipedia (or any other website) pages very easily.
