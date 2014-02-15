@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     mIndexOfSource(-1)
 {
 
-    mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
+    /*mAudioOutput = new Phonon::AudioOutput(Phonon::MusicCategory, this);
     mMediaObject = new Phonon::MediaObject(this);
     mMetaInformationResolver = new Phonon::MediaObject(this);
     Phonon::createPath(mMediaObject, mAudioOutput);
@@ -25,19 +25,19 @@ MainWindow::MainWindow(QWidget *parent) :
     setupUi();
     setupTray();
 
-    connect(mMediaObject, SIGNAL(tick(qint64)), this, SLOT(tick(qint64)));
+    /*connect(mMediaObject, SIGNAL(tick(qint64)), this, SLOT(tick(qint64)));
     connect(mMediaObject, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SLOT(stateChanged(Phonon::State,Phonon::State)));
     connect(mMediaObject, SIGNAL(aboutToFinish()), this, SLOT(aboutToFinish()));
-    connect(mMediaObject, SIGNAL(currentSourceChanged(Phonon::MediaSource)), this, SLOT(currentSourceChanged()));
+    connect(mMediaObject, SIGNAL(currentSourceChanged(Phonon::MediaSource)), this, SLOT(currentSourceChanged()));*/
 }
 
 MainWindow::~MainWindow()
 {
-    delete mAudioOutput;
+    /*delete mAudioOutput;
     delete mMediaObject;
     delete mMetaInformationResolver;
     delete mSeekSlider;
-    delete mVolumeSlider;
+    delete mVolumeSlider;*/
 
     // Delete Widgets
     delete mSidebar;
@@ -114,19 +114,19 @@ void MainWindow::setupActions()
     mPlayAction = new QAction(style()->standardIcon(QStyle::SP_MediaPlay), tr("Play"), this);
     mPlayAction->setShortcut(tr("Space"));
     mPlayAction->setDisabled(true);
-    connect(mPlayAction, SIGNAL(triggered()), mMediaObject, SLOT(play()));
+    //connect(mPlayAction, SIGNAL(triggered()), mMediaObject, SLOT(play()));
 
     // Pause
     mPauseAction = new QAction(style()->standardIcon(QStyle::SP_MediaPause), tr("Pause"), this);
     mPauseAction->setShortcut(tr("Space"));
     mPauseAction->setDisabled(true);
-    connect(mPauseAction, SIGNAL(triggered()), mMediaObject, SLOT(pause()));
+    //connect(mPauseAction, SIGNAL(triggered()), mMediaObject, SLOT(pause()));
 
     // Stop
     mStopAction = new QAction(style()->standardIcon(QStyle::SP_MediaStop), tr("Stop"), this);
     mStopAction->setShortcut(tr("Ctrl+S"));
     mStopAction->setDisabled(true);
-    connect(mStopAction, SIGNAL(triggered()), mMediaObject, SLOT(stop()));
+    //connect(mStopAction, SIGNAL(triggered()), mMediaObject, SLOT(stop()));
 
     // Next
     mNextAction = new QAction(style()->standardIcon(QStyle::SP_MediaSkipForward), tr("Suivant"), this);
@@ -335,14 +335,14 @@ void MainWindow::setupUi()
     mControlBar->addSeparator();
 
     // Volume
-    mVolumeSlider = new Phonon::VolumeSlider(this);
+    /*mVolumeSlider = new Phonon::VolumeSlider(this);
     mVolumeSlider->setWindowTitle(tr("Contrôle du volume"));
     mVolumeSlider->setAudioOutput(mAudioOutput);
     mVolumeSlider->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Maximum);
 
     // Seek Slider
     mSeekSlider = new Phonon::SeekSlider(this);
-    mSeekSlider->setMediaObject(mMediaObject);
+    mSeekSlider->setMediaObject(mMediaObject);*/
 
     // Labels
     mSongLabel = new QLabel(tr("<b>Pas de lecture en cours...</b>"));
@@ -354,7 +354,7 @@ void MainWindow::setupUi()
     QHBoxLayout* controlbarLayout = new QHBoxLayout;
         controlbarLayout->addWidget(mControlBar);
         controlbarLayout->addStretch();
-        controlbarLayout->addWidget(mVolumeSlider);
+        //controlbarLayout->addWidget(mVolumeSlider);
 
     // Layout containing the labels
     QHBoxLayout* labelsLayout = new QHBoxLayout;
@@ -385,9 +385,9 @@ void MainWindow::setupUi()
     mMusicTable->setShowGrid(false);
     mMusicTable->setContextMenuPolicy(Qt::CustomContextMenu);
     mMusicTable->setModel(mMusicModel);
-    mMusicTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
-    mMusicTable->horizontalHeader()->setResizeMode(3, QHeaderView::Fixed);
-    mMusicTable->horizontalHeader()->setResizeMode(4, QHeaderView::Fixed);
+    //mMusicTable->horizontalHeader()->setResizeMode(QHeaderView::Stretch);
+    //mMusicTable->horizontalHeader()->setResizeMode(3, QHeaderView::Fixed);
+    //mMusicTable->horizontalHeader()->setResizeMode(4, QHeaderView::Fixed);
     mMusicTable->horizontalHeader()->resizeSection(3, 80);
     mMusicTable->horizontalHeader()->resizeSection(4, 80);
     connect(mMusicTable, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(tableClicked(QModelIndex)));
@@ -404,7 +404,7 @@ void MainWindow::setupUi()
     // Global Layout for control section
     mainLayout->addLayout(controlbarLayout);
     mainLayout->addLayout(labelsLayout);
-    mainLayout->addWidget(mSeekSlider);
+    //mainLayout->addWidget(mSeekSlider);
     mainLayout->addWidget(mMusicTable);
 
 

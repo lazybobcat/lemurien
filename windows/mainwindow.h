@@ -40,7 +40,7 @@ public slots:
 
     void playlistChanged(bool checked);
     void tick(qint64);
-    void stateChanged(Phonon::State,Phonon::State);
+    //void stateChanged(Phonon::State,Phonon::State);
     void currentSourceChanged();
     void aboutToFinish();
     void next();
@@ -84,17 +84,17 @@ private:
     /////////////////////////////////
     //       Audio Properties      //
     /////////////////////////////////
-    Phonon::AudioOutput* mAudioOutput;      ///< The Audio Output for Phonon, that we will link to our MediaObject
-    Phonon::MediaObject* mMediaObject;      ///< The media object (the song that we are playing + songs in waiting queue)
-    Phonon::MediaObject *mMetaInformationResolver;  ///< The meta information resolver extract informations from songs, such as duration, title, etc..
+    //Phonon::AudioOutput* mAudioOutput;      ///< The Audio Output for Phonon, that we will link to our MediaObject
+    //Phonon::MediaObject* mMediaObject;      ///< The media object (the song that we are playing + songs in waiting queue)
+    //Phonon::MediaObject *mMetaInformationResolver;  ///< The meta information resolver extract informations from songs, such as duration, title, etc..
 
 
     /////////////////////////////////
     //         UI Properties       //
     /////////////////////////////////
     // Widgets
-    Phonon::SeekSlider  *mSeekSlider;       ///< The seek slider widget, that is used to show where we are in the playing
-    Phonon::VolumeSlider *mVolumeSlider;    ///< The volume widget to mute/unmute and set volume
+    //Phonon::SeekSlider  *mSeekSlider;       ///< The seek slider widget, that is used to show where we are in the playing
+    //Phonon::VolumeSlider *mVolumeSlider;    ///< The volume widget to mute/unmute and set volume
     SideBar     *mSidebar;              ///< The window sidebar containing shortcut to playlists. This class has been writen by Benjamin Le Cam.
     QToolBar    *mControlBar;           ///< This pointer will refer to the window toolbar
     QTableView  *mMusicTable;           ///< The table containing the songs information for a given playlist

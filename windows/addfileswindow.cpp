@@ -1,5 +1,6 @@
 #include "addfileswindow.h"
 #include "mainwindow.h"
+#include <QStandardPaths>
 
 AddfilesWindow::AddfilesWindow(MainWindow *parent) : QDialog(parent), mNbFilepaths(0), mParent(parent)
 {
@@ -56,7 +57,7 @@ void AddfilesWindow::choseDirectory()
 {
     QString directory_path = QFileDialog::getExistingDirectory(this,
                                                               tr("Choisissez le dossier musical"),
-                                                              QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
+                                                              QStandardPaths::displayName(QStandardPaths::MusicLocation));
 
     if (directory_path.isEmpty())
         return;

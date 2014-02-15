@@ -74,15 +74,15 @@ void MainWindow::tick(qint64 time)
     mElapsedTimeLabel->setText(elapsedTime.toString("mm:ss"));
 
     // Displaying elapsed time with mm:ss format
-    QTime remainingTime(0, (mMediaObject->remainingTime() / 60000) % 60, (mMediaObject->remainingTime() / 1000) % 60);
-    mRemainingTimeLabel->setText(remainingTime.toString("-mm:ss"));
+    //QTime remainingTime(0, (mMediaObject->remainingTime() / 60000) % 60, (mMediaObject->remainingTime() / 1000) % 60);
+    //mRemainingTimeLabel->setText(remainingTime.toString("-mm:ss"));
 }
 
 /**
  * @brief The song state changed (Phonon states), we need to do some graphical change. States are Play, Pause, Stopped, Error, Buffering, etc..
  * @param newstate The new state
  */
-void MainWindow::stateChanged(Phonon::State newstate,Phonon::State /*oldstate*/)
+/*void MainWindow::stateChanged(Phonon::State newstate,Phonon::State )
 {
     switch(newstate)
     {
@@ -146,7 +146,7 @@ void MainWindow::stateChanged(Phonon::State newstate,Phonon::State /*oldstate*/)
 
         break;
     }
-}
+}*/
 
 /**
  * @brief This slot change the playlist currently in the view and played
@@ -235,7 +235,7 @@ void MainWindow::aboutToFinish()
         mIndexOfSource = 0;
 
     // Enqueue next song
-    mMediaObject->enqueue(mSource->at(mIndexOfSource)->filepath());
+    //mMediaObject->enqueue(mSource->at(mIndexOfSource)->filepath());
 }
 
 /**
@@ -263,10 +263,10 @@ void MainWindow::next()
     if(mIndexOfSource >= (unsigned int)mMusicModel->rowCount())
         mIndexOfSource = 0;
 
-    mMediaObject->stop();
+    /*mMediaObject->stop();
     mMediaObject->clearQueue();
     mMediaObject->setCurrentSource(mSource->at(mIndexOfSource)->filepath());
-    mMediaObject->play();
+    mMediaObject->play();*/
 }
 
 /**
@@ -294,10 +294,10 @@ void MainWindow::previous()
     if(mIndexOfSource == -1u)
         mIndexOfSource = mMusicModel->rowCount() - 1;
 
-    mMediaObject->stop();
+    /*mMediaObject->stop();
     mMediaObject->clearQueue();
     mMediaObject->setCurrentSource(mSource->at(mIndexOfSource)->filepath());
-    mMediaObject->play();
+    mMediaObject->play();*/
 }
 
 /**
@@ -349,10 +349,10 @@ void MainWindow::tableClicked(const QModelIndex &index)
         mIndexOfSource = 0;
 
 
-    mMediaObject->stop();
+    /*mMediaObject->stop();
     mMediaObject->clearQueue();
     mMediaObject->setCurrentSource(mSource->at(mIndexOfSource)->filepath());
-    mMediaObject->play();
+    mMediaObject->play();*/
 }
 
 /**

@@ -31,7 +31,7 @@ using namespace bandit;
 /*
 int main(int argc, char *argv[])
 {
-    if(argc > 1 && strcmp(argv[1], "unittest") == 0)
+    if(argc > 1 && strcmp(argv[1], "-test") == 0)
     {
         return bandit::run(argc, argv);
     }

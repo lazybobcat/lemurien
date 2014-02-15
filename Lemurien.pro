@@ -8,12 +8,12 @@ TEMPLATE += app
 TARGET = lemurien
 DEPENDPATH += .
 INCLUDEPATH += .
-QT += core gui xml sql webkit
+QT += core gui sql webkitwidgets
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 CONFIG += c++11
 RESOURCES += resources.qrc
-LIBS += -ltag -lfsml-audio -lsfml-system
+LIBS += -ltag -lsfml-audio -lsfml-system
 
 # Input
 HEADERS += song.h \
