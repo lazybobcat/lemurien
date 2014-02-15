@@ -4,11 +4,11 @@
 
 include(QtSingleApplication/qtsingleapplication.pri)
 
-TEMPLATE = app
+TEMPLATE += app
 TARGET = 
 DEPENDPATH += .
 INCLUDEPATH += .
-QT += core gui xml sql webkit
+QT += core gui declarative xml sql webkit
 OBJECTS_DIR = .obj
 MOC_DIR = .moc
 CONFIG += c++11
