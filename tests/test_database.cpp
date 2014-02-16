@@ -37,7 +37,7 @@ go_bandit([]() {
             check_song->setPrimaryKey(song->key());
             check_song->construct();
 
-            AssertThat(check_song->key(), Equals(song->key()));
+            AssertThat(check_song->title(), Equals(song->title()));
         });
 
         // Deet the temp database to not fail next tests
