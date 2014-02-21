@@ -1,9 +1,7 @@
 # This is a first test for travis
 language: cpp
 install: make get-deps
-compiler: 
-     - gcc
-     - clang
+compiler: gcc
 
 script: 
      - make
