@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "../database/databasemanager.h"
-#include "../database/sqlmodel.h"
+#include "../models/sqlmodel.h"
 #include "../models/song.h"
 
 using namespace bandit;

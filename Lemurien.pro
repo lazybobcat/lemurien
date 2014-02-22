@@ -19,7 +19,7 @@ LIBS += -ltag -lsfml-audio -lsfml-system
 HEADERS += models/song.h \
     config.h \
     database/databasemanager.h \
-    database/sqlmodel.h \
+    models/sqlmodel.h \
     models/sqlmodelfactory.h \
     exceptions/sqlexception.h \
     exceptions.h \
@@ -42,7 +42,7 @@ SOURCES += main.cpp \
     config.cpp \
     database/databasemanager.cpp \
     models/sqlmodelfactory.cpp \
-    database/sqlmodel.cpp \
+    models/sqlmodel.cpp \
     exceptions/sqlexception.cpp \
     exceptions/sqldatabaseexception.cpp \
     exceptions/sqldatanotfoundexception.cpp \

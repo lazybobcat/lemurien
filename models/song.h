@@ -9,7 +9,7 @@
  * @date 2013-02
  */
 
-#include "database/sqlmodel.h"
+#include "sqlmodel.h"
 #include "config.h"
 #include <memory>
 #ifdef DEBUG
