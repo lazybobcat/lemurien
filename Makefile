@@ -527,20 +527,20 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: resources.qrc \
-		data/shuffle.png \
 		data/box.png \
-		data/playlist.png \
-		data/repeatOnce.png \
-		data/edit.png \
-		data/label.png \
-		data/zoom.png \
-		data/texture.png \
-		data/lemurien.svg \
-		data/cancel.png \
-		data/repeat.png \
 		data/music.png \
+		data/repeatOnce.png \
+		data/playlist.png \
+		data/trash.png \
+		data/texture.png \
 		data/idea.png \
-		data/trash.png
+		data/cancel.png \
+		data/label.png \
+		data/repeat.png \
+		data/lemurien.svg \
+		data/zoom.png \
+		data/edit.png \
+		data/shuffle.png
 	/opt/Qt/5.2.1/gcc_64/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: .moc/moc_qtsingleapplication.cpp .moc/moc_qtlocalpeer.cpp .moc/moc_sidebar.cpp .moc/moc_playlisttablemodel.cpp .moc/moc_addfileswindow.cpp .moc/moc_editsongwindow.cpp .moc/moc_mainwindow.cpp .moc/moc_webkitwindow.cpp .moc/moc_qsfmlmusic.cpp
@@ -1289,7 +1289,7 @@ compiler_moc_header_clean:
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
 		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QList \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
 		models/playlisttablemodel.h
 	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) models/playlisttablemodel.h -o .moc/moc_playlisttablemodel.cpp
@@ -1752,6 +1752,7 @@ compiler_moc_header_clean:
 		database/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		config.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
 		playlists/unsavabeplaylist.h \
 		windows/addfileswindow.h
@@ -2658,6 +2659,9 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
+		QSfmlMusic/qsfmlmusic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		database/sqlmodelfactory.h \
 		utilities/factory.h \
 		database/databasemanager.h \
@@ -4156,6 +4160,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
+		QSfmlMusic/qsfmlmusic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		database/sqlmodelfactory.h \
 		utilities/factory.h \
 		database/databasemanager.h \
@@ -4517,26 +4524,26 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		database/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QList \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmap.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpair.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdebug.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qhash.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtextstream.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qshareddata.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvector.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpoint.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qset.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringlist.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
+		playlists/unsavabeplaylist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/sqlmodelfactory.o database/sqlmodelfactory.cpp
 
 .obj/sqlmodel.o: database/sqlmodel.cpp database/sqlmodel.h \
@@ -5186,7 +5193,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
 		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QList \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/playlisttablemodel.o models/playlisttablemodel.cpp
 
@@ -5251,39 +5258,39 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
 		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QList \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qiterator.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlist.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qalgorithms.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qiterator.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvariant.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmetatype.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvarlengtharray.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontainerfwd.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qisenum.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmap.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpair.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdebug.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qhash.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtextstream.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qiodevice.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcoreevent.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmetatype.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qisenum.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobject_impl.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qshareddata.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvector.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpoint.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qset.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringlist.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
 		database/sqlmodelfactory.h \
 		utilities/factory.h \
 		database/databasemanager.h \
@@ -5753,16 +5760,19 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		database/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		config.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
 		playlists/unsavabeplaylist.h \
 		windows/mainwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QMainWindow \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		interface/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPainter \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		QSfmlMusic/qsfmlmusic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/playlisttablemodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
 		windows/editsongwindow.h \
@@ -6248,6 +6258,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		QSfmlMusic/qsfmlmusic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		database/sqlmodelfactory.h \
 		utilities/factory.h \
 		database/databasemanager.h \
@@ -6723,6 +6736,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
+		QSfmlMusic/qsfmlmusic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		database/sqlmodelfactory.h \
 		utilities/factory.h \
 		database/databasemanager.h \
@@ -7214,6 +7230,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
+		QSfmlMusic/qsfmlmusic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		database/sqlmodelfactory.h \
 		utilities/factory.h \
 		database/databasemanager.h \
@@ -7668,7 +7687,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
 		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
+		song.h \
+		config.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/test_database.o tests/test_database.cpp
 
 .obj/qsfmlmusic.o: QSfmlMusic/qsfmlmusic.cpp QSfmlMusic/qsfmlmusic.h \

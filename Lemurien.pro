@@ -35,7 +35,8 @@ HEADERS += song.h \
     windows/addfileswindow.h \
     windows/editsongwindow.h \
     windows/mainwindow.h \
-    windows/webkitwindow.h
+    windows/webkitwindow.h \
+    QSfmlMusic/qsfmlmusic.h
 SOURCES += main.cpp \
     song.cpp \
     config.cpp \
@@ -55,7 +56,8 @@ SOURCES += main.cpp \
     windows/mainwindow_ui.cpp \
     windows/mainwindow_behaviors.cpp \
     windows/webkitwindow.cpp \
-    tests/test_database.cpp
+    tests/test_database.cpp \
+    QSfmlMusic/qsfmlmusic.cpp
 
 OTHER_FILES += \
     data/texture.png \
