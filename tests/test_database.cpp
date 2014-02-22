@@ -4,7 +4,7 @@
 
 #include "../database/databasemanager.h"
 #include "../database/sqlmodel.h"
-#include "../song.h"
+#include "../models/song.h"
 
 using namespace bandit;
 using namespace std;

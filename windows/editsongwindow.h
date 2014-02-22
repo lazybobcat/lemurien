@@ -3,7 +3,7 @@
 
 #include <QtGui>
 #include <QtWidgets/QtWidgets>
-#include "song.h"
+#include "models/song.h"
 #include "exceptions.h"
 
 class MainWindow;

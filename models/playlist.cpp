@@ -1,6 +1,6 @@
 #include "playlist.h"
 #include <QVariant>
-#include "../database/sqlmodelfactory.h"
+#include "../models/sqlmodelfactory.h"
 
 
 

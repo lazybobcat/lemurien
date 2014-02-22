@@ -48,10 +48,10 @@ OBJECTS_DIR   = .obj/
 SOURCES       = QtSingleApplication/qtsingleapplication.cpp \
 		QtSingleApplication/qtlocalpeer.cpp \
 		main.cpp \
-		song.cpp \
+		models/song.cpp \
 		config.cpp \
 		database/databasemanager.cpp \
-		database/sqlmodelfactory.cpp \
+		models/sqlmodelfactory.cpp \
 		database/sqlmodel.cpp \
 		exceptions/sqlexception.cpp \
 		exceptions/sqldatabaseexception.cpp \
@@ -60,7 +60,7 @@ SOURCES       = QtSingleApplication/qtsingleapplication.cpp \
 		exceptions/logicalfaultexception.cpp \
 		interface/sidebar.cpp \
 		models/playlisttablemodel.cpp \
-		playlists/playlist.cpp \
+		models/playlist.cpp \
 		windows/addfileswindow.cpp \
 		windows/editsongwindow.cpp \
 		windows/mainwindow_ui.cpp \
@@ -502,7 +502,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .obj/lemurien1.0.0 || mkdir -p .obj/lemurien1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/lemurien1.0.0/ && $(COPY_FILE) --parents resources.qrc .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.h QtSingleApplication/qtlocalpeer.h song.h config.h database/databasemanager.h database/sqlmodel.h database/sqlmodelfactory.h exceptions/sqlexception.h exceptions.h exceptions/sqldatabaseexception.h exceptions/sqldatanotfoundexception.h exceptions/sqlinsertfailedexception.h exceptions/logicalfaultexception.h interface/sidebar.h models/playlisttablemodel.h playlists/playlist.h playlists/unsavabeplaylist.h utilities/factory.h windows/addfileswindow.h windows/editsongwindow.h windows/mainwindow.h windows/webkitwindow.h QSfmlMusic/qsfmlmusic.h .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.cpp QtSingleApplication/qtlocalpeer.cpp main.cpp song.cpp config.cpp database/databasemanager.cpp database/sqlmodelfactory.cpp database/sqlmodel.cpp exceptions/sqlexception.cpp exceptions/sqldatabaseexception.cpp exceptions/sqldatanotfoundexception.cpp exceptions/sqlinsertfailedexception.cpp exceptions/logicalfaultexception.cpp interface/sidebar.cpp models/playlisttablemodel.cpp playlists/playlist.cpp windows/addfileswindow.cpp windows/editsongwindow.cpp windows/mainwindow_ui.cpp windows/mainwindow_behaviors.cpp windows/webkitwindow.cpp tests/test_database.cpp QSfmlMusic/qsfmlmusic.cpp .obj/lemurien1.0.0/ && (cd `dirname .obj/lemurien1.0.0` && $(TAR) lemurien1.0.0.tar lemurien1.0.0 && $(COMPRESS) lemurien1.0.0.tar) && $(MOVE) `dirname .obj/lemurien1.0.0`/lemurien1.0.0.tar.gz . && $(DEL_FILE) -r .obj/lemurien1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/lemurien1.0.0/ && $(COPY_FILE) --parents resources.qrc .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.h QtSingleApplication/qtlocalpeer.h models/song.h config.h database/databasemanager.h database/sqlmodel.h models/sqlmodelfactory.h exceptions/sqlexception.h exceptions.h exceptions/sqldatabaseexception.h exceptions/sqldatanotfoundexception.h exceptions/sqlinsertfailedexception.h exceptions/logicalfaultexception.h interface/sidebar.h models/playlisttablemodel.h models/playlist.h models/unsavabeplaylist.h utilities/factory.h windows/addfileswindow.h windows/editsongwindow.h windows/mainwindow.h windows/webkitwindow.h QSfmlMusic/qsfmlmusic.h .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.cpp QtSingleApplication/qtlocalpeer.cpp main.cpp models/song.cpp config.cpp database/databasemanager.cpp models/sqlmodelfactory.cpp database/sqlmodel.cpp exceptions/sqlexception.cpp exceptions/sqldatabaseexception.cpp exceptions/sqldatanotfoundexception.cpp exceptions/sqlinsertfailedexception.cpp exceptions/logicalfaultexception.cpp interface/sidebar.cpp models/playlisttablemodel.cpp models/playlist.cpp windows/addfileswindow.cpp windows/editsongwindow.cpp windows/mainwindow_ui.cpp windows/mainwindow_behaviors.cpp windows/webkitwindow.cpp tests/test_database.cpp QSfmlMusic/qsfmlmusic.cpp .obj/lemurien1.0.0/ && (cd `dirname .obj/lemurien1.0.0` && $(TAR) lemurien1.0.0.tar lemurien1.0.0 && $(COMPRESS) lemurien1.0.0.tar) && $(MOVE) `dirname .obj/lemurien1.0.0`/lemurien1.0.0.tar.gz . && $(DEL_FILE) -r .obj/lemurien1.0.0
 
 
 clean:compiler_clean 
@@ -527,17 +527,17 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: resources.qrc \
-		data/box.png \
-		data/music.png \
+		data/lemurien.svg \
 		data/repeatOnce.png \
-		data/playlist.png \
-		data/trash.png \
-		data/texture.png \
+		data/music.png \
 		data/idea.png \
+		data/texture.png \
+		data/trash.png \
+		data/box.png \
+		data/playlist.png \
+		data/repeat.png \
 		data/cancel.png \
 		data/label.png \
-		data/repeat.png \
-		data/lemurien.svg \
 		data/zoom.png \
 		data/edit.png \
 		data/shuffle.png
@@ -1271,26 +1271,6 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		exceptions.h \
-		exceptions/sqldatabaseexception.h \
-		exceptions/sqlexception.h \
-		exceptions/sqldatanotfoundexception.h \
-		exceptions/sqlinsertfailedexception.h \
-		exceptions/logicalfaultexception.h \
-		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
 		models/playlisttablemodel.h
 	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) models/playlisttablemodel.h -o .moc/moc_playlisttablemodel.cpp
 
@@ -1730,31 +1710,6 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbox.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbutton.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtwidgetsversion.h \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
-		exceptions.h \
-		exceptions/sqldatabaseexception.h \
-		exceptions/sqlexception.h \
-		exceptions/sqldatanotfoundexception.h \
-		exceptions/sqlinsertfailedexception.h \
-		exceptions/logicalfaultexception.h \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
 		windows/addfileswindow.h
 	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) windows/addfileswindow.h -o .moc/moc_addfileswindow.cpp
 
@@ -2194,23 +2149,12 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbox.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbutton.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtwidgetsversion.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
 		exceptions.h \
 		exceptions/sqldatabaseexception.h \
 		exceptions/sqlexception.h \
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		config.h \
 		windows/editsongwindow.h
 	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) windows/editsongwindow.h -o .moc/moc_editsongwindow.cpp
 
@@ -2662,32 +2606,16 @@ compiler_moc_header_clean:
 		QSfmlMusic/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
+		models/playlisttablemodel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
+		windows/addfileswindow.h \
+		windows/editsongwindow.h \
 		exceptions.h \
 		exceptions/sqldatabaseexception.h \
 		exceptions/sqlexception.h \
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
-		models/playlisttablemodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
-		windows/addfileswindow.h \
-		windows/editsongwindow.h \
 		windows/webkitwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/QWebView \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/qwebview.h \
@@ -4163,32 +4091,16 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		QSfmlMusic/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
+		models/playlisttablemodel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
+		windows/addfileswindow.h \
+		windows/editsongwindow.h \
 		exceptions.h \
 		exceptions/sqldatabaseexception.h \
 		exceptions/sqlexception.h \
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
-		models/playlisttablemodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
-		windows/addfileswindow.h \
-		windows/editsongwindow.h \
 		windows/webkitwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/QWebView \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/qwebview.h \
@@ -4208,7 +4120,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QDialog
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/main.o main.cpp
 
-.obj/song.o: song.cpp song.h \
+.obj/song.o: models/song.cpp models/song.h \
 		database/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstring.h \
@@ -4299,7 +4211,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/song.o song.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/song.o models/song.cpp
 
 .obj/config.o: config.cpp config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
@@ -4442,7 +4354,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/databasemanager.o database/databasemanager.cpp
 
-.obj/sqlmodelfactory.o: database/sqlmodelfactory.cpp database/sqlmodelfactory.h \
+.obj/sqlmodelfactory.o: models/sqlmodelfactory.cpp models/sqlmodelfactory.h \
 		utilities/factory.h \
 		database/databasemanager.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QObject \
@@ -4519,8 +4431,8 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		playlists/playlist.h \
-		song.h \
+		models/playlist.h \
+		models/song.h \
 		database/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		config.h \
@@ -4542,9 +4454,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qset.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
+		models/unsavabeplaylist.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/sqlmodelfactory.o database/sqlmodelfactory.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/sqlmodelfactory.o models/sqlmodelfactory.cpp
 
 .obj/sqlmodel.o: database/sqlmodel.cpp database/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
@@ -5174,31 +5086,11 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		exceptions.h \
-		exceptions/sqldatabaseexception.h \
-		exceptions/sqlexception.h \
-		exceptions/sqldatanotfoundexception.h \
-		exceptions/sqlinsertfailedexception.h \
-		exceptions/logicalfaultexception.h \
-		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/playlisttablemodel.o models/playlisttablemodel.cpp
 
-.obj/playlist.o: playlists/playlist.cpp playlists/playlist.h \
-		song.h \
+.obj/playlist.o: models/playlist.cpp models/playlist.h \
+		models/song.h \
 		database/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstring.h \
@@ -5290,16 +5182,8 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qset.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QObject \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfile.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfiledevice.h \
-		playlists/unsavabeplaylist.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/playlist.o playlists/playlist.cpp
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/playlist.o models/playlist.cpp
 
 .obj/addfileswindow.o: windows/addfileswindow.cpp windows/addfileswindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QtGui \
@@ -5738,44 +5622,28 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbox.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbutton.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtwidgetsversion.h \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
-		exceptions.h \
-		exceptions/sqldatabaseexception.h \
-		exceptions/sqlexception.h \
-		exceptions/sqldatanotfoundexception.h \
-		exceptions/sqlinsertfailedexception.h \
-		exceptions/logicalfaultexception.h \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		config.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
 		windows/mainwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QMainWindow \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		interface/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPainter \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		config.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		QSfmlMusic/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/playlisttablemodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
 		windows/editsongwindow.h \
+		exceptions.h \
+		exceptions/sqldatabaseexception.h \
+		exceptions/sqlexception.h \
+		exceptions/sqldatanotfoundexception.h \
+		exceptions/sqlinsertfailedexception.h \
+		exceptions/logicalfaultexception.h \
 		windows/webkitwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/QWebView \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/qwebview.h \
@@ -6233,23 +6101,12 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbox.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbutton.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtwidgetsversion.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
 		exceptions.h \
 		exceptions/sqldatabaseexception.h \
 		exceptions/sqlexception.h \
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		config.h \
 		windows/mainwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
@@ -6258,16 +6115,11 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		config.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		QSfmlMusic/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
-		playlists/playlist.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
 		models/playlisttablemodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
 		windows/addfileswindow.h \
@@ -6739,32 +6591,16 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		QSfmlMusic/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
+		models/playlisttablemodel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
+		windows/addfileswindow.h \
+		windows/editsongwindow.h \
 		exceptions.h \
 		exceptions/sqldatabaseexception.h \
 		exceptions/sqlexception.h \
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
-		models/playlisttablemodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
-		windows/addfileswindow.h \
-		windows/editsongwindow.h \
 		windows/webkitwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/QWebView \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/qwebview.h \
@@ -7233,32 +7069,16 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		QSfmlMusic/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
-		database/sqlmodelfactory.h \
-		utilities/factory.h \
-		database/databasemanager.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlDatabase \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqldatabase.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsql.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlError \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlerror.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/QSqlQuery \
-		/opt/Qt/5.2.1/gcc_64/include/QtSql/qsqlquery.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
+		models/playlisttablemodel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
+		windows/addfileswindow.h \
+		windows/editsongwindow.h \
 		exceptions.h \
 		exceptions/sqldatabaseexception.h \
 		exceptions/sqlexception.h \
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		playlists/playlist.h \
-		song.h \
-		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtAlgorithms \
-		playlists/unsavabeplaylist.h \
-		models/playlisttablemodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
-		windows/addfileswindow.h \
-		windows/editsongwindow.h \
 		windows/webkitwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/QWebView \
 		/opt/Qt/5.2.1/gcc_64/include/QtWebKitWidgets/qwebview.h \
@@ -7687,9 +7507,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
 		database/sqlmodel.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		song.h \
-		config.h
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/test_database.o tests/test_database.cpp
 
 .obj/qsfmlmusic.o: QSfmlMusic/qsfmlmusic.cpp QSfmlMusic/qsfmlmusic.h \

@@ -10,9 +10,9 @@
  */
 
 #include "../utilities/factory.h"
-#include "databasemanager.h"
-#include "../playlists/playlist.h"
-#include "../playlists/unsavabeplaylist.h"
+#include "../database/databasemanager.h"
+#include "playlist.h"
+#include "unsavabeplaylist.h"
 #include <boost/make_shared.hpp>
 #include <map>
 #include <QVariant>

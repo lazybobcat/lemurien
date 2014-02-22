@@ -16,11 +16,11 @@ RESOURCES += resources.qrc
 LIBS += -ltag -lsfml-audio -lsfml-system
 
 # Input
-HEADERS += song.h \
+HEADERS += models/song.h \
     config.h \
     database/databasemanager.h \
     database/sqlmodel.h \
-    database/sqlmodelfactory.h \
+    models/sqlmodelfactory.h \
     exceptions/sqlexception.h \
     exceptions.h \
     exceptions/sqldatabaseexception.h \
@@ -29,8 +29,8 @@ HEADERS += song.h \
     exceptions/logicalfaultexception.h \
     interface/sidebar.h \
     models/playlisttablemodel.h \
-    playlists/playlist.h \
-    playlists/unsavabeplaylist.h \
+    models/playlist.h \
+    models/unsavabeplaylist.h \
     utilities/factory.h \
     windows/addfileswindow.h \
     windows/editsongwindow.h \
@@ -38,10 +38,10 @@ HEADERS += song.h \
     windows/webkitwindow.h \
     QSfmlMusic/qsfmlmusic.h
 SOURCES += main.cpp \
-    song.cpp \
+    models/song.cpp \
     config.cpp \
     database/databasemanager.cpp \
-    database/sqlmodelfactory.cpp \
+    models/sqlmodelfactory.cpp \
     database/sqlmodel.cpp \
     exceptions/sqlexception.cpp \
     exceptions/sqldatabaseexception.cpp \
@@ -50,7 +50,7 @@ SOURCES += main.cpp \
     exceptions/logicalfaultexception.cpp \
     interface/sidebar.cpp \
     models/playlisttablemodel.cpp \
-    playlists/playlist.cpp \
+    models/playlist.cpp \
     windows/addfileswindow.cpp \
     windows/editsongwindow.cpp \
     windows/mainwindow_ui.cpp \

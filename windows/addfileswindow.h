@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtWidgets/QtWidgets>
 #include <queue>
-#include "../database/sqlmodelfactory.h"
+#include "../models/sqlmodelfactory.h"
 
 class MainWindow;
 

@@ -3,7 +3,7 @@
 
 #include <QAbstractTableModel>
 #include <QVariant>
-#include "../playlists/playlist.h"
+#include "../models/playlist.h"
 
 /**
  * @brief This is a (Qt) Model used by a view to display a playlist (a list of songs)
