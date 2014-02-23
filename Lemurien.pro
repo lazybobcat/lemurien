@@ -27,7 +27,7 @@ HEADERS += models/song.h \
     exceptions/sqldatanotfoundexception.h \
     exceptions/sqlinsertfailedexception.h \
     exceptions/logicalfaultexception.h \
-    interface/sidebar.h \
+    widgets/sidebar.h \
     models/playlisttablemodel.h \
     models/playlist.h \
     models/unsavabeplaylist.h \
@@ -36,7 +36,7 @@ HEADERS += models/song.h \
     windows/editsongwindow.h \
     windows/mainwindow.h \
     windows/webkitwindow.h \
-    QSfmlMusic/qsfmlmusic.h
+    widgets/qsfmlmusic.h
 SOURCES += main.cpp \
     models/song.cpp \
     config.cpp \
@@ -48,7 +48,7 @@ SOURCES += main.cpp \
     exceptions/sqldatanotfoundexception.cpp \
     exceptions/sqlinsertfailedexception.cpp \
     exceptions/logicalfaultexception.cpp \
-    interface/sidebar.cpp \
+    widgets/sidebar.cpp \
     models/playlisttablemodel.cpp \
     models/playlist.cpp \
     windows/addfileswindow.cpp \
@@ -57,7 +57,7 @@ SOURCES += main.cpp \
     windows/mainwindow_behaviors.cpp \
     windows/webkitwindow.cpp \
     tests/test_database.cpp \
-    QSfmlMusic/qsfmlmusic.cpp
+    widgets/qsfmlmusic.cpp
 
 OTHER_FILES += \
     data/texture.png \

@@ -58,7 +58,7 @@ SOURCES       = QtSingleApplication/qtsingleapplication.cpp \
 		exceptions/sqldatanotfoundexception.cpp \
 		exceptions/sqlinsertfailedexception.cpp \
 		exceptions/logicalfaultexception.cpp \
-		interface/sidebar.cpp \
+		widgets/sidebar.cpp \
 		models/playlisttablemodel.cpp \
 		models/playlist.cpp \
 		windows/addfileswindow.cpp \
@@ -67,7 +67,7 @@ SOURCES       = QtSingleApplication/qtsingleapplication.cpp \
 		windows/mainwindow_behaviors.cpp \
 		windows/webkitwindow.cpp \
 		tests/test_database.cpp \
-		QSfmlMusic/qsfmlmusic.cpp qrc_resources.cpp \
+		widgets/qsfmlmusic.cpp qrc_resources.cpp \
 		.moc/moc_qtsingleapplication.cpp \
 		.moc/moc_qtlocalpeer.cpp \
 		.moc/moc_sidebar.cpp \
@@ -502,7 +502,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .obj/lemurien1.0.0 || mkdir -p .obj/lemurien1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/lemurien1.0.0/ && $(COPY_FILE) --parents resources.qrc .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.h QtSingleApplication/qtlocalpeer.h models/song.h config.h database/databasemanager.h models/sqlmodel.h models/sqlmodelfactory.h exceptions/sqlexception.h exceptions.h exceptions/sqldatabaseexception.h exceptions/sqldatanotfoundexception.h exceptions/sqlinsertfailedexception.h exceptions/logicalfaultexception.h interface/sidebar.h models/playlisttablemodel.h models/playlist.h models/unsavabeplaylist.h utilities/factory.h windows/addfileswindow.h windows/editsongwindow.h windows/mainwindow.h windows/webkitwindow.h QSfmlMusic/qsfmlmusic.h .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.cpp QtSingleApplication/qtlocalpeer.cpp main.cpp models/song.cpp config.cpp database/databasemanager.cpp models/sqlmodelfactory.cpp models/sqlmodel.cpp exceptions/sqlexception.cpp exceptions/sqldatabaseexception.cpp exceptions/sqldatanotfoundexception.cpp exceptions/sqlinsertfailedexception.cpp exceptions/logicalfaultexception.cpp interface/sidebar.cpp models/playlisttablemodel.cpp models/playlist.cpp windows/addfileswindow.cpp windows/editsongwindow.cpp windows/mainwindow_ui.cpp windows/mainwindow_behaviors.cpp windows/webkitwindow.cpp tests/test_database.cpp QSfmlMusic/qsfmlmusic.cpp .obj/lemurien1.0.0/ && (cd `dirname .obj/lemurien1.0.0` && $(TAR) lemurien1.0.0.tar lemurien1.0.0 && $(COMPRESS) lemurien1.0.0.tar) && $(MOVE) `dirname .obj/lemurien1.0.0`/lemurien1.0.0.tar.gz . && $(DEL_FILE) -r .obj/lemurien1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/lemurien1.0.0/ && $(COPY_FILE) --parents resources.qrc .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.h QtSingleApplication/qtlocalpeer.h models/song.h config.h database/databasemanager.h models/sqlmodel.h models/sqlmodelfactory.h exceptions/sqlexception.h exceptions.h exceptions/sqldatabaseexception.h exceptions/sqldatanotfoundexception.h exceptions/sqlinsertfailedexception.h exceptions/logicalfaultexception.h widgets/sidebar.h models/playlisttablemodel.h models/playlist.h models/unsavabeplaylist.h utilities/factory.h windows/addfileswindow.h windows/editsongwindow.h windows/mainwindow.h windows/webkitwindow.h widgets/qsfmlmusic.h .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.cpp QtSingleApplication/qtlocalpeer.cpp main.cpp models/song.cpp config.cpp database/databasemanager.cpp models/sqlmodelfactory.cpp models/sqlmodel.cpp exceptions/sqlexception.cpp exceptions/sqldatabaseexception.cpp exceptions/sqldatanotfoundexception.cpp exceptions/sqlinsertfailedexception.cpp exceptions/logicalfaultexception.cpp widgets/sidebar.cpp models/playlisttablemodel.cpp models/playlist.cpp windows/addfileswindow.cpp windows/editsongwindow.cpp windows/mainwindow_ui.cpp windows/mainwindow_behaviors.cpp windows/webkitwindow.cpp tests/test_database.cpp widgets/qsfmlmusic.cpp .obj/lemurien1.0.0/ && (cd `dirname .obj/lemurien1.0.0` && $(TAR) lemurien1.0.0.tar lemurien1.0.0 && $(COMPRESS) lemurien1.0.0.tar) && $(MOVE) `dirname .obj/lemurien1.0.0`/lemurien1.0.0.tar.gz . && $(DEL_FILE) -r .obj/lemurien1.0.0
 
 
 clean:compiler_clean 
@@ -527,20 +527,20 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: resources.qrc \
-		data/label.png \
-		data/idea.png \
-		data/playlist.png \
-		data/texture.png \
-		data/zoom.png \
-		data/edit.png \
+		data/box.png \
 		data/music.png \
-		data/trash.png \
-		data/repeatOnce.png \
-		data/lemurien.svg \
 		data/repeat.png \
 		data/cancel.png \
-		data/box.png \
-		data/shuffle.png
+		data/trash.png \
+		data/lemurien.svg \
+		data/idea.png \
+		data/shuffle.png \
+		data/label.png \
+		data/repeatOnce.png \
+		data/zoom.png \
+		data/edit.png \
+		data/playlist.png \
+		data/texture.png
 	/opt/Qt/5.2.1/gcc_64/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: .moc/moc_qtsingleapplication.cpp .moc/moc_qtlocalpeer.cpp .moc/moc_sidebar.cpp .moc/moc_playlisttablemodel.cpp .moc/moc_addfileswindow.cpp .moc/moc_editsongwindow.cpp .moc/moc_mainwindow.cpp .moc/moc_webkitwindow.cpp .moc/moc_qsfmlmusic.cpp
@@ -1192,8 +1192,8 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
-		interface/sidebar.h
-	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) interface/sidebar.h -o .moc/moc_sidebar.cpp
+		widgets/sidebar.h
+	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) widgets/sidebar.h -o .moc/moc_sidebar.cpp
 
 .moc/moc_playlisttablemodel.cpp: /opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qabstractitemmodel.h \
@@ -2521,7 +2521,7 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		interface/sidebar.h \
+		widgets/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgets \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgetsDepends \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaccessiblewidget.h \
@@ -2659,7 +2659,7 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		QSfmlMusic/qsfmlmusic.h \
+		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/sqlmodelfactory.h \
@@ -3141,8 +3141,8 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtimer.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qbasictimer.h \
-		QSfmlMusic/qsfmlmusic.h
-	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) QSfmlMusic/qsfmlmusic.h -o .moc/moc_qsfmlmusic.cpp
+		widgets/qsfmlmusic.h
+	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) widgets/qsfmlmusic.h -o .moc/moc_qsfmlmusic.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
@@ -4024,7 +4024,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		interface/sidebar.h \
+		widgets/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgets \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgetsDepends \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaccessiblewidget.h \
@@ -4160,7 +4160,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		QSfmlMusic/qsfmlmusic.h \
+		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/sqlmodelfactory.h \
@@ -4655,7 +4655,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 .obj/logicalfaultexception.o: exceptions/logicalfaultexception.cpp exceptions/logicalfaultexception.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/logicalfaultexception.o exceptions/logicalfaultexception.cpp
 
-.obj/sidebar.o: interface/sidebar.cpp interface/sidebar.h \
+.obj/sidebar.o: widgets/sidebar.cpp widgets/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgets \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgetsDepends \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QtCore \
@@ -5096,7 +5096,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/sidebar.o interface/sidebar.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/sidebar.o widgets/sidebar.cpp
 
 .obj/playlisttablemodel.o: models/playlisttablemodel.cpp models/playlisttablemodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QAbstractTableModel \
@@ -5765,12 +5765,12 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		models/unsavabeplaylist.h \
 		windows/mainwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QMainWindow \
-		interface/sidebar.h \
+		widgets/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPainter \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
-		QSfmlMusic/qsfmlmusic.h \
+		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/playlisttablemodel.h \
@@ -6253,12 +6253,12 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		windows/mainwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		interface/sidebar.h \
+		widgets/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPainter \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPaintEvent \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
-		QSfmlMusic/qsfmlmusic.h \
+		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/sqlmodelfactory.h \
@@ -6598,7 +6598,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		interface/sidebar.h \
+		widgets/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgets \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgetsDepends \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaccessiblewidget.h \
@@ -6736,7 +6736,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		QSfmlMusic/qsfmlmusic.h \
+		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/sqlmodelfactory.h \
@@ -7092,7 +7092,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
-		interface/sidebar.h \
+		widgets/sidebar.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgets \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QtWidgetsDepends \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaccessiblewidget.h \
@@ -7230,7 +7230,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
-		QSfmlMusic/qsfmlmusic.h \
+		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		models/sqlmodelfactory.h \
@@ -7686,13 +7686,13 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		exceptions/sqldatanotfoundexception.h \
 		exceptions/sqlinsertfailedexception.h \
 		exceptions/logicalfaultexception.h \
-		models/song.h \
 		models/sqlmodel.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
+		models/song.h \
 		config.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/test_database.o tests/test_database.cpp
 
-.obj/qsfmlmusic.o: QSfmlMusic/qsfmlmusic.cpp QSfmlMusic/qsfmlmusic.h \
+.obj/qsfmlmusic.o: widgets/qsfmlmusic.cpp widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtGui/qwindowdefs.h \
@@ -7804,7 +7804,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtimer.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qbasictimer.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/qsfmlmusic.o QSfmlMusic/qsfmlmusic.cpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/qsfmlmusic.o widgets/qsfmlmusic.cpp
 
 .obj/qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/qrc_resources.o qrc_resources.cpp

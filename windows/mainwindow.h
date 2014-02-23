@@ -5,9 +5,9 @@
 #include <QtWidgets/QMainWindow>
 #include <QMap>
 #include <QVariant>
-#include "../interface/sidebar.h"
+#include "../widgets/sidebar.h"
 #include "config.h"
-#include "QSfmlMusic/qsfmlmusic.h"
+#include "../widgets/qsfmlmusic.h"
 #include "../models/sqlmodelfactory.h"
 #include "../models/playlisttablemodel.h"
 #include "addfileswindow.h"
