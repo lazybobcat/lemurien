@@ -148,7 +148,11 @@ void QMusicPlayer::setVolume(int volume)
 
 void QMusicPlayer::setPlaymode(PlayMode mode)
 {
-    mPlaymode = mode;
+    if(mPlaymode != mode)
+    {
+        mPlaymode = mode;
+        emit playmodeChanged(mPlaymode);
+    }
 }
 
 QMusicPlayer::PlayMode QMusicPlayer::playmode() const

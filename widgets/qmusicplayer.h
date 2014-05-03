@@ -37,6 +37,7 @@ signals:
     void                volumeChanged(int new_volume);
     void                statusChanged(sf::Music::Status new_status);
     void                sourceChanged(QSong new_source);
+    void                playmodeChanged(PlayMode);
 
 public slots:
     void                songAboutToFinish();
