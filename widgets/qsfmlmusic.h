@@ -20,9 +20,11 @@ public slots:
 signals:
     void    tick(sf::Time);
     void    aboutToFinish();
+    void    finished();
 
 private:
     QTimer*     mTimer;
+    bool        mAboutToFinish;
 
 };
 
