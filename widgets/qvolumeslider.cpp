@@ -2,6 +2,8 @@
 #include <QStyle>
 #include "qmusicplayer.h"
 
+#include <iostream>
+
 QVolumeSlider::QVolumeSlider(QMusicPlayer *player) :
     QWidget(player),
     mPlayer(player),
@@ -14,9 +16,11 @@ QVolumeSlider::QVolumeSlider(QMusicPlayer *player) :
     connect(mIcon, SIGNAL(pressed()), this, SLOT(mute()));
 
     mSlider = new QSlider(this);
+    mSlider->setOrientation(Qt::Horizontal);
     mSlider->setTickInterval(1);
     mSlider->setMaximum(100);
     mSlider->setMinimum(0);
+    mSlider->setMaximumWidth(200);
     connect(mSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderValueChanged(int)));
 
     mLayout = new QHBoxLayout(this);
@@ -30,6 +34,8 @@ QVolumeSlider::~QVolumeSlider()
     delete mIcon;
     delete mSlider;
     delete mLayout;
+
+    std::cout << "QVolumeSlider deleted !" << std::endl;
 }
 
 
