@@ -16,48 +16,44 @@ RESOURCES += resources.qrc
 LIBS += -ltag -lsfml-audio -lsfml-system
 
 # Input
-HEADERS += models/song.h \
+HEADERS += \
     config.h \
     database/databasemanager.h \
     models/sqlmodel.h \
-    models/sqlmodelfactory.h \
     exceptions/sqlexception.h \
     exceptions.h \
     exceptions/sqldatabaseexception.h \
     exceptions/sqldatanotfoundexception.h \
     exceptions/sqlinsertfailedexception.h \
     exceptions/logicalfaultexception.h \
-    widgets/sidebar.h \
-    models/playlisttablemodel.h \
-    models/playlist.h \
-    models/unsavabeplaylist.h \
     utilities/factory.h \
-    windows/addfileswindow.h \
-    windows/editsongwindow.h \
     windows/mainwindow.h \
     windows/webkitwindow.h \
-    widgets/qsfmlmusic.h
+    widgets/qsfmlmusic.h \
+    widgets/qmusicplayer.h \
+    widgets/qvolumeslider.h \
+    models/songmodel.h \
+    widgets/qsong.h \
+    widgets/qplaylist.h
 SOURCES += main.cpp \
-    models/song.cpp \
     config.cpp \
     database/databasemanager.cpp \
-    models/sqlmodelfactory.cpp \
     models/sqlmodel.cpp \
     exceptions/sqlexception.cpp \
     exceptions/sqldatabaseexception.cpp \
     exceptions/sqldatanotfoundexception.cpp \
     exceptions/sqlinsertfailedexception.cpp \
     exceptions/logicalfaultexception.cpp \
-    widgets/sidebar.cpp \
-    models/playlisttablemodel.cpp \
-    models/playlist.cpp \
-    windows/addfileswindow.cpp \
-    windows/editsongwindow.cpp \
     windows/mainwindow_ui.cpp \
     windows/mainwindow_behaviors.cpp \
     windows/webkitwindow.cpp \
     tests/test_database.cpp \
-    widgets/qsfmlmusic.cpp
+    widgets/qsfmlmusic.cpp \
+    widgets/qmusicplayer.cpp \
+    widgets/qvolumeslider.cpp \
+    models/songmodel.cpp \
+    widgets/qsong.cpp \
+    widgets/qplaylist.cpp
 
 OTHER_FILES += \
     data/texture.png \
