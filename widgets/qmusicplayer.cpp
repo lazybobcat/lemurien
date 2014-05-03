@@ -6,7 +6,7 @@ QMusicPlayer::QMusicPlayer(QWidget *parent) :
     QWidget(parent),
     mPlaylist(nullptr),
     mPlaylistIndex(0),
-    mLoop(false)
+    mPlaymode(QMusicPlayer::Normal)
 {
     connect(&mMusic, SIGNAL(aboutToFinish()), this, SLOT(songAboutToFinish()));
     connect(&mMusic, SIGNAL(finished()), this, SLOT(songFinished()));
@@ -68,33 +68,70 @@ void QMusicPlayer::stop()
 
 void QMusicPlayer::previous()
 {
-    if(mPlaylist && mPlaylistIndex > 0)
+    mMusic.stop();
+
+    switch(mPlaymode)
     {
-        mMusic.stop();
-        mPlaylistIndex -= 1;
-        play();
-    }
-    else if(mPlaylist && mPlaylistIndex == 0 && mLoop)
-    {
-        mMusic.stop();
-        mPlaylistIndex = mPlaylist->size() - 1;
-        play();
+        case Normal:
+            if(mPlaylist && mPlaylistIndex > 0)
+            {
+                mPlaylistIndex -= 1;
+                play();
+            }
+            break;
+
+        case Loop:
+            if(mPlaylist && mPlaylistIndex > 0)
+            {
+                mPlaylistIndex -= 1;
+                play();
+            }
+            else if(mPlaylist && mPlaylistIndex == 0)
+            {
+                mPlaylistIndex = mPlaylist->size() - 1;
+                play();
+            }
+            break;
+
+        case LoopSingle:
+            play();
+            break;
     }
 }
 
 void QMusicPlayer::next()
 {
-    if(mPlaylist && mPlaylistIndex < (mPlaylist->size()-1))
+    mMusic.stop();
+
+    switch(mPlaymode)
     {
-        mMusic.stop();
-        mPlaylistIndex += 1;
-        play();
-    }
-    else if(mPlaylist && mPlaylistIndex == (mPlaylist->size()-1) && mLoop)
-    {
-        mMusic.stop();
-        mPlaylistIndex = 0;
-        play();
+        case Normal:
+            if(mPlaylist && mPlaylistIndex < (mPlaylist->size()-1u))
+            {
+                mPlaylistIndex += 1;
+                play();
+                std::cout << "next() -> normal mode will play index " << mPlaylistIndex << std::endl;
+            }
+            break;
+
+        case Loop:
+            if(mPlaylist && mPlaylistIndex < (mPlaylist->size()-1u))
+            {
+                mPlaylistIndex += 1;
+                play();
+                std::cout << "next() -> loop mode 1 will play index " << mPlaylistIndex << std::endl;
+            }
+            else if(mPlaylist)
+            {
+                mPlaylistIndex = 0;
+                play();
+                std::cout << "next() -> loop mode 2 will play index " << mPlaylistIndex << std::endl;
+            }
+            break;
+
+        case LoopSingle:
+            play();
+            break;
     }
 }
 
@@ -109,6 +146,17 @@ void QMusicPlayer::setVolume(int volume)
 }
 
 
+void QMusicPlayer::setPlaymode(PlayMode mode)
+{
+    mPlaymode = mode;
+}
+
+QMusicPlayer::PlayMode QMusicPlayer::playmode() const
+{
+    return mPlaymode;
+}
+
+
 void QMusicPlayer::songAboutToFinish()
 {
 
@@ -116,5 +164,6 @@ void QMusicPlayer::songAboutToFinish()
 
 void QMusicPlayer::songFinished()
 {
+    std::cout << "songFinished() " << mPlaylistIndex << std::endl;
     next();
 }

@@ -8,6 +8,16 @@
 class QMusicPlayer : public QWidget
 {
     Q_OBJECT
+
+public:
+    enum PlayMode
+    {
+        Normal,
+        Loop,
+        LoopSingle,
+        Random
+    };
+
 public:
     explicit QMusicPlayer(QWidget *parent = 0);
 
@@ -18,6 +28,8 @@ public:
     void                previous();
     void                next();
     void                setVolume(int volume);
+    void                setPlaymode(PlayMode mode);
+    PlayMode            playmode() const;
 
     sf::Music::Status   status() const;
 
@@ -34,7 +46,7 @@ private:
     QSfmlMusic          mMusic;
     QPlaylist*          mPlaylist;
     unsigned int        mPlaylistIndex;
-    bool                mLoop;
+    PlayMode            mPlaymode;
 
 };
 

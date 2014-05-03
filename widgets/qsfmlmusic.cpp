@@ -22,14 +22,14 @@ void QSfmlMusic::tick()
         emit tick(getPlayingOffset());
         if((getDuration() - getPlayingOffset()) < sf::seconds(1.5) && !mAboutToFinish)
         {
-            emit aboutToFinish();
             mAboutToFinish = true;
+            emit aboutToFinish();
         }
     }
     else
     {
-        emit finished();
         mTimer->stop();
+        emit finished();
     }
 }
 
