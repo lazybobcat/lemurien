@@ -18,10 +18,8 @@ MainWindow::MainWindow(QWidget *parent) :
     mMediaObject->play();
     mMetaInformationResolver->setCurrentSource(Config::cIntroSong);*/
 
-    mMusicPlayer.openFromFile("/home/lo-x/Musique/testsample.flac");
-    connect(&mMusicPlayer, SIGNAL(tick(sf::Time)), this, SLOT(tick(sf::Time)));
 
-    mMusicPlayer.play();
+
 
 
     setupPlaylists();
@@ -29,6 +27,22 @@ MainWindow::MainWindow(QWidget *parent) :
     setupMenus();
     setupUi();
     setupTray();
+
+    SongModel::Ptr model(new SongModel());
+    model->setFilepath("/home/lo-x/Musique/testsample2.flac");
+    QSong song(model->shared_from_this());
+    QPlaylist* playlist = new QPlaylist(this);
+    playlist->append(song);
+
+    model.reset(new SongModel());
+    model->setFilepath("/home/lo-x/Musique/testsample.flac");
+    song.setModel(model);
+    playlist->append(song);
+
+    std::cout << "Playlist size : " << playlist->size() << std::endl;
+
+    mMusicPlayer.setPlaylist(playlist);
+    mMusicPlayer.play();
 
     /*connect(mMediaObject, SIGNAL(tick(qint64)), this, SLOT(tick(qint64)));
     connect(mMediaObject, SIGNAL(stateChanged(Phonon::State,Phonon::State)), this, SLOT(stateChanged(Phonon::State,Phonon::State)));

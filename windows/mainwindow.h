@@ -7,7 +7,7 @@
 #include <QVariant>
 #include "../widgets/sidebar.h"
 #include "config.h"
-#include "../widgets/qsfmlmusic.h"
+#include "../widgets/qmusicplayer.h"
 #include "../models/sqlmodelfactory.h"
 #include "../models/playlisttablemodel.h"
 #include "addfileswindow.h"
@@ -89,7 +89,7 @@ private:
     //Phonon::AudioOutput* mAudioOutput;      ///< The Audio Output for Phonon, that we will link to our MediaObject
     //Phonon::MediaObject* mMediaObject;      ///< The media object (the song that we are playing + songs in waiting queue)
     //Phonon::MediaObject *mMetaInformationResolver;  ///< The meta information resolver extract informations from songs, such as duration, title, etc..
-    QSfmlMusic  mMusicPlayer;
+    QMusicPlayer  mMusicPlayer;
 
     /////////////////////////////////
     //         UI Properties       //
