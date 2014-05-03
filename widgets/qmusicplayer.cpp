@@ -1,14 +1,18 @@
 #include "qmusicplayer.h"
 
+#include <iostream>
+
 QMusicPlayer::QMusicPlayer(QWidget *parent) :
     QWidget(parent),
     mPlaylist(nullptr),
     mPlaylistIndex(0),
     mLoop(false)
 {
+    connect(&mMusic, SIGNAL(aboutToFinish()), this, SLOT(songAboutToFinish()));
+    connect(&mMusic, SIGNAL(finished()), this, SLOT(songFinished()));
 }
 
-void QMusicPlayer::setPlaylist(Playlist::Ptr playlist)
+void QMusicPlayer::setPlaylist(QPlaylist *playlist)
 {
     if(mPlaylist)
     {
@@ -34,8 +38,11 @@ void QMusicPlayer::play()
         {
             if(mPlaylist->find(mPlaylistIndex) != mPlaylist->end())
             {
-                Song::Ptr song = (*mPlaylist)[mPlaylistIndex];
-                mMusic.openFromFile(song->filepath().toStdString());
+                QSong song = (*mPlaylist)[mPlaylistIndex];
+                mMusic.openFromFile(song.model()->filepath().toStdString());
+                mMusic.play();
+
+                std::cout << "Start playing : " << song.model()->filepath().toStdString() << std::endl;
 
                 emit sourceChanged(song);
                 emit statusChanged(sf::Music::Playing);

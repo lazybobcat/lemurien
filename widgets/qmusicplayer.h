@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include "qsfmlmusic.h"
-#include "../models/playlist.h"
+#include "qplaylist.h"
 
 class QMusicPlayer : public QWidget
 {
@@ -11,7 +11,7 @@ class QMusicPlayer : public QWidget
 public:
     explicit QMusicPlayer(QWidget *parent = 0);
 
-    void                setPlaylist(Playlist::Ptr playlist);
+    void                setPlaylist(QPlaylist* playlist);
     void                play();
     void                pause();
     void                stop();
@@ -24,7 +24,7 @@ public:
 signals:
     void                volumeChanged(int new_volume);
     void                statusChanged(sf::Music::Status new_status);
-    void                sourceChanged(Song::Ptr new_source);
+    void                sourceChanged(QSong new_source);
 
 public slots:
     void                songAboutToFinish();
@@ -32,7 +32,7 @@ public slots:
 
 private:
     QSfmlMusic          mMusic;
-    Playlist::Ptr       mPlaylist;
+    QPlaylist*          mPlaylist;
     unsigned int        mPlaylistIndex;
     bool                mLoop;
 

@@ -17,8 +17,6 @@
 #include <QtWidgets/QApplication>
 #include <QtSingleApplication/QtSingleApplication>
 #include "windows/mainwindow.h"
-#include "models/sqlmodelfactory.h"
-#include "models/playlist.h"
 
 #include <cassert>
 #include <bandit/bandit.h>
