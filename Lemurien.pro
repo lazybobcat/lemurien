@@ -3,6 +3,7 @@
 ######################################################################
 
 include(QtSingleApplication/qtsingleapplication.pri)
+include(QtAwesome/QtAwesome/QtAwesome.pri)
 
 TEMPLATE += app
 TARGET = lemurien

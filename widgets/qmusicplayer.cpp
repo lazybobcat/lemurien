@@ -26,28 +26,32 @@ void QMusicPlayer::setPlaylist(QPlaylist *playlist)
 
 void QMusicPlayer::play()
 {
-    if(mPlaylist && !mMusic.getStatus() != sf::Music::Playing)
+    if(mPlaylist)
     {
-        // If something was already playing
-        if(mMusic.getPlayingOffset() > sf::Time::Zero)
+        switch(mMusic.getStatus())
         {
-            mMusic.play();
-
-            emit statusChanged(sf::Music::Playing);
-        }
-        else
-        {
-            if(mPlaylist->find(mPlaylistIndex) != mPlaylist->end())
-            {
-                QSong song = (*mPlaylist)[mPlaylistIndex];
-                mMusic.openFromFile(song.model()->filepath().toStdString());
+            case sf::Music::Paused:
                 mMusic.play();
 
-                std::cout << "Start playing : " << song.model()->filepath().toStdString() << std::endl;
-
-                emit sourceChanged(song);
                 emit statusChanged(sf::Music::Playing);
+                break;
+
+            case sf::Music::Stopped:
+            case sf::Music::Playing:
+            {
+                if(mPlaylist->find(mPlaylistIndex) != mPlaylist->end())
+                {
+                    QSong song = (*mPlaylist)[mPlaylistIndex];
+                    mMusic.openFromFile(song.model()->filepath().toStdString());
+                    mMusic.play();
+
+                    std::cout << "Start playing : " << song.model()->filepath().toStdString() << std::endl;
+
+                    emit sourceChanged(song);
+                    emit statusChanged(sf::Music::Playing);
+                }
             }
+            break;
         }
     }
 }
@@ -133,6 +137,9 @@ void QMusicPlayer::next()
         case LoopSingle:
             play();
             break;
+
+        default:
+            break;
     }
 }
 
@@ -174,6 +181,22 @@ sf::Time QMusicPlayer::songProgression() const
 void QMusicPlayer::setSongProgression(sf::Time progression)
 {
     mMusic.setPlayingOffset(progression);
+}
+
+bool QMusicPlayer::hasNext() const
+{
+    return (mPlaymode == Loop || mPlaymode == LoopSingle || (mPlaylist->find(mPlaylistIndex+1) != mPlaylist->end()));
+}
+
+bool QMusicPlayer::hasPrevious() const
+{
+    return (mPlaymode == Loop || mPlaymode == LoopSingle || (mPlaylistIndex > 0 && mPlaylist->find(mPlaylistIndex-1) != mPlaylist->end()));
+}
+
+
+sf::Music::Status QMusicPlayer::status() const
+{
+    return mMusic.getStatus();
 }
 
 

@@ -22,16 +22,12 @@ public:
     explicit QMusicPlayer(QWidget *parent = 0);
 
     void                setPlaylist(QPlaylist* playlist);
-    void                play();
-    void                pause();
-    void                stop();
-    void                previous();
-    void                next();
-    void                setVolume(int volume);
     void                setPlaymode(PlayMode mode);
     PlayMode            playmode() const;
     sf::Time            songDuration() const;
     sf::Time            songProgression() const;
+    bool                hasNext() const;
+    bool                hasPrevious() const;
 
     sf::Music::Status   status() const;
 
@@ -43,6 +39,13 @@ signals:
     void                tick(sf::Time progression);
 
 public slots:
+    void                play();
+    void                pause();
+    void                stop();
+    void                previous();
+    void                next();
+    void                setVolume(int volume);
+
     void                songAboutToFinish();
     void                songFinished();
     void                setSongProgression(sf::Time progression);

@@ -4,6 +4,7 @@
 #include <QSlider>
 #include <QMouseEvent>
 #include <SFML/System/Time.hpp>
+#include <SFML/Audio/Music.hpp>
 #include "qsong.h"
 
 class QMusicPlayer;
@@ -18,6 +19,7 @@ signals:
 
 public slots:
     void        sourceChanged(QSong);
+    void        statusChaged(sf::Music::Status status);
     void        tick(sf::Time progression);
     void        changeSongProgression(int value);
 

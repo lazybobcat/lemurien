@@ -12,6 +12,7 @@ QSeekSlider::QSeekSlider(QMusicPlayer *player) :
 
     connect(mPlayer, SIGNAL(sourceChanged(QSong)), this, SLOT(sourceChanged(QSong)));
     connect(mPlayer, SIGNAL(tick(sf::Time)), this, SLOT(tick(sf::Time)));
+    connect(mPlayer, SIGNAL(statusChanged(sf::Music::Status)), this, SLOT(statusChaged(sf::Music::Status)));
 }
 
 
@@ -19,6 +20,19 @@ void QSeekSlider::sourceChanged(QSong)
 {
     setValue(0);
     setMaximum(mPlayer->songDuration().asMilliseconds());
+}
+
+void QSeekSlider::statusChaged(sf::SoundSource::Status status)
+{
+    switch(status)
+    {
+        case sf::Music::Stopped:
+            setValue(0);
+            break;
+
+        default:
+            break;
+    }
 }
 
 void QSeekSlider::tick(sf::Time progression)
@@ -37,6 +51,9 @@ void QSeekSlider::changeSongProgression(int value)
 
 void QSeekSlider::mouseReleaseEvent(QMouseEvent *ev)
 {
+    if(mPlayer->status() != sf::Music::Playing)
+        return;
+
     if(ev->button() == Qt::LeftButton)
     {
         int value = 0;
