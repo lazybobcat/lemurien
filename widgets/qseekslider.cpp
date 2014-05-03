@@ -1,6 +1,8 @@
 #include "qseekslider.h"
 #include "qmusicplayer.h"
 
+#include <iostream>
+
 QSeekSlider::QSeekSlider(QMusicPlayer *player) :
     QSlider(player),
     mPlayer(player)
@@ -10,7 +12,6 @@ QSeekSlider::QSeekSlider(QMusicPlayer *player) :
 
     connect(mPlayer, SIGNAL(sourceChanged(QSong)), this, SLOT(sourceChanged(QSong)));
     connect(mPlayer, SIGNAL(tick(sf::Time)), this, SLOT(tick(sf::Time)));
-    connect(this, SIGNAL(valueChanged(int)), this, SLOT(changeSongProgression(int)));
 }
 
 
@@ -34,7 +35,7 @@ void QSeekSlider::changeSongProgression(int value)
     mPlayer->setSongProgression(p);
 }
 
-void QSeekSlider::mousePressEvent(QMouseEvent *ev)
+void QSeekSlider::mouseReleaseEvent(QMouseEvent *ev)
 {
     if(ev->button() == Qt::LeftButton)
     {
@@ -51,6 +52,8 @@ void QSeekSlider::mousePressEvent(QMouseEvent *ev)
             setValue(value);
             changeSongProgression(value);
         }
+
+        setSliderDown(false);
         ev->accept();
     }
     QSlider::mousePressEvent(ev);

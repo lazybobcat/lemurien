@@ -22,7 +22,7 @@ public slots:
     void        changeSongProgression(int value);
 
 protected:
-    virtual void mousePressEvent(QMouseEvent *ev);
+    virtual void mouseReleaseEvent(QMouseEvent *ev);
 
 private:
     QMusicPlayer*   mPlayer;
