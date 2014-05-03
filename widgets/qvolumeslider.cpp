@@ -13,6 +13,7 @@ QVolumeSlider::QVolumeSlider(QMusicPlayer *player) :
     mMuted(false)
 {
     mIcon = new QPushButton(style()->standardIcon(QStyle::SP_MediaVolume), "", this);
+    mIcon->setMaximumWidth(40);
     connect(mIcon, SIGNAL(pressed()), this, SLOT(mute()));
 
     mSlider = new QSlider(this);
@@ -24,8 +25,10 @@ QVolumeSlider::QVolumeSlider(QMusicPlayer *player) :
     connect(mSlider, SIGNAL(valueChanged(int)), this, SLOT(sliderValueChanged(int)));
 
     mLayout = new QHBoxLayout(this);
+    mLayout->addStretch();
     mLayout->addWidget(mIcon);
     mLayout->addWidget(mSlider);
+    mLayout->addStretch();
 }
 
 
@@ -34,8 +37,6 @@ QVolumeSlider::~QVolumeSlider()
     delete mIcon;
     delete mSlider;
     delete mLayout;
-
-    std::cout << "QVolumeSlider deleted !" << std::endl;
 }
 
 
