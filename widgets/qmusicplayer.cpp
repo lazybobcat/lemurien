@@ -1,7 +1,7 @@
 #include "qmusicplayer.h"
 
-QMusicPlayer::QMusicPlayer(QObject *parent) :
-    QObject(parent),
+QMusicPlayer::QMusicPlayer(QWidget *parent) :
+    QWidget(parent),
     mPlaylist(nullptr),
     mPlaylistIndex(0),
     mLoop(false)

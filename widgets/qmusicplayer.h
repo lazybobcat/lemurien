@@ -1,15 +1,15 @@
 #ifndef QMUSICPLAYER_H
 #define QMUSICPLAYER_H
 
-#include <QObject>
+#include <QWidget>
 #include "qsfmlmusic.h"
 #include "../models/playlist.h"
 
-class QMusicPlayer : public QObject
+class QMusicPlayer : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QMusicPlayer(QObject *parent = 0);
+    explicit QMusicPlayer(QWidget *parent = 0);
 
     void                setPlaylist(Playlist::Ptr playlist);
     void                play();
