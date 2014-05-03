@@ -10,6 +10,7 @@ QMusicPlayer::QMusicPlayer(QWidget *parent) :
 {
     connect(&mMusic, SIGNAL(aboutToFinish()), this, SLOT(songAboutToFinish()));
     connect(&mMusic, SIGNAL(finished()), this, SLOT(songFinished()));
+    connect(&mMusic, SIGNAL(tick(sf::Time)), this, SLOT(songTick(sf::Time)));
 }
 
 void QMusicPlayer::setPlaylist(QPlaylist *playlist)
@@ -160,6 +161,21 @@ QMusicPlayer::PlayMode QMusicPlayer::playmode() const
     return mPlaymode;
 }
 
+sf::Time QMusicPlayer::songDuration() const
+{
+    return mMusic.getDuration();
+}
+
+sf::Time QMusicPlayer::songProgression() const
+{
+    return mMusic.getPlayingOffset();
+}
+
+void QMusicPlayer::setSongProgression(sf::Time progression)
+{
+    mMusic.setPlayingOffset(progression);
+}
+
 
 void QMusicPlayer::songAboutToFinish()
 {
@@ -170,4 +186,10 @@ void QMusicPlayer::songFinished()
 {
     std::cout << "songFinished() " << mPlaylistIndex << std::endl;
     next();
+}
+
+
+void QMusicPlayer::songTick(sf::Time progression)
+{
+    emit tick(progression);
 }

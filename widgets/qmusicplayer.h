@@ -30,6 +30,8 @@ public:
     void                setVolume(int volume);
     void                setPlaymode(PlayMode mode);
     PlayMode            playmode() const;
+    sf::Time            songDuration() const;
+    sf::Time            songProgression() const;
 
     sf::Music::Status   status() const;
 
@@ -38,10 +40,13 @@ signals:
     void                statusChanged(sf::Music::Status new_status);
     void                sourceChanged(QSong new_source);
     void                playmodeChanged(PlayMode);
+    void                tick(sf::Time progression);
 
 public slots:
     void                songAboutToFinish();
     void                songFinished();
+    void                setSongProgression(sf::Time progression);
+    void                songTick(sf::Time progression);
 
 private:
     QSfmlMusic          mMusic;
