@@ -168,6 +168,16 @@ QMusicPlayer::PlayMode QMusicPlayer::playmode() const
     return mPlaymode;
 }
 
+QSong QMusicPlayer::song() const
+{
+    if(mPlaylist->find(mPlaylistIndex) != mPlaylist->end())
+    {
+        return (*mPlaylist)[mPlaylistIndex];
+    }
+
+    return QSong();
+}
+
 sf::Time QMusicPlayer::songDuration() const
 {
     return mMusic.getDuration();

@@ -24,6 +24,7 @@ public:
     void                setPlaylist(QPlaylist* playlist);
     void                setPlaymode(PlayMode mode);
     PlayMode            playmode() const;
+    QSong               song() const;
     sf::Time            songDuration() const;
     sf::Time            songProgression() const;
     bool                hasNext() const;
