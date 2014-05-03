@@ -67,7 +67,8 @@ SOURCES       = QtSingleApplication/qtsingleapplication.cpp \
 		models/songmodel.cpp \
 		widgets/qsong.cpp \
 		widgets/qplaylist.cpp \
-		widgets/qseekslider.cpp qrc_QtAwesome.cpp \
+		widgets/qseekslider.cpp \
+		widgets/qalbum.cpp qrc_QtAwesome.cpp \
 		qrc_resources.cpp \
 		.moc/moc_qtsingleapplication.cpp \
 		.moc/moc_qtlocalpeer.cpp \
@@ -80,7 +81,8 @@ SOURCES       = QtSingleApplication/qtsingleapplication.cpp \
 		.moc/moc_songmodel.cpp \
 		.moc/moc_qsong.cpp \
 		.moc/moc_qplaylist.cpp \
-		.moc/moc_qseekslider.cpp
+		.moc/moc_qseekslider.cpp \
+		.moc/moc_qalbum.cpp
 OBJECTS       = .obj/qtsingleapplication.o \
 		.obj/qtlocalpeer.o \
 		.obj/QtAwesome.o \
@@ -104,6 +106,7 @@ OBJECTS       = .obj/qtsingleapplication.o \
 		.obj/qsong.o \
 		.obj/qplaylist.o \
 		.obj/qseekslider.o \
+		.obj/qalbum.o \
 		.obj/qrc_QtAwesome.o \
 		.obj/qrc_resources.o \
 		.obj/moc_qtsingleapplication.o \
@@ -117,7 +120,8 @@ OBJECTS       = .obj/qtsingleapplication.o \
 		.obj/moc_songmodel.o \
 		.obj/moc_qsong.o \
 		.obj/moc_qplaylist.o \
-		.obj/moc_qseekslider.o
+		.obj/moc_qseekslider.o \
+		.obj/moc_qalbum.o
 DIST          = /opt/Qt/5.2.1/gcc_64/mkspecs/features/spec_pre.prf \
 		/opt/Qt/5.2.1/gcc_64/mkspecs/common/shell-unix.conf \
 		/opt/Qt/5.2.1/gcc_64/mkspecs/common/unix.conf \
@@ -516,7 +520,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .obj/lemurien1.0.0 || mkdir -p .obj/lemurien1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtAwesome/QtAwesome/QtAwesome.qrc resources.qrc .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.h QtSingleApplication/qtlocalpeer.h QtAwesome/QtAwesome/QtAwesome.h config.h database/databasemanager.h models/sqlmodel.h exceptions/sqlexception.h exceptions.h exceptions/sqldatabaseexception.h exceptions/sqldatanotfoundexception.h exceptions/sqlinsertfailedexception.h exceptions/logicalfaultexception.h utilities/factory.h windows/mainwindow.h windows/webkitwindow.h widgets/qsfmlmusic.h widgets/qmusicplayer.h widgets/qvolumeslider.h models/songmodel.h widgets/qsong.h widgets/qplaylist.h widgets/qseekslider.h .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.cpp QtSingleApplication/qtlocalpeer.cpp QtAwesome/QtAwesome/QtAwesome.cpp main.cpp config.cpp database/databasemanager.cpp models/sqlmodel.cpp exceptions/sqlexception.cpp exceptions/sqldatabaseexception.cpp exceptions/sqldatanotfoundexception.cpp exceptions/sqlinsertfailedexception.cpp exceptions/logicalfaultexception.cpp windows/mainwindow_ui.cpp windows/mainwindow_behaviors.cpp windows/webkitwindow.cpp tests/test_database.cpp widgets/qsfmlmusic.cpp widgets/qmusicplayer.cpp widgets/qvolumeslider.cpp models/songmodel.cpp widgets/qsong.cpp widgets/qplaylist.cpp widgets/qseekslider.cpp .obj/lemurien1.0.0/ && (cd `dirname .obj/lemurien1.0.0` && $(TAR) lemurien1.0.0.tar lemurien1.0.0 && $(COMPRESS) lemurien1.0.0.tar) && $(MOVE) `dirname .obj/lemurien1.0.0`/lemurien1.0.0.tar.gz . && $(DEL_FILE) -r .obj/lemurien1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtAwesome/QtAwesome/QtAwesome.qrc resources.qrc .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.h QtSingleApplication/qtlocalpeer.h QtAwesome/QtAwesome/QtAwesome.h config.h database/databasemanager.h models/sqlmodel.h exceptions/sqlexception.h exceptions.h exceptions/sqldatabaseexception.h exceptions/sqldatanotfoundexception.h exceptions/sqlinsertfailedexception.h exceptions/logicalfaultexception.h utilities/factory.h windows/mainwindow.h windows/webkitwindow.h widgets/qsfmlmusic.h widgets/qmusicplayer.h widgets/qvolumeslider.h models/songmodel.h widgets/qsong.h widgets/qplaylist.h widgets/qseekslider.h widgets/qalbum.h .obj/lemurien1.0.0/ && $(COPY_FILE) --parents QtSingleApplication/qtsingleapplication.cpp QtSingleApplication/qtlocalpeer.cpp QtAwesome/QtAwesome/QtAwesome.cpp main.cpp config.cpp database/databasemanager.cpp models/sqlmodel.cpp exceptions/sqlexception.cpp exceptions/sqldatabaseexception.cpp exceptions/sqldatanotfoundexception.cpp exceptions/sqlinsertfailedexception.cpp exceptions/logicalfaultexception.cpp windows/mainwindow_ui.cpp windows/mainwindow_behaviors.cpp windows/webkitwindow.cpp tests/test_database.cpp widgets/qsfmlmusic.cpp widgets/qmusicplayer.cpp widgets/qvolumeslider.cpp models/songmodel.cpp widgets/qsong.cpp widgets/qplaylist.cpp widgets/qseekslider.cpp widgets/qalbum.cpp .obj/lemurien1.0.0/ && (cd `dirname .obj/lemurien1.0.0` && $(TAR) lemurien1.0.0.tar lemurien1.0.0 && $(COMPRESS) lemurien1.0.0.tar) && $(MOVE) `dirname .obj/lemurien1.0.0`/lemurien1.0.0.tar.gz . && $(DEL_FILE) -r .obj/lemurien1.0.0
 
 
 clean:compiler_clean 
@@ -546,24 +550,24 @@ qrc_QtAwesome.cpp: QtAwesome/QtAwesome/QtAwesome.qrc \
 
 qrc_resources.cpp: resources.qrc \
 		data/idea.png \
-		data/music.png \
-		data/playlist.png \
-		data/trash.png \
-		data/texture.png \
-		data/zoom.png \
-		data/edit.png \
-		data/lemurien.svg \
 		data/label.png \
-		data/box.png \
-		data/repeatOnce.png \
 		data/repeat.png \
+		data/shuffle.png \
+		data/box.png \
 		data/cancel.png \
-		data/shuffle.png
+		data/playlist.png \
+		data/edit.png \
+		data/zoom.png \
+		data/music.png \
+		data/texture.png \
+		data/trash.png \
+		data/lemurien.svg \
+		data/repeatOnce.png
 	/opt/Qt/5.2.1/gcc_64/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
 
-compiler_moc_header_make_all: .moc/moc_qtsingleapplication.cpp .moc/moc_qtlocalpeer.cpp .moc/moc_QtAwesome.cpp .moc/moc_mainwindow.cpp .moc/moc_webkitwindow.cpp .moc/moc_qsfmlmusic.cpp .moc/moc_qmusicplayer.cpp .moc/moc_qvolumeslider.cpp .moc/moc_songmodel.cpp .moc/moc_qsong.cpp .moc/moc_qplaylist.cpp .moc/moc_qseekslider.cpp
+compiler_moc_header_make_all: .moc/moc_qtsingleapplication.cpp .moc/moc_qtlocalpeer.cpp .moc/moc_QtAwesome.cpp .moc/moc_mainwindow.cpp .moc/moc_webkitwindow.cpp .moc/moc_qsfmlmusic.cpp .moc/moc_qmusicplayer.cpp .moc/moc_qvolumeslider.cpp .moc/moc_songmodel.cpp .moc/moc_qsong.cpp .moc/moc_qplaylist.cpp .moc/moc_qseekslider.cpp .moc/moc_qalbum.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) .moc/moc_qtsingleapplication.cpp .moc/moc_qtlocalpeer.cpp .moc/moc_QtAwesome.cpp .moc/moc_mainwindow.cpp .moc/moc_webkitwindow.cpp .moc/moc_qsfmlmusic.cpp .moc/moc_qmusicplayer.cpp .moc/moc_qvolumeslider.cpp .moc/moc_songmodel.cpp .moc/moc_qsong.cpp .moc/moc_qplaylist.cpp .moc/moc_qseekslider.cpp
+	-$(DEL_FILE) .moc/moc_qtsingleapplication.cpp .moc/moc_qtlocalpeer.cpp .moc/moc_QtAwesome.cpp .moc/moc_mainwindow.cpp .moc/moc_webkitwindow.cpp .moc/moc_qsfmlmusic.cpp .moc/moc_qmusicplayer.cpp .moc/moc_qvolumeslider.cpp .moc/moc_songmodel.cpp .moc/moc_qsong.cpp .moc/moc_qplaylist.cpp .moc/moc_qseekslider.cpp .moc/moc_qalbum.cpp
 .moc/moc_qtsingleapplication.cpp: /opt/Qt/5.2.1/gcc_64/include/QtWidgets/QApplication \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qapplication.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcoreapplication.h \
@@ -1182,8 +1186,12 @@ compiler_moc_header_clean:
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qframe.h \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		widgets/qmusicplayer.h \
@@ -1191,6 +1199,7 @@ compiler_moc_header_clean:
 		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		widgets/qplaylist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		widgets/qsong.h \
 		models/songmodel.h \
 		models/sqlmodel.h \
@@ -2321,6 +2330,121 @@ compiler_moc_header_clean:
 		widgets/qseekslider.h
 	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) widgets/qseekslider.h -o .moc/moc_qseekslider.cpp
 
+.moc/moc_qalbum.cpp: /opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qwidget.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qglobal.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qconfig.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfeatures.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_integrity.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qoldbasicatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_vxworks.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_power.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_alpha.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_armv7.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_armv6.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_armv5.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_bfin.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_ia64.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_mips.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_s390.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_sh4a.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_sparc.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_x86.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_gcc.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_unix.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmutex.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlogging.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qflags.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtypetraits.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsysinfo.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qnamespace.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qchar.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qrefcount.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qarraydata.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qalgorithms.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qiterator.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcoreevent.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmetatype.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qisenum.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmargins.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qrect.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsize.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpoint.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpalette.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qcolor.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qrgb.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qiodevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpair.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qbrush.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvector.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qmatrix.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpolygon.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qregion.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qline.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qtransform.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpainterpath.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qimage.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpixmap.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qshareddata.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qhash.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qfont.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qfontmetrics.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qfontinfo.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qcursor.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qkeysequence.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qevent.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdebug.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtextstream.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qset.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qurl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qurlquery.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfile.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfiledevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qvector2d.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qtouchdevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qicon.h \
+		widgets/qalbum.h
+	/opt/Qt/5.2.1/gcc_64/bin/moc $(DEFINES) $(INCPATH) widgets/qalbum.h -o .moc/moc_qalbum.cpp
+
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
 compiler_uic_make_all:
@@ -3312,8 +3436,12 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QMainWindow \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qmainwindow.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qframe.h \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		widgets/qmusicplayer.h \
@@ -3321,6 +3449,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		widgets/qplaylist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		widgets/qsong.h \
 		models/songmodel.h \
 		models/sqlmodel.h \
@@ -3928,8 +4057,12 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qframe.h \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		widgets/qmusicplayer.h \
@@ -3937,6 +4070,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		widgets/qplaylist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		widgets/qsong.h \
 		models/songmodel.h \
 		models/sqlmodel.h \
@@ -3987,7 +4121,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QDialog \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qdialog.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QToolBar \
-		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbar.h
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtoolbar.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QStyle \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qstyle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/mainwindow_ui.o windows/mainwindow_ui.cpp
 
 .obj/mainwindow_behaviors.o: windows/mainwindow_behaviors.cpp windows/mainwindow.h \
@@ -4296,8 +4432,12 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qwidget.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qtabwidget.h \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
-		/opt/Qt/5.2.1/gcc_64/include/QtCore/QVariant \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QAction \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qaction.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qactiongroup.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QLabel \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qlabel.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qframe.h \
 		config.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QString \
 		widgets/qmusicplayer.h \
@@ -4305,6 +4445,7 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		widgets/qsfmlmusic.h \
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QTimer \
 		widgets/qplaylist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap \
 		widgets/qsong.h \
 		models/songmodel.h \
 		models/sqlmodel.h \
@@ -5564,6 +5705,129 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 		/opt/Qt/5.2.1/gcc_64/include/QtCore/QMap
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/qseekslider.o widgets/qseekslider.cpp
 
+.obj/qalbum.o: widgets/qalbum.cpp widgets/qalbum.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QWidget \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qwidget.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qwindowdefs.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qglobal.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qconfig.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfeatures.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsystemdetection.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qprocessordetection.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcompilerdetection.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qglobalstatic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qbasicatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qgenericatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_msvc.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_integrity.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qoldbasicatomic.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_vxworks.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_power.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_alpha.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_armv7.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_armv6.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_armv5.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_bfin.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_ia64.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_mips.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_s390.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_sh4a.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_sparc.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_x86.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_cxx11.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_gcc.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qatomic_unix.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmutex.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlogging.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qflags.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtypeinfo.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtypetraits.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsysinfo.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qnamespace.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qwindowdefs_win.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobject.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstring.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qchar.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qbytearray.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qrefcount.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qarraydata.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringbuilder.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qalgorithms.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qiterator.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcoreevent.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qscopedpointer.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmetatype.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvarlengtharray.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontainerfwd.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qisenum.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qobject_impl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmargins.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qrect.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsize.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpoint.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpaintdevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpalette.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qcolor.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qrgb.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringlist.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdatastream.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qiodevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qpair.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qregexp.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstringmatcher.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qbrush.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvector.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qmatrix.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpolygon.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qregion.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qline.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qtransform.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpainterpath.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qimage.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qpixmap.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsharedpointer.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qshareddata.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qhash.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qfont.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qfontmetrics.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qfontinfo.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qsizepolicy.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qcursor.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qkeysequence.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qevent.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qvariant.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qmap.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdebug.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qtextstream.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qlocale.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qset.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qcontiguouscache.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qurl.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qurlquery.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfile.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfiledevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qvector2d.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qtouchdevice.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/QPushButton \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qpushbutton.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtWidgets/qabstractbutton.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/qicon.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/QPixmap \
+		/opt/Qt/5.2.1/gcc_64/include/QtGui/QIcon \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QDir \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qdir.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qfileinfo.h \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QFile \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/QStandardPaths \
+		/opt/Qt/5.2.1/gcc_64/include/QtCore/qstandardpaths.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/qalbum.o widgets/qalbum.cpp
+
 .obj/qrc_QtAwesome.o: qrc_QtAwesome.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/qrc_QtAwesome.o qrc_QtAwesome.cpp
 
@@ -5605,6 +5869,9 @@ compiler_clean: compiler_rcc_clean compiler_moc_header_clean
 
 .obj/moc_qseekslider.o: .moc/moc_qseekslider.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_qseekslider.o .moc/moc_qseekslider.cpp
+
+.obj/moc_qalbum.o: .moc/moc_qalbum.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o .obj/moc_qalbum.o .moc/moc_qalbum.cpp
 
 ####### Install
 

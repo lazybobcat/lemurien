@@ -36,7 +36,8 @@ HEADERS += \
     models/songmodel.h \
     widgets/qsong.h \
     widgets/qplaylist.h \
-    widgets/qseekslider.h
+    widgets/qseekslider.h \
+    widgets/qalbum.h
 SOURCES += main.cpp \
     config.cpp \
     database/databasemanager.cpp \
@@ -56,7 +57,8 @@ SOURCES += main.cpp \
     models/songmodel.cpp \
     widgets/qsong.cpp \
     widgets/qplaylist.cpp \
-    widgets/qseekslider.cpp
+    widgets/qseekslider.cpp \
+    widgets/qalbum.cpp
 
 OTHER_FILES += \
     data/texture.png \
